@@ -11,10 +11,10 @@ body {
 .otp-container {
     text-align: center;
     background: #fff;
-    padding: 20px;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 30vw;
 }
 
 .otp-inputs {
@@ -31,6 +31,7 @@ body {
     text-align: center;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 button {
@@ -40,8 +41,9 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
+    margin: 20px 0px !important;
     border-radius: 5px;
+
 }
 
 button:hover {

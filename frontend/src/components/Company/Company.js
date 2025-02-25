@@ -33,7 +33,7 @@ function Company() {
     }, []);
 
     return (
-        <div className="container">
+        <div id="companyContainer" className="container">
             <h1>NIFTY 50 STOCKS</h1>
             <ul className="stocks-container">
                 {stocks.map((stock, index) => (

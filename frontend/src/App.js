@@ -7,6 +7,7 @@ import HomePage  from './components/HomePage/HomePage';
 import Markets from './components/Market/Markets'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Company  from './components/Company/Company';
+import MarketStatus from './components/MarketStatus/MarketStatus';
 
 function App() {
   
@@ -17,6 +18,7 @@ function App() {
       <Route path="/otp" element={<Otp />} />
       <Route path="/markets" element={<Markets />} />
       <Route path="/company" element={<Company />} />
+      <Route path="/market-status" element={<MarketStatus />} />
     </Routes>
     
   );

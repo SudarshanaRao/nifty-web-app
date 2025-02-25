@@ -3,12 +3,7 @@ import { Link } from "react-router-dom";
 import "./style.css";
 import Markets from "../Market/Markets";
 import Company from '../Company/Company'
-// import MarketBids from "../Market/MarketBids";
-// import BidsCreation from "../Market/BidsCreation";
-// import MarketStatus from "../Market/MarketStatus";
-// import Results from "../Market/Results";
-// import UsersInfo from "../Market/UsersInfo";
-// import BidsUpdate from "../Market/BidsUpdate";
+import MarketStatus from "../MarketStatus/MarketStatus";
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -27,8 +22,8 @@ const HomePage = () => {
         return <Company />;
       // case "bids-creation":
       //   return <BidsCreation />;
-      // case "market-status":
-      //   return <MarketStatus />;
+      case "market-status":
+        return <MarketStatus />;
       // case "results":
       //   return <Results />;
       // case "users-info":
@@ -41,6 +36,7 @@ const HomePage = () => {
   };
 
   return (
+    <>
     <div className={`app-container ${sidebarExpanded ? "sidebar-expanded" : "sidebar-collapsed"}`}>
       {/* Sidebar */}
       <div className={`sidebar ${sidebarExpanded ? "expanded" : "collapsed"}`}>
@@ -121,11 +117,14 @@ const HomePage = () => {
         </header>
         
         {/* Render Active Tab Content Below Header */}
-        <main id="renderContainer" className="markets-container">
-          {renderContent()}
-        </main>
+        
       </div>
+
     </div>
+    <main id="renderContainer" className="markets-container">
+    {renderContent()}
+  </main>
+  </>
   );
 };
 

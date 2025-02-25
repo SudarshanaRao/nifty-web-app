@@ -1,0 +1,147 @@
+.container {
+    width: 100vw !important;
+    margin: auto;
+    text-align: center;
+    margin-right: 15%;
+}
+
+.tab-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    background: #ddd;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.tab.active {
+    background: #4caf50;
+    color: white;
+}
+
+.stocks-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 3fr);
+    gap: 20px;
+    padding: 10px;
+}
+
+.stock-box {
+    width: 60%;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.stock-symbol {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+}
+
+.submit-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background: #4caf50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.submit-button:hover {
+    background: #388e3c;
+}
+
+.radio-group {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    background: #f3f4f6; /* Light gray background */
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.radio-group input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #6b7280; /* Gray border */
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.radio-group input[type="radio"]:checked {
+    border-color: #2563eb; /* Blue border for selected */
+    background: #2563eb;
+}
+
+.radio-group input[type="radio"]:checked::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.radio-group label:hover {
+    background: #e5e7eb; /* Slightly darker gray on hover */
+}
+
+.radio-group input[type="radio"]:checked + label {
+    background: #2563eb;
+    color: white;
+}
+.toggle-container {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    padding: 10px;
+}
+
+.toggle-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #ccc;
+    color: #333;
+    transition: background-color 0.3s ease-in-out, color 0.3s;
+}
+
+.toggle-button.active {
+    background-color: #2563eb;
+    color: white;
+}

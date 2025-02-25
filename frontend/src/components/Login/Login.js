@@ -21,7 +21,7 @@ const Login = () => {
     }
 
     return (
-        <div className="container">
+        <div className="login-container">
             <div className="logo">
             <img src="https://nifty10.com/wp-content/uploads/2024/02/Logo-150x150.png" width="40px" alt="Logo" />
             </div>
