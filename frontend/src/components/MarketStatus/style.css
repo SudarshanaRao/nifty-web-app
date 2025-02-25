@@ -55,7 +55,7 @@
     margin-top: 20px;
     padding: 10px 20px;
     border: none;
-    background: #4caf50;
+    background: #4d4d4d;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -63,7 +63,7 @@
 }
 
 .submit-button:hover {
-    background: #388e3c;
+    background: #191919;
 }
 
 .radio-group {

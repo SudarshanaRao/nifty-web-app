@@ -315,7 +315,6 @@ main {
   .sidebar-open .main-content {
     margin-left: 250px;
   }
-
   .app-container {
     display: flex;
     height: 100vh;
