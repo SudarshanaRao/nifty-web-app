@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./style.css";
 
 function MarketStatus() {
@@ -15,13 +17,18 @@ function MarketStatus() {
                 console.log("API Response:", response.data);
                 setStocks(response.data.data || []);
             })
-            .catch((error) => console.error("Error fetching data:", error));
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+                toast.error("Failed to fetch company data.");
+            });
     }, []);
 
     const handleStatusChange = (companyCode, newStatus) => {
         setStocks((prevStocks) =>
             prevStocks.map((stock) =>
-                stock.companyCode === companyCode ? { ...stock, companyStatus: newStatus } : stock
+                stock.companyCode === companyCode
+                    ? { ...stock, companyStatus: newStatus, isSelected: true }
+                    : stock
             )
         );
         setIsSubmitActive(true);
@@ -34,6 +41,59 @@ function MarketStatus() {
 
     const handleToggleChange = (newFilter) => {
         setFilter((prevFilter) => (prevFilter === newFilter ? null : newFilter));
+    };
+
+    const handleSubmit = async () => {
+        if (!isSubmitActive) return;
+
+        const updatedStocks = stocks.filter((stock) => stock.isSelected);
+
+        if (updatedStocks.length === 0) {
+            toast.warn("Please select at least one stock to update!", { position: "top-right" });
+            return;
+        }
+
+        try {
+            await Promise.all(
+                updatedStocks.map(async (updatedStock) => {
+                    const requestData = {
+                        companyId: updatedStock.companyId,
+                        companyName: updatedStock.companyName,
+                        companyCode: updatedStock.companyCode,
+                        rankNumber: updatedStock.rankNumber || 0,
+                        companyPoint: updatedStock.companyPoint || 0,
+                        companyStatus: updatedStock.companyStatus,
+                        liveBB: true,
+                        createdBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
+                        createdDate: new Date().toISOString(),
+                        modifiedBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
+                        modifiedDate: new Date().toISOString(),
+                        active: true,
+                    };
+
+                    console.log("Sending data:", requestData);
+
+                    const response = await axios.post(
+                        "https://dev-api.nifty10.com/company/update/company",
+                        requestData,
+                        {
+                            params: { userId: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985" },
+                            headers: { "Content-Type": "application/json" },
+                        }
+                    );
+
+                    console.log("API Response:", response.data);
+                    toast.success(`Market status updated for ${updatedStock.companyName}`, {
+                        position: "top-right",
+                    });
+                })
+            );
+
+            setIsSubmitActive(false);
+        } catch (error) {
+            console.error("API Error:", error.response?.data || error.message);
+            toast.error("Failed to update market status!", { position: "top-right" });
+        }
     };
 
     const filteredStocks = filter ? stocks.filter((stock) => stock.companyStatus === filter) : stocks;
@@ -54,6 +114,8 @@ function MarketStatus() {
                     Live BB
                 </button>
             </div>
+            <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
+
             <div className="toggle-switch-container">
                 <span className="toggle-text">BEARISH</span>
                 <div>
@@ -106,7 +168,7 @@ function MarketStatus() {
                             </div>
                         ))}
                     </div>
-                    <button className="submit-button" disabled={!isSubmitActive}>
+                    <button className="submit-button" disabled={!isSubmitActive} onClick={handleSubmit}>
                         Submit
                     </button>
                 </>
