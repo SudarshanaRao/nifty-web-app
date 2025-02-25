@@ -21,6 +21,7 @@ const Login = () => {
     }
 
     return (
+        <div className="login-main-container">
         <div className="login-container">
             <div className="logo">
             <img src="https://nifty10.com/wp-content/uploads/2024/02/Logo-150x150.png" width="40px" alt="Logo" />
@@ -60,6 +61,7 @@ const Login = () => {
                 </div>
                 <button type="submit" className="btn">LOGIN</button>
             </form>
+        </div>
         </div>
     )
 }

@@ -15,14 +15,14 @@
     padding: 10px 20px;
     margin: 0 10px;
     border: none;
-    background: #ddd;
+    background: #555;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
 }
 
 .tab.active {
-    background: #4caf50;
+    background: #161616;
     color: white;
 }
 
@@ -123,25 +123,148 @@
     background: #2563eb;
     color: white;
 }
-.toggle-container {
+
+/* Css for toggle switch */
+.switch-button {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    gap: 10px;
-    margin-left: auto;
-    padding: 10px;
-}
-
-.toggle-button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 20px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    justify-content: center;
+    margin: auto;
+    height: 40px;
+  }
+  
+  .switch-button .switch-outer {
+    height: 100%;
+    background: #252532;
+    width: 80px;
+    border-radius: 165px;
+    -webkit-box-shadow: inset 0px 5px 10px 0px #16151c, 0px 3px 6px -2px #403f4e;
+    box-shadow: inset 0px 5px 10px 0px #16151c, 0px 3px 6px -2px #403f4e;
+    border: 1px solid #32303e;
+    padding: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     cursor: pointer;
-    font-weight: bold;
-    background-color: #ccc;
-    color: #333;
-    transition: background-color 0.3s ease-in-out, color 0.3s;
-}
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .switch-button .switch-outer input[type="checkbox"] {
+    opacity: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+  }
+  
+  .switch-button .switch-outer .button-toggle {
+    height: 30px;
+    width: 30px;
+    background: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(#3b3a4e),
+      to(#272733)
+    );
+    background: -o-linear-gradient(#3b3a4e, #272733);
+    background: linear-gradient(#3b3a4e, #272733);
+    border-radius: 100%;
+    -webkit-box-shadow: inset 0px 5px 4px 0px #424151, 0px 4px 15px 0px #0f0e17;
+    box-shadow: inset 0px 5px 4px 0px #424151, 0px 4px 15px 0px #0f0e17;
+    position: relative;
+    z-index: 2;
+    -webkit-transition: left 0.3s ease-in;
+    -o-transition: left 0.3s ease-in;
+    transition: left 0.3s ease-in;
+    left: 0;
+  }
+  
+  .switch-button
+    .switch-outer
+    input[type="checkbox"]:checked
+    + .button
+    .button-toggle {
+    left: 50%;
+  }
+  
+  .switch-button
+    .switch-outer
+    input[type="checkbox"]:checked
+    + .button
+    .button-indicator {
+    -webkit-animation: indicator 1s forwards;
+    animation: indicator 1s forwards;
+  }
+  
+  .switch-button .switch-outer .button {
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: relative;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+  }
+  
+  .switch-button .switch-outer .button-indicator {
+    height: 18px;
+    width: 18px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border-radius: 50%;
+    border: 3px solid #ef565f;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    right: 6px;
+    position: relative;
+  }
+  
+  @-webkit-keyframes indicator {
+    30% {
+      opacity: 0;
+    }
+  
+    0% {
+      opacity: 1;
+    }
+  
+    100% {
+      opacity: 1;
+      border: 3px solid #60d480;
+      left: -68%;
+    }
+  }
+  
+  @keyframes indicator {
+    30% {
+      opacity: 0;
+    }
+  
+    0% {
+      opacity: 1;
+    }
+  
+    100% {
+      opacity: 1;
+      border: 3px solid #60d480;
+      left: -68%;
+    }
+  }
 
-.toggle-button.active {
-    background-color: #2563eb;
-    color: white;
-}
+  .toggle-switch-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .toggle-text{
+    padding: 0px 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
