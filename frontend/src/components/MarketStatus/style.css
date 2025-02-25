@@ -102,9 +102,14 @@
     position: relative;
 }
 
-.radio-group input[type="radio"]:checked {
-    border-color: #2563eb; /* Blue border for selected */
-    background: #2563eb;
+.radio-group input[type="radio"]:checked[value="BULLISH"] {
+    border-color: green;
+    background-color: green;
+}
+
+.radio-group input[type="radio"]:checked[value="BEARISH"] {
+    border-color: red;
+    background-color: red;
 }
 
 .radio-group input[type="radio"]:checked::before {
@@ -139,13 +144,13 @@
     justify-content: center;
     justify-content: center;
     margin: auto;
-    height: 40px;
+    height: 30px;
   }
   
   .switch-button .switch-outer {
     height: 100%;
     background: #252532;
-    width: 80px;
+    width: 60px;
     border-radius: 165px;
     -webkit-box-shadow: inset 0px 5px 10px 0px #16151c, 0px 3px 6px -2px #403f4e;
     box-shadow: inset 0px 5px 10px 0px #16151c, 0px 3px 6px -2px #403f4e;
@@ -166,8 +171,8 @@
   }
   
   .switch-button .switch-outer .button-toggle {
-    height: 30px;
-    width: 30px;
+    height: 22px;
+    width: 22px;
     background: -webkit-gradient(
       linear,
       left top,
@@ -226,7 +231,7 @@
     border: 3px solid #ef565f;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    right: 6px;
+    right: 4px;
     position: relative;
   }
   
