@@ -6,6 +6,7 @@ function MarketStatus() {
     const [activeTab, setActiveTab] = useState("marketStatus");
     const [stocks, setStocks] = useState([]);
     const [filter, setFilter] = useState(null);
+    const [isSubmitActive, setIsSubmitActive] = useState(false);
 
     useEffect(() => {
         axios
@@ -23,6 +24,7 @@ function MarketStatus() {
                 stock.companyCode === companyCode ? { ...stock, companyStatus: newStatus } : stock
             )
         );
+        setIsSubmitActive(true);
     };
 
     const handleTabChange = (tab) => {
@@ -53,29 +55,29 @@ function MarketStatus() {
                 </button>
             </div>
             <div className="toggle-switch-container">
-                    <span className="toggle-text">BEARISH</span>
-                        <div>
-                            <label className="switch-button" htmlFor="switch">
-                                <div className="switch-outer">
-                                    <input
-                                    id="switch"
-                                    type="checkbox"
-                                    checked={filter === "BULLISH"}
-                                    onChange={() => handleToggleChange(filter === "BULLISH" ? "BEARISH" : "BULLISH")}
-                                    />
-                                    <div className="button">
-                                    <span className="button-toggle"></span>
-                                    <span className="button-indicator"></span>
-                                    </div>
-                                </div>
-                            </label>
+                <span className="toggle-text">BEARISH</span>
+                <div>
+                    <label className="switch-button" htmlFor="switch">
+                        <div className="switch-outer">
+                            <input
+                                id="switch"
+                                type="checkbox"
+                                checked={filter === "BULLISH"}
+                                onChange={() => handleToggleChange(filter === "BULLISH" ? "BEARISH" : "BULLISH")}
+                            />
+                            <div className="button">
+                                <span className="button-toggle"></span>
+                                <span className="button-indicator"></span>
+                            </div>
                         </div>
-                    <span className="toggle-text">BULLISH</span>
-                    </div>
+                    </label>
+                </div>
+                <span className="toggle-text">BULLISH</span>
+            </div>
 
             {activeTab === "marketStatus" && (
                 <>
-                   <div className="stocks-container">
+                    <div className="stocks-container">
                         {filteredStocks.map((stock) => (
                             <div key={stock.companyCode} className="stock-box">
                                 <span className="stock-symbol">{stock.companyName}</span>
@@ -104,7 +106,9 @@ function MarketStatus() {
                             </div>
                         ))}
                     </div>
-                    <button className="submit-button">Submit</button>
+                    <button className="submit-button" disabled={!isSubmitActive}>
+                        Submit
+                    </button>
                 </>
             )}
 
