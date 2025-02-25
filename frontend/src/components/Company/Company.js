@@ -14,7 +14,7 @@ function Company() {
                 let fetchedStocks = response.data.data || [];
 
                 // Skip the first index
-                fetchedStocks = fetchedStocks.slice(1);
+                fetchedStocks = fetchedStocks.slice(0);
 
                 // Map through fetched stocks and update pChange from stockData if available
                 const updatedStocks = fetchedStocks.map((stock) => {
