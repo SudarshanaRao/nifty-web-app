@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./style.css";
-import stockData from "../../stockData";
+import "./company.css";
 
 function Company() {
     const [stocks, setStocks] = useState([]);
@@ -15,24 +14,13 @@ function Company() {
                 // Skip the first index
                 fetchedStocks = fetchedStocks.slice(0);
 
-                // Map through fetched stocks and update pChange from stockData if available
-                const updatedStocks = fetchedStocks.map((stock) => {
-                    const matchingStock = stockData.find(
-                        (s) => s.symbol === stock.symbol
-                    );
-                    return {
-                        ...stock,
-                        pChange: matchingStock ? matchingStock.pChange : stock.pChange,
-                    };
-                });
-
-                setStocks(updatedStocks);
+                setStocks(fetchedStocks);
             })
             .catch((error) => console.error("Error fetching data:", error));
     }, []);
 
     return (
-        <div id="companyContainer" className="container">
+        <div id="companyContainer" className="company-container">
             <h1>NIFTY 50 STOCKS</h1>
             <ul className="stocks-container">
                 {stocks.map((stock, index) => (

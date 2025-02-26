@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; 
-import "./style.css";
+import "./HomePage.css";
 import Markets from "../Market/Markets";
 import Company from '../Company/Company'
 import MarketStatus from "../MarketStatus/MarketStatus";
+import UsersInfo from "../UsersInfo/UsersInfo";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -13,6 +16,12 @@ const HomePage = () => {
     if (window.innerWidth < 800) return;
     setSidebarExpanded(!sidebarExpanded);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userToken"); 
+    window.location.href = "/login"; 
+};
+
 
   const renderContent = () => {
     switch (activeTab) {
@@ -26,8 +35,8 @@ const HomePage = () => {
         return <MarketStatus />;
       // case "results":
       //   return <Results />;
-      // case "users-info":
-      //   return <UsersInfo />;
+      case "users-info":
+        return <UsersInfo />;
       // case "bids-update":
       //   return <BidsUpdate />;
       default:
@@ -113,6 +122,7 @@ const HomePage = () => {
               <i className="fas fa-envelope"></i>
               <i className="fa-solid fa-user-tie"></i>
             </div>
+            <button onClick={handleLogout} className="btn logout">Logout</button>
           </div>
         </header>
         

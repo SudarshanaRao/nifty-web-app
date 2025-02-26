@@ -1,0 +1,104 @@
+/* Container Styling */
+.users-info__container {
+    max-width: 84%;
+    padding: 10px 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Title */
+  .users-info__title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  /* Loading & Error Messages */
+  .users-info__loading,
+  .users-info__error {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
+  .users-info__error {
+    color: red;
+    font-weight: bold;
+  }
+  
+  /* Table Wrapper */
+  .users-info__table-wrapper {
+    overflow-x: auto;
+  }
+  
+  /* Table Styling */
+  .users-info__table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  /* Table Header */
+  .users-info__table thead {
+    background: #333;
+    color: white;
+  }
+  
+  .users-info__table th {
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  /* Table Rows */
+  .users-info__row td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* Alternating Row Colors */
+  .users-info__row:nth-child(odd) {
+    background: #f2f2f2;
+  }
+  
+  .users-info__row:hover {
+    background: #e0e0e0;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  /* Active Status */
+  .users-info__status {
+    font-size: 18px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .users-info__container {
+      padding: 10px;
+    }
+  
+    .users-info__table th,
+    .users-info__table td {
+      padding: 8px;
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .users-info__title {
+      font-size: 20px;
+    }
+  
+    .users-info__table {
+      font-size: 12px;
+    }
+  }
+  

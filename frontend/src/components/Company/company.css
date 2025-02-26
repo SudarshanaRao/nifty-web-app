@@ -1,8 +1,9 @@
 .stocks-container {
     display: grid !important;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, 2fr) !important;
     gap: 20px;
     padding: 10px;
+    margin-top: 10px;
   }
   
   .stock-box {
@@ -21,20 +22,18 @@
     flex-grow: 1;
     text-align: left;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 16px !important;
     margin-right: 15px;
   }
   
   .stock-value {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
     color: #333;
   }
-  .container {
-    width: auto;
-    height: auto;
-  }
-  #companyContainer {
-    width: 95vw !important;
+  .company-container {
+    text-align: center;
+    margin: 20px 0px;
+    width: 95vw;
     margin-right: 15%;
   }

@@ -1,6 +1,5 @@
-.container {
-    width: 100vw !important;
-    margin: auto;
+.market-status-container {
+    width: 95vw;
     text-align: center;
     margin-right: 15%;
 }
@@ -26,9 +25,9 @@
     color: white;
 }
 
-.stocks-container {
+.market-stocks-container {
     display: grid !important;
-    grid-template-columns: repeat(3, 3fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     padding: 10px;
 }
@@ -42,7 +41,7 @@
 }
 
 .stock-symbol {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
 }
 

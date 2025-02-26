@@ -10,15 +10,24 @@ const Otp = () => {
   const inputRefs = useRef([]);
   const navigate = useNavigate();
 
+  // Function to generate a 6-digit OTP
   const generateOtp = () => {
     let randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedOtp(randomOtp);
+    localStorage.setItem("generatedOtp", randomOtp); // Store OTP for verification
   };
 
   useEffect(() => {
+    const isAuthenticated = localStorage.getItem("userToken"); // Check if user is logged in
+    if (!isAuthenticated) {
+      toast.error("You need to login first!", { position: "top-center" });
+      navigate("/");
+      return;
+    }
     generateOtp();
-  }, []);
+  }, [navigate]);
 
+  // Handle OTP input change
   const handleChange = (index, e) => {
     const value = e.target.value;
     if (isNaN(value)) return;
@@ -32,18 +41,22 @@ const Otp = () => {
     }
   };
 
+  // Handle backspace key navigation
   const handleKeyDown = (index, e) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();
     }
   };
 
+  // Verify OTP on form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const fullOtp = otp.join("");
+    const storedOtp = localStorage.getItem("generatedOtp"); // Retrieve stored OTP
 
-    if (fullOtp === generatedOtp) {
-      toast.success("Logged in successfully!", { autoClose: 2000 });
+    if (fullOtp === storedOtp) {
+      localStorage.setItem("otpVerified", "true"); // Mark OTP as verified
+      toast.success("OTP Verified! Redirecting...", { autoClose: 2000 });
       setTimeout(() => navigate("/home"), 2000);
     } else {
       toast.error("Invalid OTP. Please try again.", { autoClose: 2000 });
@@ -76,7 +89,7 @@ const Otp = () => {
         <p className="resend">
           Haven't received the OTP?{" "}
           <a
-            href="/login"
+            href="/otp"
             onClick={(e) => {
               e.preventDefault();
               generateOtp();

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./style.css";
+import "./MarketStatus.css";
 
 function MarketStatus() {
     const [activeTab, setActiveTab] = useState("marketStatus");
@@ -98,7 +98,7 @@ function MarketStatus() {
     const filteredStocks = filter ? stocks.filter((stock) => stock.companyStatus === filter) : stocks;
 
     return (
-        <div id="marketStatusContainer" className="container">
+        <div id="marketStatusContainer" className="market-status-container">
             <div className="tab-container">
                 <button
                     className={`tab ${activeTab === "marketStatus" ? "active" : ""}`}
@@ -138,7 +138,7 @@ function MarketStatus() {
 
             {activeTab === "marketStatus" && (
                 <>
-                    <div className="stocks-container">
+                    <div className="market-stocks-container">
                         {filteredStocks.map((stock) => (
                             <div key={stock.companyCode} className="stock-box">
                                 <span className="stock-symbol">{stock.companyName}</span>

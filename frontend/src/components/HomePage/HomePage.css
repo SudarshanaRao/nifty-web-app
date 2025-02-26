@@ -137,8 +137,8 @@ header {
     top: 0;
     border-radius: 10px;
     background: #000;
-    height: 60px;
-    padding: 0 1rem;
+    height: 65px;
+    padding: 0 2rem;
     border-bottom: 1px solid #ccc;
     transition: left 500ms;
     overflow: hidden; /* Prevents content from overflowing */
@@ -149,10 +149,22 @@ header {
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem; /* Spacing between icon & input */
-    max-width: 550px; /* Prevents taking full space */
+    width: 100%; /* Prevents taking full space */
     flex-shrink: 1;
-    margin-top: 10px;
+    margin-bottom: 10px;
+    top: 0;
     
+    
+}
+.logout {
+    height: 35px;
+    background-color: #ff0000;
+    top: 0;
+    font-size: 12px;
+    width: auto;
+}
+.logout:hover {
+    background-color: #990000;
 }
 .search-box {
     display: flex;
@@ -184,9 +196,8 @@ header {
 .social-icons {
     display: flex;
     justify-content: center;
-    
     gap: 2rem;
-    color: #fff;
+    color: #fff !important;
     flex-shrink: 0; /* Prevents shrinking */
 }
 
@@ -364,7 +375,7 @@ main {
     display: flex;
     flex-direction: column;
     width: 100vw;
-    height: 5%;
+    height: 6%;
 }
 
 #renderContainer {
@@ -383,3 +394,4 @@ main {
     margin-left: 40px;
     z-index: 1;
 }
+
