@@ -10,7 +10,6 @@ function Company() {
         axios
             .get("http://localhost:4000/get/company")
             .then((response) => {
-                console.log("API Response:", response.data);
                 let fetchedStocks = response.data.data || [];
 
                 // Skip the first index

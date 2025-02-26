@@ -62,7 +62,6 @@ const Markets = () => {
             ? market.marketName.toLowerCase().replace(/\s+/g, "-")
             : "default";
 
-          console.log(`Original: ${market.marketName}, Converted: ${color}`);
 
           return (
             <Card

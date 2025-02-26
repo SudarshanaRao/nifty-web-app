@@ -14,7 +14,6 @@ function MarketStatus() {
         axios
             .get("http://localhost:4000/get/company")
             .then((response) => {
-                console.log("API Response:", response.data);
                 setStocks(response.data.data || []);
             })
             .catch((error) => {
