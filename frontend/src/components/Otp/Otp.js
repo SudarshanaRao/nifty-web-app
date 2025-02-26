@@ -19,9 +19,9 @@ const Otp = () => {
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("userToken"); // Check if user is logged in
-    if (!isAuthenticated) {
-      toast.error("You need to login first!", { position: "top-center" });
-      navigate("/");
+    if (isAuthenticated == "null") {
+      toast.error("You need to login first!", { position: "top-center", autoClose: 2000 });
+      navigate("/login");
       return;
     }
     generateOtp();
@@ -55,11 +55,12 @@ const Otp = () => {
     const storedOtp = localStorage.getItem("generatedOtp"); // Retrieve stored OTP
 
     if (fullOtp === storedOtp) {
-      localStorage.setItem("otpVerified", "true"); // Mark OTP as verified
+      localStorage.setItem("isOtpVerfied", "true"); // Mark OTP as verified
       toast.success("OTP Verified! Redirecting...", { autoClose: 2000 });
       setTimeout(() => navigate("/home"), 2000);
     } else {
       toast.error("Invalid OTP. Please try again.", { autoClose: 2000 });
+
     }
   };
 

@@ -1,16 +1,38 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom"; 
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 import "./HomePage.css";
 import Markets from "../Market/Markets";
 import Company from '../Company/Company'
 import MarketStatus from "../MarketStatus/MarketStatus";
 import UsersInfo from "../UsersInfo/UsersInfo";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { toast, ToastContainer } from "react-toastify";
+
 
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [activeTab, setActiveTab] = useState(""); // Default tab
+  const [result, setResult] = useState(false);
+  const navigate = useNavigate();
+
+  const userVerification = () => {
+    const loginCheck = localStorage.getItem("userToken");
+    const otpCheck = localStorage.getItem("isOtpVerfied");
+    if (loginCheck && otpCheck) {
+      setResult(true);
+    }
+  }
+
+  useEffect(() => {
+      const isAuthenticated = localStorage.getItem("isOtpVerfied"); // Check if user is logged in
+      if (!isAuthenticated) {
+        toast.error("You need to Verify Otp!", { position: "top-center" });
+        navigate("/otp");
+        return;
+      }
+      userVerification();
+    }, [navigate]);
 
   const handleNavbar = () => {
     if (window.innerWidth < 800) return;
@@ -19,6 +41,7 @@ const HomePage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userToken"); 
+    localStorage.removeItem("isOtpVerfied"); 
     window.location.href = "/login"; 
 };
 

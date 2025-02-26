@@ -11,13 +11,14 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
         // Corrected validation logic (AND condition)
         if (username === "admin" && password === "finpages") {
             setError("");
             toast.success("OTP Sent To Your Mobile!", { autoClose: 2000 });
-            localStorage.setItem("userToken", "authenticated"); // Store login status
+            localStorage.setItem("userToken", "authenticated");
             setTimeout(() => navigate("/otp"), 2000);
+            
+
         } else {
             setError("Invalid username or password!");
             toast.error("Invalid Credentials. Please try again.", { autoClose: 2000 });
