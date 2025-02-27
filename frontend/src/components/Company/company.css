@@ -1,17 +1,15 @@
 .stocks-container {
     display: grid !important;
     grid-template-columns: repeat(5, 2fr) !important;
-    gap: 15px;
+    gap: 10px;
     padding: 10px;
-    margin-top: 5px;
-    overflow: hidden;
+    margin-top: 0px;
   }
   
   .stock-box {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    object-fit: contain;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
