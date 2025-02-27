@@ -73,9 +73,9 @@ header {
 }
 
 .sidebar-header {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     height: 60px;
     padding: 0rem 1rem;
 }
@@ -386,6 +386,7 @@ main {
     left: 250px;
     top: 0;
     width: 100% !important;
+    height: auto !important;
 }
 
 
