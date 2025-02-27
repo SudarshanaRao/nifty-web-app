@@ -75,10 +75,10 @@ const HomePage = () => {
       {/* Sidebar */}
       <div className={`sidebar ${sidebarExpanded ? "expanded" : "collapsed"}`}>
         <div className="sidebar-header">
-          <h3 className="brand">
+          {/* <h3 className="brand"> */}
             <img src="Nifty10-logo.png" alt="logo" className="logo" onClick={handleNavbar} />
             <span className={sidebarExpanded ? "visible" : "hidden"}>Nifty10</span>
-          </h3>
+          {/* </h3> */}
         </div>
         <div className="sidebar-menu">
           <ul>
