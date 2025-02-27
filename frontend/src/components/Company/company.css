@@ -1,9 +1,9 @@
 .stocks-container {
     display: grid !important;
     grid-template-columns: repeat(5, 2fr) !important;
-    gap: 18px;
+    gap: 15px;
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
   }
   
   .stock-box {
