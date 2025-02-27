@@ -6,6 +6,7 @@
     padding: 20px;
     font-weight: 400;
     font-family: roboto;
+    overflow: hidden;
   }
   
   .card {
@@ -13,6 +14,7 @@
     justify-content: space-between;
     align-items: center;
     width: 400px;
+    object-fit: contain;
     max-width: 100%;
     padding: 15px 20px;
     border-radius: 14px;
