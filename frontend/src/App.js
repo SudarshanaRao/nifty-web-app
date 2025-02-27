@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 // Protected Route Component
 function ProtectedRoute({ children }) {
   const isAuthenticated = localStorage.getItem("userToken");
-  const isOtpVerified = localStorage.getItem("isOtpVerfied");
   
   
   

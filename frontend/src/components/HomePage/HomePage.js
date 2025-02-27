@@ -6,7 +6,7 @@ import Company from '../Company/Company'
 import MarketStatus from "../MarketStatus/MarketStatus";
 import UsersInfo from "../UsersInfo/UsersInfo";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 
 
@@ -43,6 +43,8 @@ const HomePage = () => {
     localStorage.removeItem("userToken"); 
     localStorage.removeItem("isOtpVerfied"); 
     window.location.href = "/login"; 
+    console.log(result);
+    
 };
 
 

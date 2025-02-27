@@ -19,7 +19,7 @@ const Otp = () => {
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("userToken"); // Check if user is logged in
-    if (isAuthenticated == "null") {
+    if (isAuthenticated === null) {
       toast.error("You need to login first!", { position: "top-center", autoClose: 2000 });
       navigate("/login");
       return;
