@@ -356,6 +356,7 @@ main {
     align-items: flex-start;
     padding-left: 20px; 
     width: 100%;
+    top: 0;
 }
 
 #bgContainer {
@@ -381,7 +382,7 @@ main {
 #renderContainer {
     position: absolute;   
     z-index: -1; 
-    flex-grow: 1;
+    flex-grow: 0;
     left: 250px;
     top: 0;
     width: 100% !important;
