@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./UsersInfo.css";
-
 const UsersInfo = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-
   useEffect(() => {
     fetch("https://dev-api.nifty10.com/nif/user/list/activeUser")
       .then((response) => response.json())
@@ -38,7 +36,6 @@ const UsersInfo = () => {
     );
     setFilteredUsers(filtered);
   }, [searchQuery, users]);
-
   if (loading) {
     return <div className="users-info__loading">Loading...</div>;
   }
