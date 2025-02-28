@@ -10,8 +10,6 @@ function Company() {
             .get("http://localhost:4000/get/company")
             .then((response) => {
                 let fetchedStocks = response.data.data || [];
-
-                // Skip the first index
                 fetchedStocks = fetchedStocks.slice(0);
 
                 setStocks(fetchedStocks);

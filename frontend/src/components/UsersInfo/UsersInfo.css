@@ -14,6 +14,7 @@
     color: #333;
     margin-bottom: 20px;
     font-weight: 600;
+    margin-right: 45%;
   }
   
   /* Loading & Error Messages */
@@ -102,3 +103,45 @@
     }
   }
   
+
+  
+.users-search-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 5px;
+}
+
+.users-search-box i {
+  color: #000;
+  padding-left: 10px;
+}
+
+.users-search-input {
+  background-color: transparent;
+  border-radius: 4px;
+  border: 0;
+  outline: 0;
+  padding: 0.1rem 1rem;
+  height: 30px;
+  width: 100%;
+  min-width: 250px;
+  color: #000;
+}
+.users-search-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem; /* Spacing between icon & input */
+  width: 100%; /* Prevents taking full space */
+  flex-shrink: 1;
+  margin-bottom: 10px;
+  top: 0;
+  
+}
+.top-container {
+  display: flex;
+}
