@@ -197,9 +197,9 @@ function MarketStatus() {
 
             {activeTab === "liveBB" && (
                 <>
-                    <div className={`live-bb-container ${isDisabled ? "disabled-container" : ""}`}>
+                    <div className='live-bb-container'>
                         {liveBBStocks.map((stock) => (
-                            <div key={stock.companyCode} className="stock-box">
+                            <div key={stock.companyCode} className={`stock-box ${isDisabled && !selectedStocks[stock.companyCode] ? "disabled-container" : ""}`}>
                                 <input
                                     type="checkbox"
                                     className="live-checkbox"
