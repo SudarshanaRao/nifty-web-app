@@ -41,7 +41,7 @@ function MarketStatus() {
 
     const handleToggleChange = (newFilter) => {
         setFilter((prevFilter) => (prevFilter === newFilter ? null : newFilter));
-        setSelectedStocks({});
+        // setSelectedStocks({});
     };
 
     const handleCheckboxChange = (event, companyCode) => {
@@ -50,7 +50,7 @@ function MarketStatus() {
             const updatedSelected = { ...prevSelected };
     
             if (event.target.checked) {
-                if (Object.keys(updatedSelected).length < 5) {
+                if (Object.keys(updatedSelected).length < 10) {
                     updatedSelected[companyCode] = true;
                 }
             } else {
@@ -61,26 +61,49 @@ function MarketStatus() {
         });
     };
     const selectedCount = Object.keys(selectedStocks).length;
-    const isDisabled = selectedCount >= 5;
+    const isStockDisabled = (stock) => {
+        if (stock.companyStatus === "BEARISH") {
+            return selectedBearishCount >= 5 && !selectedBearishStocks[stock.companyCode];
+        }
+        if (stock.companyStatus === "BULLISH") {
+            return selectedBullishCount >= 5 && !selectedBullishStocks[stock.companyCode];
+        }
+        return false;
+    };
+
+    const bearishStocks = stocks.filter(stock => stock.companyStatus === "BEARISH");
+    const bullishStocks = stocks.filter(stock => stock.companyStatus === "BULLISH");
+
+    // Get the selected stocks from the user
+    const selectedBearishStocks = bearishStocks.filter(stock => selectedStocks[stock.companyCode]);
+    const selectedBullishStocks = bullishStocks.filter(stock => selectedStocks[stock.companyCode]);
+
+    const selectedBearishCount = selectedBearishStocks.length;
+    const selectedBullishCount = selectedBullishStocks.length;
+
 
     const handleProceed = async () => {
-        if (selectedCount < 5) {
-            toast.warn("Please select exactly 5 stocks to proceed!", { position: "top-right" });
+        if (selectedCount < 10) {
+            toast.warn("Please select exactly 10 stocks to proceed!", { position: "top-right" });
             return;
         }
-    
-        const selectedStockData = stocks
-            .filter(stock => selectedStocks[stock.companyCode])
-            .map(stock => ({
-                companyId: stock.companyId,
-                companyStatus: stock.companyStatus,
-                liveBB: true,
-            }));
+
+        const updatedStockData = stocks.map(stock => ({
+            companyId: stock.companyId,
+            companyStatus: stock.companyStatus,
+            liveBB: stock.companyStatus === "BEARISH"
+                ? selectedBearishStocks.includes(stock) // True only for selected bearish stocks
+                : stock.companyStatus === "BULLISH"
+                ? selectedBullishStocks.includes(stock) // True only for selected bullish stocks
+                : false, // All other stocks should have liveBB: false
+        }));
+        
+        
     
         try {
             const response = await axios.put(
                 "https://dev-api.nifty10.com/company/bulk/update/company",
-                selectedStockData,
+                updatedStockData,
                 {
                     params: { userId: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985" },
                     headers: { "Content-Type": "application/json" },
@@ -237,14 +260,14 @@ function MarketStatus() {
 
             {activeTab === "liveBB" && (
                 <>
-                    {selectedCount == 5 ? "" : <div>
+                    {selectedCount == 10 ? "" : <div>
                             <p className="selection-msg">Kindly select any 5 to proceed</p>
                         </div>
                     }
                     
                     <div className='live-bb-container'>
                         {liveBBStocks.map((stock) => (
-                            <div key={stock.companyCode} className={`stock-box ${isDisabled && !selectedStocks[stock.companyCode] ? "disabled-container" : ""}`}>
+                            <div key={stock.companyCode} className={`stock-box ${isStockDisabled(stock) && !selectedStocks[stock.companyCode] ? "disabled-container" : ""}`}>
                                 <input
                                     type="checkbox"
                                     className="live-checkbox"
@@ -252,7 +275,7 @@ function MarketStatus() {
                                     value={stock.companyStatus}
                                     checked={!!selectedStocks[stock.companyCode]}
                                     onChange={(e) => handleCheckboxChange(e, stock.companyCode)}
-                                    disabled={isDisabled && !selectedStocks[stock.companyCode]}  
+                                    disabled={isStockDisabled(stock) && !selectedStocks[stock.companyCode]}   
                                 />
                                 <span className="stock-symbol">{stock.companyName}</span>
                                 <div className="radio-group">
@@ -262,7 +285,7 @@ function MarketStatus() {
                                             name={`status-${stock.companyCode}`}
                                             value={stock.companyStatus}
                                             checked={stock.companyStatus === "BULLISH" || stock.companyStatus === "BEARISH"}
-                                            disabled={isDisabled && !selectedStocks[stock.companyCode]}
+                                            disabled={isStockDisabled(stock)}
                                         />
                                         {stock.companyStatus === "BULLISH" ? "Bullish" : "Bearish"}
                                     </label>
@@ -270,7 +293,7 @@ function MarketStatus() {
                             </div>
                         ))}
                     </div>
-                    <button className="submit-button" onClick={handleProceed} disabled={selectedCount < 5}>
+                    <button className="submit-button" onClick={handleProceed} disabled={selectedCount < 10}>
                         Proceed
                     </button>
                 </>
