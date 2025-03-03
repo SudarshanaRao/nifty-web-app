@@ -122,10 +122,10 @@ const HomePage = () => {
         <div id="mainContent" className="main-content">
           <header id="headerContent">
             <div className="search-wrapper">
-              <div className="search-box">
+              {/* <div className="search-box">
                 <i className="fas fa-search"></i>
                 <input className="search-input" type="search" placeholder="Search" />
-              </div>
+              </div> */}
               <div className="social-icons">
                 <i className="fas fa-bell"></i>
                 <i className="fas fa-envelope"></i>
