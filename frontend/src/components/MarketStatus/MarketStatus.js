@@ -9,6 +9,7 @@ function MarketStatus() {
     const [stocks, setStocks] = useState([]);
     const [filter, setFilter] = useState(null);
     const [isSubmitActive, setIsSubmitActive] = useState(false);
+    const [selectedStocks, setSelectedStocks] = useState({});
 
     useEffect(() => {
         axios
@@ -41,6 +42,25 @@ function MarketStatus() {
     const handleToggleChange = (newFilter) => {
         setFilter((prevFilter) => (prevFilter === newFilter ? null : newFilter));
     };
+
+    const handleCheckboxChange = (event, companyCode) => {
+        setSelectedStocks((prevSelected) => {
+            const updatedSelected = { ...prevSelected };
+    
+            if (event.target.checked) {
+                if (Object.keys(updatedSelected).length < 5) {
+                    updatedSelected[companyCode] = true;
+                }
+            } else {
+                delete updatedSelected[companyCode];
+            }
+    
+            return updatedSelected;
+        });
+    };
+    const selectedCount = Object.keys(selectedStocks).length;
+    const isDisabled = selectedCount >= 5;
+    
 
     const handleSubmit = async () => {
         if (!isSubmitActive) return;
@@ -96,6 +116,8 @@ function MarketStatus() {
     };
 
     const filteredStocks = filter ? stocks.filter((stock) => stock.companyStatus === filter) : stocks;
+
+    const liveBBStocks = stocks.filter((stock) => stock.companyStatus === (filter || "BEARISH"));
 
     return (
         <div id="marketStatusContainer" className="market-status-container">
@@ -174,9 +196,39 @@ function MarketStatus() {
             )}
 
             {activeTab === "liveBB" && (
-                <div className="live-bb-container">
-                    <h2>Live BB Content Goes Here</h2>
-                </div>
+                <>
+                    <div className={`live-bb-container ${isDisabled ? "disabled-container" : ""}`}>
+                        {liveBBStocks.map((stock) => (
+                            <div key={stock.companyCode} className="stock-box">
+                                <input
+                                    type="checkbox"
+                                    className="live-checkbox"
+                                    name={`status-${stock.companyCode}`}
+                                    value={stock.companyStatus}
+                                    checked={!!selectedStocks[stock.companyCode]}
+                                    onChange={(e) => handleCheckboxChange(e, stock.companyCode)}
+                                    disabled={isDisabled && !selectedStocks[stock.companyCode]}  
+                                />
+                                <span className="stock-symbol">{stock.companyName}</span>
+                                <div className="radio-group">
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name={`status-${stock.companyCode}`}
+                                            value={stock.companyStatus}
+                                            checked={stock.companyStatus === "BULLISH" || stock.companyStatus === "BEARISH"}
+                                            disabled={isDisabled && !selectedStocks[stock.companyCode]}
+                                        />
+                                        {stock.companyStatus === "BULLISH" ? "Bullish" : "Bearish"}
+                                    </label>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <button className="submit-button" disabled={selectedCount < 5}>
+                        Submit
+                    </button>
+                </>
             )}
         </div>
     );

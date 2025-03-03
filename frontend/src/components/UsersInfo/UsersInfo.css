@@ -33,8 +33,9 @@
 
 /* ===== Table Wrapper ===== */
 .users-info__table-wrapper {
-  overflow-x: auto;
+  overflow: hidden;
   border-radius: 10px;
+  width: 78vw;
 }
 
 /* ===== Table Styling ===== */

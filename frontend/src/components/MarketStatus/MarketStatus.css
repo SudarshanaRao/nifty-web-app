@@ -31,7 +31,12 @@
     gap: 20px;
     padding: 10px;
 }
-
+.live-bb-container {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 10px;
+}
 .stock-box {
     width: 60%;
     background: #f9f9f9;
@@ -276,3 +281,34 @@
     padding: 0px 10px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
+
+  .live-checkbox {
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+    appearance: none;
+    border: 2px solid gray;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .live-checkbox:checked {
+    background-color: black;
+    border-color: black;
+}
+
+.live-checkbox:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+}
+.disabled-container {
+  opacity: 0.5;
+  pointer-events: none;
+}
