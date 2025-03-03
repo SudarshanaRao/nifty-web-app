@@ -138,6 +138,7 @@ function MarketStatus() {
                 </button>
             </div>
             <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
+            
 
             <div className="toggle-switch-container">
                 <span className="toggle-text">BEARISH</span>
@@ -162,6 +163,7 @@ function MarketStatus() {
 
             {activeTab === "marketStatus" && (
                 <>
+                
                     <div className="market-stocks-container">
                         {filteredStocks.map((stock) => (
                             <div key={stock.companyCode} className="stock-box">
@@ -199,6 +201,11 @@ function MarketStatus() {
 
             {activeTab === "liveBB" && (
                 <>
+                    {selectedCount == 5 ? "" : <div>
+                            <p className="selection-msg">Kindly select 5 companies</p>
+                        </div>
+                    }
+                    
                     <div className='live-bb-container'>
                         {liveBBStocks.map((stock) => (
                             <div key={stock.companyCode} className={`stock-box ${isDisabled && !selectedStocks[stock.companyCode] ? "disabled-container" : ""}`}>

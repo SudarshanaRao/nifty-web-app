@@ -312,3 +312,7 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+.selection-msg {
+  color: red;
+}
