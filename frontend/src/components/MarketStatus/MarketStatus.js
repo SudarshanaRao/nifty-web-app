@@ -41,10 +41,12 @@ function MarketStatus() {
 
     const handleToggleChange = (newFilter) => {
         setFilter((prevFilter) => (prevFilter === newFilter ? null : newFilter));
+        setSelectedStocks({});
     };
 
     const handleCheckboxChange = (event, companyCode) => {
         setSelectedStocks((prevSelected) => {
+
             const updatedSelected = { ...prevSelected };
     
             if (event.target.checked) {
