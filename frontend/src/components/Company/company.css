@@ -36,3 +36,176 @@
     width: 90vw;
     margin-right: 15%;
   }
+  .add-company-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 10px;
+  }
+
+  /* Page Layout */
+.company-page {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  flex-direction: column;
+}
+
+/* Add Button */
+.company-add-btn {
+  padding: 10px 20px;
+  background-color: #252526;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.company-add-btn:hover {
+  background-color: #0c0c0d;
+}
+
+/* Popup */
+.company-popup {
+  position: fixed;
+  top: 55%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  width: 55vw;
+  height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Form */
+.company-form-group {
+  margin: 30px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.company-form-group label {
+  font-weight: bold;
+  margin-right: 15px;
+}
+.company-form-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 50%;
+}
+
+/* Radio Buttons */
+.company-radio-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.company-radio-input {
+  appearance: none;
+  width: 20px ;
+  height: 20px;
+  border: 2px solid #000;
+  border-radius: 50% !important;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.company-radio-input:checked {
+  background-color: #191919;
+  border-color: #000;
+}
+
+.company-radio-input::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.company-radio-input:checked::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.company-radio-label {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Submit & Close Buttons */
+.cancel-btn,
+.submit-btn {
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modal-actions{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 20px;
+}
+
+.company-radio-input {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.company-radio-input:checked {
+  background-color: #191919;
+  border-color: #000;
+}
+
+.company-radio-input::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.company-radio-input:checked::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.company-radio-label {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
