@@ -4,13 +4,14 @@ const cors = require("cors");
 
 const app = express();
 const PORT = 4000;
+const API_BASE_URL = "https://dev-api.nifty10.com"
 
 // Enable CORS for frontend requests
 app.use(cors());
 
 app.get("/get/company", async (req, res) => {
     try {
-        const response = await axios.get("https://dev-api.nifty10.com/company");
+        const response = await axios.get(`${API_BASE_URL}/company`);
 
         res.json(response.data);
     } catch (error) {
@@ -21,7 +22,7 @@ app.get("/get/company", async (req, res) => {
 
 app.get("/get/market", async (req, res) => {
     try {
-        const response = await axios.get("https://dev-api.nifty10.com/market", { timeout: 5000 });
+        const response = await axios.get(`${API_BASE_URL}/market`, { timeout: 5000 });
         res.json(response.data);
     } catch (error) {
         if (error.response) {

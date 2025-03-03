@@ -2,32 +2,64 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 import "./style.css";
 
 const Otp = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [generatedOtp, setGeneratedOtp] = useState("");
+  const [userId, setUserId] = useState("556c3d52-e18d-11ef-9b7f-02fd6cfaf985");
   const inputRefs = useRef([]);
   const navigate = useNavigate();
 
-  // Function to generate a 6-digit OTP
-  const generateOtp = () => {
-    let randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(randomOtp);
-    localStorage.setItem("generatedOtp", randomOtp); // Store OTP for verification
+  // Function to send OTP via API
+  const sendOtp = async () => {
+    try {
+      const mobileNo = "7013302191";
+      const response = await axios.put(`https://dev-api.nifty10.com/nif/user/sendOtp?mobileNo=${mobileNo}`);
+  
+      const receivedOtp = response.data.data?.otp; // Corrected path to extract OTP
+      if (receivedOtp) {
+        setGeneratedOtp(receivedOtp); // Store OTP for hint display
+      }
+    } catch (error) {
+      toast.error("Failed to send OTP. Please try again.");
+    }
   };
 
+  // Function to verify OTP via API
+  const verifyOtp = async () => {
+    try {
+      const fullOtp = otp.join(""); // User-entered OTP
+  
+      if (fullOtp != generatedOtp) {
+        toast.error("Invalid OTP. Please try again.");
+        
+        return;
+      }
+  
+      const url = `https://dev-api.nifty10.com/nif/user/verifyOtp?Otp=${fullOtp}&userId=${userId}`;
+      const response = await axios.put(url);
+  
+      toast.success("OTP Verified! Redirecting...");
+      localStorage.setItem("isOtpVerfied", "true");
+      setTimeout(() => navigate("/home"), 2000);
+    } catch (error) {
+      toast.error("Invalid OTP. Please try again.");
+    }
+  };
+  
+
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem("userToken"); // Check if user is logged in
-    if (isAuthenticated === null) {
-      toast.error("You need to login first!", { position: "top-center", autoClose: 2000 });
+    const isAuthenticated = localStorage.getItem("userToken");
+    if (!isAuthenticated) {
+      toast.error("You need to login first!");
       navigate("/login");
       return;
     }
-    generateOtp();
+    sendOtp();
   }, [navigate]);
 
-  // Handle OTP input change
   const handleChange = (index, e) => {
     const value = e.target.value;
     if (isNaN(value)) return;
@@ -41,26 +73,9 @@ const Otp = () => {
     }
   };
 
-  // Handle backspace key navigation
   const handleKeyDown = (index, e) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();
-    }
-  };
-
-  // Verify OTP on form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const fullOtp = otp.join("");
-    const storedOtp = localStorage.getItem("generatedOtp"); // Retrieve stored OTP
-
-    if (fullOtp === storedOtp) {
-      localStorage.setItem("isOtpVerfied", "true"); // Mark OTP as verified
-      toast.success("OTP Verified! Redirecting...", { autoClose: 2000 });
-      setTimeout(() => navigate("/home"), 2000);
-    } else {
-      toast.error("Invalid OTP. Please try again.", { autoClose: 2000 });
-
     }
   };
 
@@ -70,7 +85,12 @@ const Otp = () => {
       <div className="otp-container">
         <h2>OTP has been sent to your registered mobile</h2>
         <p>Enter OTP</p>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            verifyOtp();
+          }}
+        >
           <div className="otp-inputs">
             {otp.map((digit, index) => (
               <input
@@ -93,7 +113,7 @@ const Otp = () => {
             href="/otp"
             onClick={(e) => {
               e.preventDefault();
-              generateOtp();
+              sendOtp();
               setOtp(["", "", "", "", "", ""]);
               inputRefs.current[0]?.focus();
             }}
