@@ -10,6 +10,7 @@ function MarketStatus() {
     const [filter, setFilter] = useState(null);
     const [isSubmitActive, setIsSubmitActive] = useState(false);
     const [selectedStocks, setSelectedStocks] = useState({});
+    const [hasToggled, setHasToggled] = useState(false);
 
     useEffect(() => {
         axios
@@ -37,10 +38,18 @@ function MarketStatus() {
     const handleTabChange = (tab) => {
         setActiveTab(tab);
         if (tab === "marketStatus") setFilter(null);
+        setHasToggled(false)
+        const trueBearishStocks = stocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB);
+        const trueBullishStocks = stocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB);
+        console.log(trueBearishStocks, trueBullishStocks);
+        
+
     };
 
     const handleToggleChange = (newFilter) => {
-        setFilter((prevFilter) => (prevFilter === newFilter ? null : newFilter));
+        setHasToggled(true);
+        setFilter(newFilter);
+        // setFilter((prevFilter) => (prevFilter === newFilter ? null : newFilter));
         // setSelectedStocks({});
     };
 
@@ -260,6 +269,31 @@ function MarketStatus() {
 
             {activeTab === "liveBB" && (
                 <>
+                    {!hasToggled ? (
+                            <div className="custom-stocks-container">
+                            <div className="custom-stocks-column custom-bullish-column">
+                                <h3 className="custom-column-title">BULLISH</h3>
+                                {bullishStocks.slice(0, 5).map(stock => (
+                                    <div key={stock.companyCode} className="custom-stock-item">
+                                        <span className="custom-stock-name">{stock.companyName}</span>
+                                        <span className="custom-stock-name">{stock.companyPoint}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div className="custom-stocks-column custom-bearish-column">
+                                <h3 className="custom-column-title">BEARISH</h3>
+                                {bearishStocks.slice(0, 5).map(stock => (
+                                    <div key={stock.companyCode} className="custom-stock-item">
+                                        <span className="custom-stock-name">{stock.companyName}</span>
+                                        <span className="custom-stock-name">{stock.companyPoint}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    
+                    ) : (
+                        <>
                     {selectedCount == 10 ? "" : <div>
                             <p className="selection-msg">Kindly select 5 BULLISH and 5 BEARISH to proceed</p>
                         </div>
@@ -296,8 +330,11 @@ function MarketStatus() {
                     <button className="submit-button" onClick={handleProceed} disabled={selectedCount < 10}>
                         Proceed
                     </button>
+                    </>
+                    )}
                 </>
             )}
+            
         </div>
     );
 }
