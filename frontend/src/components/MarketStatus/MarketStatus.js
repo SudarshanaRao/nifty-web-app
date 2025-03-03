@@ -261,7 +261,7 @@ function MarketStatus() {
             {activeTab === "liveBB" && (
                 <>
                     {selectedCount == 10 ? "" : <div>
-                            <p className="selection-msg">Kindly select any 5 to proceed</p>
+                            <p className="selection-msg">Kindly select 5 BULLISH and 5 BEARISH to proceed</p>
                         </div>
                     }
                     
