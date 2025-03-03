@@ -62,6 +62,42 @@ function MarketStatus() {
     };
     const selectedCount = Object.keys(selectedStocks).length;
     const isDisabled = selectedCount >= 5;
+
+    const handleProceed = async () => {
+        if (selectedCount < 5) {
+            toast.warn("Please select exactly 5 stocks to proceed!", { position: "top-right" });
+            return;
+        }
+    
+        const selectedStockData = stocks
+            .filter(stock => selectedStocks[stock.companyCode])
+            .map(stock => ({
+                companyId: stock.companyId,
+                companyStatus: stock.companyStatus,
+                liveBB: true,
+            }));
+    
+        try {
+            const response = await axios.put(
+                "https://dev-api.nifty10.com/company/bulk/update/company",
+                selectedStockData,
+                {
+                    params: { userId: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985" },
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+    
+            console.log("Proceed API Response:", response.data);
+            toast.success("Live BB status updated successfully!", { position: "top-right" });
+            
+            // Reset selection after successful API call
+            setSelectedStocks({});
+        } catch (error) {
+            console.error("API Error:", error.response?.data || error.message);
+            toast.error("Failed to update Live BB status!", { position: "top-right" });
+        }
+    };
+    
     
 
     const handleSubmit = async () => {
@@ -84,7 +120,7 @@ function MarketStatus() {
                         rankNumber: updatedStock.rankNumber || 0,
                         companyPoint: updatedStock.companyPoint || 0,
                         companyStatus: updatedStock.companyStatus,
-                        liveBB: true,
+                        liveBB: false,
                         createdBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
                         createdDate: new Date().toISOString(),
                         modifiedBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
@@ -202,7 +238,7 @@ function MarketStatus() {
             {activeTab === "liveBB" && (
                 <>
                     {selectedCount == 5 ? "" : <div>
-                            <p className="selection-msg">Kindly select 5 companies</p>
+                            <p className="selection-msg">Kindly select any 5 to proceed</p>
                         </div>
                     }
                     
@@ -234,8 +270,8 @@ function MarketStatus() {
                             </div>
                         ))}
                     </div>
-                    <button className="submit-button" disabled={selectedCount < 5}>
-                        Submit
+                    <button className="submit-button" onClick={handleProceed} disabled={selectedCount < 5}>
+                        Proceed
                     </button>
                 </>
             )}
