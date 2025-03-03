@@ -1,118 +1,108 @@
-/* Container Styling */
+/* ===== Container Styling ===== */
 .users-info__container {
-    max-width: 84%;
-    padding: 10px 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  /* Title */
-  .users-info__title {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-    font-weight: 600;
-    margin-right: 45%;
-  }
-  
-  /* Loading & Error Messages */
-  .users-info__loading,
-  .users-info__error {
-    text-align: center;
-    font-size: 18px;
-    margin-top: 20px;
-  }
-  
-  .users-info__error {
-    color: #333;
-    font-weight: bold;
-  }
-  
-  /* Table Wrapper */
-  .users-info__table-wrapper {
-    overflow-x: auto;
-  }
-  
-  /* Table Styling */
-  .users-info__table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  /* Table Header */
-  .users-info__table thead {
-    background: #333;
-    color: white;
-  }
-  
-  .users-info__table th {
-    padding: 12px;
-    text-align: left;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  
-  /* Table Rows */
-  .users-info__row td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    font-size: 14px;
-    color: #333;
-  }
-  
-  /* Alternating Row Colors */
-  .users-info__row:nth-child(odd) {
-    background: #f2f2f2;
-  }
-  
-  .users-info__row:hover {
-    background: #e0e0e0;
-    transition: background 0.3s ease-in-out;
-  }
-  
-  /* Active Status */
-  .users-info__status {
-    font-size: 18px;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .users-info__container {
-      padding: 10px;
-    }
-  
-    .users-info__table th,
-    .users-info__table td {
-      padding: 8px;
-      font-size: 14px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .users-info__title {
-      font-size: 20px;
-    }
-  
-    .users-info__table {
-      font-size: 12px;
-    }
-  }
-  
+  margin-top: 3%;
+  max-width: 89%;
+  padding: 15px 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(5, 5, 5, 0.1);
+  text-align: center;
+}
 
-  
+/* ===== Title Styling ===== */
+.users-info__title {
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ===== Loading & Error Messages ===== */
+.users-info__loading,
+.users-info__error {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.users-info__error {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* ===== Table Wrapper ===== */
+.users-info__table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+/* ===== Table Styling ===== */
+.users-info__table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ===== Table Header ===== */
+.users-info__table thead {
+  background: #333;
+  color: white;
+}
+
+.users-info__table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ===== Table Rows ===== */
+.users-info__row td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 13px;
+  color: #333;
+}
+
+/* ===== Alternating Row Colors ===== */
+.users-info__row:nth-child(odd) {
+  background: #f2f2f2;
+}
+
+/* ===== Hover Effect ===== */
+.users-info__row:hover {
+  background: #e0e0e0;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
+/* ===== Active Status Styling ===== */
+.users-info__status {
+  font-size: 17px;
+  font-weight: bold;
+  color: green;
+}
+
+.users-info__status.inactive {
+  color: red;
+}
+
+/* ===== Search Box Styling ===== */
 .users-search-box {
   display: flex;
   justify-content: center;
   align-items: center;
   border: 2px solid #000;
   border-radius: 8px;
-  padding: 3px;
-  margin-bottom: 5px;
+  padding: 5px;
+  margin-bottom: 15px;
+  width: 100%;
+  max-width: 400px;
 }
 
 .users-search-box i {
@@ -123,25 +113,79 @@
 .users-search-input {
   background-color: transparent;
   border-radius: 4px;
-  border: 0;
-  outline: 0;
-  padding: 0.1rem 1rem;
-  height: 30px;
+  border: none;
+  outline: none;
+  padding: 0.3rem 1rem;
+  height: 35px;
   width: 100%;
-  min-width: 250px;
+  min-width: 200px;
   color: #000;
 }
+
+/* ===== Search Wrapper ===== */
 .users-search-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem; /* Spacing between icon & input */
-  width: 100%; /* Prevents taking full space */
+  gap: 0.5rem;
+  width: 100%;
   flex-shrink: 1;
   margin-bottom: 10px;
-  top: 0;
-  
+  position: relative;
 }
+
+/* ===== Top Container Layout ===== */
 .top-container {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .users-info__container {
+    padding: 10px;
+  }
+
+  .users-info__table th,
+  .users-info__table td {
+    padding: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .users-search-box {
+    width: 90%;
+    max-width: none;
+  }
+
+  .users-search-input {
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .top-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .users-info__title {
+    font-size: 20px;
+  }
+
+  .users-info__table {
+    font-size: 12px;
+  }
+
+  .users-search-box {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .users-search-input {
+    width: 100%;
+  }
 }

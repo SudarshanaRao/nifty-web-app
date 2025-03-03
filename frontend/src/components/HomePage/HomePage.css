@@ -54,7 +54,35 @@ header {
 }
 
 
-
+.sidebar {
+    height: 100vh; /* Ensure sidebar takes full height */
+    overflow-y: auto; /* Enable scrolling if items exceed height */
+    scrollbar-width: thin;
+  }
+  
+  .sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-menu ul li {
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .sidebar-menu ul li.active {
+    background-color: #28292a; /* Highlight color */
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .sidebar-menu ul li.active a {
+    color: white;
+    font-weight: bold;
+  }
+  
 .hidden {
     display: none;
 }
@@ -91,7 +119,7 @@ header {
 }
 
 .sidebar li {
-    margin-top: 2.5rem;
+    margin-top: 2rem;
 }
 
 .sidebar a {
@@ -156,7 +184,7 @@ header {
     gap: 0.5rem; /* Spacing between icon & input */
     width: 100%; /* Prevents taking full space */
     flex-shrink: 1;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     top: 0;
     
     
