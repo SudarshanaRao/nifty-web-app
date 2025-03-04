@@ -339,11 +339,11 @@
 }
 
 .custom-bullish-column {
-  border: 4px solid #dc3545; /* Green */
+  border: 4px solid #28a745; /* Green */
 }
 
 .custom-bearish-column {
-  border: 4px solid #28a745; /* Red */
+  border: 4px solid #dc3545; /* Red */
 }
 
 .custom-column-title {

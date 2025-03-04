@@ -11,6 +11,13 @@ function MarketStatus() {
     const [isSubmitActive, setIsSubmitActive] = useState(false);
     const [selectedStocks, setSelectedStocks] = useState({});
     const [hasToggled, setHasToggled] = useState(false);
+    const [trueBullishStocks, setTrueBullishStocks] = useState([]);
+    const [trueBearishStocks, setTrueBearishStocks] = useState([]);
+
+    useEffect(() => {
+        setTrueBullishStocks(stocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
+        setTrueBearishStocks(stocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
+    }, [stocks]);
 
     useEffect(() => {
         axios
@@ -35,15 +42,21 @@ function MarketStatus() {
         setIsSubmitActive(true);
     };
 
-    const handleTabChange = (tab) => {
+    const handleTabChange = async (tab) => {
         setActiveTab(tab);
         if (tab === "marketStatus") setFilter(null);
         setHasToggled(false)
-        const trueBearishStocks = stocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB);
-        const trueBullishStocks = stocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB);
-        console.log(trueBearishStocks, trueBullishStocks);
         
-
+        try {
+            const response = await axios.get("https://dev-api.nifty10.com/company");
+            const updatedStocks = response.data.data;
+            setStocks(updatedStocks);
+            
+            setTrueBullishStocks(updatedStocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
+            setTrueBearishStocks(updatedStocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
+        } catch (error) {
+            console.error("Failed to fetch stocks:", error);
+        }
     };
 
     const handleToggleChange = (newFilter) => {
@@ -121,9 +134,15 @@ function MarketStatus() {
     
             console.log("Proceed API Response:", response.data);
             toast.success("Live BB status updated successfully!", { position: "top-right" });
+
+            setStocks(updatedStockData);
+            setTrueBullishStocks(updatedStockData.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
+            setTrueBearishStocks(updatedStockData.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
             
             // Reset selection after successful API call
             setSelectedStocks({});
+            handleTabChange("liveBB")
+            
         } catch (error) {
             console.error("API Error:", error.response?.data || error.message);
             toast.error("Failed to update Live BB status!", { position: "top-right" });
@@ -273,7 +292,7 @@ function MarketStatus() {
                             <div className="custom-stocks-container">
                             <div className="custom-stocks-column custom-bullish-column">
                                 <h3 className="custom-column-title">BULLISH</h3>
-                                {bullishStocks.slice(0, 5).map(stock => (
+                                {trueBullishStocks.slice(0, 5).map(stock => (
                                     <div key={stock.companyCode} className="custom-stock-item">
                                         <span className="custom-stock-name">{stock.companyName}</span>
                                         <span className="custom-stock-name">{stock.companyPoint}</span>
@@ -283,7 +302,7 @@ function MarketStatus() {
                             
                             <div className="custom-stocks-column custom-bearish-column">
                                 <h3 className="custom-column-title">BEARISH</h3>
-                                {bearishStocks.slice(0, 5).map(stock => (
+                                {trueBearishStocks.slice(0, 5).map(stock => (
                                     <div key={stock.companyCode} className="custom-stock-item">
                                         <span className="custom-stock-name">{stock.companyName}</span>
                                         <span className="custom-stock-name">{stock.companyPoint}</span>
