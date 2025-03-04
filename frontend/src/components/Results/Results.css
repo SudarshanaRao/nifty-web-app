@@ -1,0 +1,17 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.Results-container {
+    display: flex;
+    justify-content: space-between;
+    width: 70vw;
+  }
+  
+.results-form-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+  

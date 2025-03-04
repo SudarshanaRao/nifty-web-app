@@ -9,9 +9,9 @@ const marketImages = {
   "Bank Nifty Prediction": "bank-nifty-prediction.png",
 };
 
-const Card = ({ title, color, image, openTime, closeTime }) => {
+const Card = ({ title, color, image, openTime, closeTime, onClick = () => console.log() }) => {
   return (
-    <div className={`card ${color}`}>
+    <div className={`card ${color}`} onClick={() => onClick(title)}>
       <div className="card-content">
         <h2>{title}</h2>
         <div className="time-container">
@@ -33,7 +33,7 @@ const Card = ({ title, color, image, openTime, closeTime }) => {
   );
 };
 
-const Markets = () => {
+const Markets = ({ onSelectMarket }) => {
   const [marketData, setMarketData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -71,6 +71,7 @@ const Markets = () => {
               image={marketImages[market.marketName] || "default.png"}
               openTime={market.openingTime}
               closeTime={market.closingTime}
+              onClick={onSelectMarket}
             />
           );
         })

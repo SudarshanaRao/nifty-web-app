@@ -7,6 +7,7 @@ import MarketStatus from "../MarketStatus/MarketStatus";
 import UsersInfo from "../UsersInfo/UsersInfo";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { toast } from "react-toastify";
+import Results from "../Results/Results";
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -50,6 +51,8 @@ const HomePage = () => {
         return <MarketStatus />;
       case "users-info":
         return <UsersInfo />;
+      case "results":
+        return <Results />;
       default:
         return <Markets />; // Default to Markets if no tab is selected
     }
