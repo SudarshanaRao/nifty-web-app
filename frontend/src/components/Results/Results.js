@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./Results.css";
 import Markets from "../Market/Markets";
-import BullishPerformance from "../BullishPerformance/BullishPerformance";
-import BearishPerformance from "../BearishPerformance/BearishPerformance";
+import DayPerformance from "../DayPerformance/DayPerformance";
 
 const Results = () => {
   const [selectedMarket, setSelectedMarket] = useState(null);
@@ -15,8 +14,7 @@ const Results = () => {
     <div className="Results-container">
       <Markets onSelectMarket={setSelectedMarket} />
       <div className="results-form-container">
-        {selectedMarket === "Bullish" && <BullishPerformance onBack={handleBack} />}
-        {selectedMarket === "Bearish" && <BearishPerformance onBack={handleBack} />}
+        {selectedMarket && <DayPerformance trend={selectedMarket.toUpperCase()} onBack={handleBack} /> }
       </div>
     </div>
   );

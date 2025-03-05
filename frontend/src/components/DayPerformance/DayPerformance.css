@@ -1,4 +1,4 @@
-.bearish-container {
+.day-performance-container {
     width: 500px;
     max-width: 600px;
     background: #fff;
@@ -8,19 +8,21 @@
     text-align: center;
 }
 
-.bearish-header {
+.performance-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
     padding-bottom: 10px;
     text-align: center;
+    position: relative;
 }
 .results-title {
-    margin-right: 35%;
+    flex: 1;
+    text-align: center;
 }
 
-.bearish-back-btn {
+.performance-back-btn {
     background: #000;
     border: none;
     font-size: 20px;
@@ -32,23 +34,23 @@
     height: 40px;
 }
 
-.bearish-subtitle {
+.performance-subtitle {
     font-size: 16px;
     margin-bottom: 15px;
 }
 
-.bearish-table {
+.performance-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
 
-.bearish-table th, .bearish-table td {
+.performance-table th, .performance-table td {
     padding: 10px;
     text-align: left;
 }
 
-.bearish-input {
+.performance-input {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -56,7 +58,7 @@
     font-size: 14px;
 }
 
-.bearish-submit-btn {
+.performance-submit-btn {
     width: 100%;
     background: black;
     color: white;
@@ -67,22 +69,23 @@
     cursor: pointer;
 }
 
-.bearish-submit-btn:hover {
+.performance-submit-btn:hover {
     background: #333;
 }
 
 .no-data-message {
     color: red;
+    margin: 50px 0px;
 }
 
-.bearish-loading-container {
+.performance-loading-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100px;
   }
   
-  .bearish-loader {
+  .performance-loader {
     width: 40px;
     height: 40px;
     border: 4px solid #f3f3f3;
