@@ -331,7 +331,7 @@ function MarketStatus() {
                                     disabled={isStockDisabled(stock) && !selectedStocks[stock.companyCode]}   
                                 />
                                 <span className="stock-symbol">{stock.companyName}</span>
-                                <div className="radio-group">
+                                <div className="livebb-radio-group">
                                     <label>
                                         <input
                                             type="radio"
