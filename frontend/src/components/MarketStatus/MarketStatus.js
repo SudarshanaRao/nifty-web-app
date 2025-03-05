@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +15,6 @@ function MarketStatus() {
     const [trueBullishStocks, setTrueBullishStocks] = useState([]);
     const [trueBearishStocks, setTrueBearishStocks] = useState([]);
     const [visibleStocks, setVisibleStocks] = useState(stocks);
-    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         setTrueBullishStocks(stocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
@@ -230,7 +229,6 @@ function MarketStatus() {
     
     
 
-    const filteredStocks = filter ? stocks.filter((stock) => stock.companyStatus === filter) : stocks;
 
     const liveBBStocks = stocks.filter((stock) => stock.companyStatus === (filter || "BEARISH"));
 
