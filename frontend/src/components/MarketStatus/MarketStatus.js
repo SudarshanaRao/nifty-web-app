@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,14 +9,18 @@ function MarketStatus() {
     const [stocks, setStocks] = useState([]);
     const [filter, setFilter] = useState(null);
     const [isSubmitActive, setIsSubmitActive] = useState(false);
+    const [pendingUpdates, setPendingUpdates] = useState({});
     const [selectedStocks, setSelectedStocks] = useState({});
     const [hasToggled, setHasToggled] = useState(false);
     const [trueBullishStocks, setTrueBullishStocks] = useState([]);
     const [trueBearishStocks, setTrueBearishStocks] = useState([]);
+    const [visibleStocks, setVisibleStocks] = useState(stocks);
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         setTrueBullishStocks(stocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
         setTrueBearishStocks(stocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
+        setVisibleStocks(stocks);
     }, [stocks]);
 
     useEffect(() => {
@@ -31,40 +35,39 @@ function MarketStatus() {
             });
     }, []);
 
-    const handleStatusChange = (companyCode, newStatus) => {
-        setStocks((prevStocks) =>
-            prevStocks.map((stock) =>
-                stock.companyCode === companyCode
-                    ? { ...stock, companyStatus: newStatus, isSelected: true }
-                    : stock
-            )
-        );
-        setIsSubmitActive(true);
-    };
+    
+    
+    
+    
+    
 
     const handleTabChange = async (tab) => {
         setActiveTab(tab);
         if (tab === "marketStatus") setFilter(null);
-        setHasToggled(false)
-        
+        setHasToggled(false);
+        setIsLoading(true); // Show a loading state while fetching data
+        setPendingUpdates({})
+    
         try {
             const response = await axios.get("https://dev-api.nifty10.com/company");
             const updatedStocks = response.data.data;
-            setStocks(updatedStocks);
-            
+    
+            setStocks(updatedStocks); // Store fresh API data
+            setVisibleStocks(updatedStocks); // Update UI with latest stocks
+    
             setTrueBullishStocks(updatedStocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
             setTrueBearishStocks(updatedStocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
+    
         } catch (error) {
             console.error("Failed to fetch stocks:", error);
+            toast.error("Failed to load stock data!", { position: "top-right" });
+        } finally {
+            setIsLoading(false); // Hide loading state after fetching
         }
     };
+    
 
-    const handleToggleChange = (newFilter) => {
-        setHasToggled(true);
-        setFilter(newFilter);
-        // setFilter((prevFilter) => (prevFilter === newFilter ? null : newFilter));
-        // setSelectedStocks({});
-    };
+    
 
     const handleCheckboxChange = (event, companyCode) => {
         setSelectedStocks((prevSelected) => {
@@ -149,60 +152,83 @@ function MarketStatus() {
         }
     };
     
-    
+    const handleToggleChange = (newFilter) => {
+            setFilter(newFilter);
+            setHasToggled(true);
+            setFilter(newFilter);
+        
+            const defaultStatus = newFilter.toUpperCase(); // "BULLISH" or "BEARISH"
+        
+            // Set all stocks to the selected status (Bullish or Bearish)
+            const updatedPendingUpdates = Object.fromEntries(
+                stocks.map(stock => [stock.companyCode, defaultStatus])
+            );
+        
+            setPendingUpdates(updatedPendingUpdates);
+            setIsSubmitActive(true);
+        
+            // Ensure all stocks are visible with updated status
+            setVisibleStocks(stocks.map(stock => ({
+                ...stock,
+                companyStatus: defaultStatus,
+            })));
+    };
 
+    const handleStatusChange = (companyCode, newStatus) => {
+        setPendingUpdates((prev) => ({
+            ...prev,
+            [companyCode]: newStatus, // Allow manual updates per stock
+        }));
+    
+        setIsSubmitActive(true);
+    };
+    
+    
     const handleSubmit = async () => {
         if (!isSubmitActive) return;
-
-        const updatedStocks = stocks.filter((stock) => stock.isSelected);
-
-        if (updatedStocks.length === 0) {
-            toast.warn("Please select at least one stock to update!", { position: "top-right" });
-            return;
-        }
-
+    
+        // Ensure all 50 stocks are updated with the selected filter (Bullish/Bearish)
+        const updatedStocks = stocks.map(stock => ({
+            ...stock,
+            companyStatus: pendingUpdates[stock.companyCode] || stock.companyStatus,
+        }));
+    
         try {
             await Promise.all(
-                updatedStocks.map(async (updatedStock) => {
-                    const requestData = {
-                        companyId: updatedStock.companyId,
-                        companyName: updatedStock.companyName,
-                        companyCode: updatedStock.companyCode,
-                        rankNumber: updatedStock.rankNumber || 0,
-                        companyPoint: updatedStock.companyPoint || 0,
-                        companyStatus: updatedStock.companyStatus,
-                        liveBB: false,
-                        createdBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
-                        createdDate: new Date().toISOString(),
-                        modifiedBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
-                        modifiedDate: new Date().toISOString(),
-                        active: true,
-                    };
-
-                    console.log("Sending data:", requestData);
-
-                    const response = await axios.post(
+                updatedStocks.map(updatedStock =>
+                    axios.post(
                         "https://dev-api.nifty10.com/company/update/company",
-                        requestData,
+                        {
+                            companyId: updatedStock.companyId,
+                            companyName: updatedStock.companyName,
+                            companyCode: updatedStock.companyCode,
+                            companyPoint: updatedStock.companyPoint || 0,
+                            companyStatus: updatedStock.companyStatus,
+                            liveBB: false,
+                            active: true,
+                        },
                         {
                             params: { userId: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985" },
                             headers: { "Content-Type": "application/json" },
                         }
-                    );
-
-                    console.log("API Response:", response.data);
-                    toast.success(`Market status updated for ${updatedStock.companyName}`, {
-                        position: "top-right",
-                    });
-                })
+                    )
+                )
             );
-
+    
+            setStocks(updatedStocks);
+            setPendingUpdates({});
             setIsSubmitActive(false);
+            toast.success("Market status updated successfully!", { position: "top-right" });
+    
         } catch (error) {
             console.error("API Error:", error.response?.data || error.message);
             toast.error("Failed to update market status!", { position: "top-right" });
         }
     };
+    
+    
+    
+    
 
     const filteredStocks = filter ? stocks.filter((stock) => stock.companyStatus === filter) : stocks;
 
@@ -252,7 +278,7 @@ function MarketStatus() {
                 <>
                 
                     <div className="market-stocks-container">
-                        {filteredStocks.map((stock) => (
+                        {visibleStocks.map((stock) => (
                             <div key={stock.companyCode} className="stock-box">
                                 <span className="stock-symbol">{stock.companyName}</span>
                                 <div className="radio-group">
@@ -261,7 +287,11 @@ function MarketStatus() {
                                             type="radio"
                                             name={`status-${stock.companyCode}`}
                                             value="BULLISH"
-                                            checked={stock.companyStatus === "BULLISH"}
+                                            checked={
+                                                pendingUpdates[stock.companyCode] !== undefined
+                                                    ? pendingUpdates[stock.companyCode] === "BULLISH"
+                                                    : stock.companyStatus === "BULLISH"
+                                            }
                                             onChange={() => handleStatusChange(stock.companyCode, "BULLISH")}
                                         />
                                         Bullish
@@ -271,7 +301,11 @@ function MarketStatus() {
                                             type="radio"
                                             name={`status-${stock.companyCode}`}
                                             value="BEARISH"
-                                            checked={stock.companyStatus === "BEARISH"}
+                                            checked={
+                                                pendingUpdates[stock.companyCode] !== undefined
+                                                    ? pendingUpdates[stock.companyCode] === "BEARISH"
+                                                    : stock.companyStatus === "BEARISH"
+                                            }
                                             onChange={() => handleStatusChange(stock.companyCode, "BEARISH")}
                                         />
                                         Bearish
@@ -279,6 +313,7 @@ function MarketStatus() {
                                 </div>
                             </div>
                         ))}
+
                     </div>
                     <button className="submit-button" disabled={!isSubmitActive} onClick={handleSubmit}>
                         Submit
