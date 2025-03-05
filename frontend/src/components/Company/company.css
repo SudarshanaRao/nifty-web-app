@@ -1,6 +1,6 @@
 .stocks-container {
     display: grid !important;
-    grid-template-columns: repeat(5, 2fr) !important;
+    grid-template-columns: repeat(6, 2fr) !important;
     gap: 10px;
     padding: 10px;
     margin-top: 0px;

@@ -29,7 +29,7 @@
 
 .market-stocks-container {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 3fr);
     gap: 20px;
     padding: 10px;
 }
@@ -40,7 +40,7 @@
   padding: 10px;
 }
 .stock-box {
-    width: 60%;
+    width: auto;
     background: #f9f9f9;
     padding: 10px;
     border-radius: 5px;
