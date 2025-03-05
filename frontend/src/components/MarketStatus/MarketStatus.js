@@ -313,7 +313,7 @@ function MarketStatus() {
                     
                     ) : (
                         <>
-                    {selectedCount == 10 ? "" : <div>
+                    {selectedCount === 10 ? "" : <div>
                             <p className="selection-msg">Kindly select 5 BULLISH and 5 BEARISH to proceed</p>
                         </div>
                     }
