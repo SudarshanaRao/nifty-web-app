@@ -1,4 +1,4 @@
-.stocks-container {
+.company-stocks-container {
     display: grid !important;
     grid-template-columns: repeat(6, 2fr) !important;
     gap: 10px;
@@ -6,7 +6,7 @@
     margin-top: 0px;
   }
   
-  .stock-box {
+  .company-stock-box {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -16,16 +16,18 @@
     width: auto !important;
     background-color: #f9f9f9;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
   }
-  .stock-symbol {
+  .company-stock-symbol {
     flex-grow: 1;
     text-align: left;
     font-weight: 600;
-    font-size: 14px !important;
+    font-size: 14px;
     margin-right: 15px;
+    font-weight: 700;
   }
   
-  .stock-value {
+  .company-stock-value {
     font-weight: bold;
     font-size: 14px;
     color: #333;
