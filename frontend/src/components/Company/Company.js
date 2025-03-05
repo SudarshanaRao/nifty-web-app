@@ -120,13 +120,17 @@ function Company() {
 
             setIsEditing(false);
 
-        if (response.data?.data) {
-            setStocks((prevStocks) =>
-                prevStocks
-                    .map(company => company.companyId === response.data.data.companyId ? response.data.data : company)
-                    .sort((a, b) => (a.companyName || "").localeCompare(b.companyName || ""))
-            );
-        }
+            if (response.data?.data) {
+                setStocks((prevStocks) =>
+                    response.data.data.active
+                        ? prevStocks
+                            .map(company =>
+                                company.companyId === response.data.data.companyId ? response.data.data : company
+                            )
+                            .sort((a, b) => (a.companyName || "").localeCompare(b.companyName || ""))
+                        : prevStocks.filter(company => company.companyId !== response.data.data.companyId) // Remove inactive company
+                );
+            }
 
         } catch (error) {
             console.error("Error adding company:", error.response?.data || error.message);

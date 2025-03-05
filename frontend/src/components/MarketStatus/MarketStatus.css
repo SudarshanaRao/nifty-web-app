@@ -1,7 +1,8 @@
 .market-status-container {
     width: 95vw;
-    text-align: center;
     margin-right: 15%;
+    display: flex;
+    flex-direction: column;
 }
 
 .tab-container {
@@ -30,7 +31,7 @@
 .market-stocks-container {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 10px;
     padding: 10px;
 }
 .live-bb-container {
@@ -40,11 +41,14 @@
   padding: 10px;
 }
 .stock-box {
-    width: 60%;
+    width: auto;
     background: #f9f9f9;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .stock-symbol {
@@ -64,6 +68,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
+    align-self: center;
 }
 
 .submit-button:disabled {
@@ -317,6 +322,7 @@
 
 .selection-msg {
   color: red;
+  text-align: center;
 }
 
 .custom-stocks-container {
@@ -380,68 +386,4 @@
 .custom-stock-name {
   font-size: 1rem;
   font-weight: 500;
-}
-
-
-.livebb-radio-group {
-  display: flex;
-  gap: 5px;
-  margin-top: 10px;
-  align-items: center;
-}
-
-.livebb-radio-group label {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  background: #f3f4f6; /* Light gray background */
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.livebb-radio-group input[type="radio"] {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #6b7280; /* Gray border */
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.livebb-radio-group input[type="radio"]:checked[value="BULLISH"] {
-  border-color: green;
-  background-color: green;
-}
-
-.livebb-radio-group input[type="radio"]:checked[value="BEARISH"] {
-  border-color: red;
-  background-color: red;
-}
-
-.livebb-radio-group input[type="radio"]:checked::before {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: white;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.livebb-radio-group label:hover {
-  background: #e5e7eb; /* Slightly darker gray on hover */
-}
-
-.livebb-radio-group input[type="radio"]:checked + label {
-  background: #2563eb;
-  color: white;
 }
