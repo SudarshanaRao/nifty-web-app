@@ -12,7 +12,7 @@ import AllMarkets from "../AllMarkets/AllMarkets";
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const [activeTab, setActiveTab] = useState(""); // Default tab is "markets"
+  const [activeTab, setActiveTab] = useState("markets"); // Default tab is "markets"
   const [result, setResult] = useState(false);
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const HomePage = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "markets":
-        return <Markets />;
+        return <AllMarkets />;
       case "companies":
         return <Company />;
       case "market-status":
@@ -55,7 +55,7 @@ const HomePage = () => {
       case "results":
         return <Results />;
       default:
-        return <AllMarkets />; // Default to Markets if no tab is selected
+        return null; // Default to Markets if no tab is selected
     }
   };
 

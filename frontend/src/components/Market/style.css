@@ -70,19 +70,23 @@
 }
 
 .bullish {
-  background-color: #c8f7c5;
+  background: linear-gradient(135deg, #B2F2BB, #8EE4AF);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .bearish {
-  background-color: #f7c5c5;
+  background: linear-gradient(135deg, #FFB3B3, #FF6F61);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .nifty-prediction {
-  background-color: #c5e1f7;
+  background: linear-gradient(135deg, #A7C7E7, #74A9D8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .bank-nifty-prediction {
-  background-color: #f7e2c5;
+  background: linear-gradient(135deg, #FFD8A8, #FFAD60);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .floating-button {

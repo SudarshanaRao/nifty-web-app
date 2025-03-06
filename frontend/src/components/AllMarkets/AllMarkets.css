@@ -1,24 +1,33 @@
 .all-cards-container {
-  display: flex;
-  gap: 10px;
-  padding: 20px 10px;
   font-weight: 400;
   font-family: roboto;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f4f4f4;
 }
 
 .all-card {
   color: #333;
-  font-weight: bold;
+  font-weight: 600;
   text-align: center;
   font-size: 1.2rem;
   border-radius: 12px;
-  padding: 15px;
-  margin: 10px 15px;
+  margin: 10px 0px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 250px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 .all-card:hover {
   transform: translateY(-5px);
@@ -26,45 +35,56 @@
 }
 
 .all-card h2 {
-  margin: 0;
-  color: #3f3f3f;
-  font-weight: 400;
-  font-size: 24px;
+  margin-top: 30px;
+  color: #666;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: left;
 }
+
 
 .all-time-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 0px;
   margin-top: 10px;
+  font-size: 14px;
 }
+
 
 .all-time-left {
   text-align: center;
-  font-size: 12px;
+  font-size: 10px;
   margin-right: 10px;
 }
 .all-time-right {
   text-align: center;
-  font-size: 12px;
+  font-size: 10px;
   margin-left: 10px;
 }
 
 .all-timer-line {
   width: 2px;
-  height: 35px;
+  height: 25px;
   background-color: transparent;
   border-left: 2px dashed #4f4f4f;
 }
 
 
 .all-card-icon {
-  font-size: 30px;
-  padding-top: 10px;
+  position: absolute;
+  top: -15px;
+  left: 15px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: white;
 }
 
-.bullish {
+/* .bullish {
   background: linear-gradient(135deg, #B2F2BB, #8EE4AF);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -82,15 +102,15 @@
 .bank-nifty-prediction {
   background: linear-gradient(135deg, #FFD8A8, #FFAD60);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+} */
 
 
 .all-floating-button {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: black;
-  color: white;
+  background-color: #333;
+  color: #fff;
   border: none;
   width: 50px;
   height: 50px;
@@ -101,14 +121,18 @@
 }
 
 .all-des {
+  color: #777;
   font-size: 12px;
 }
+
 .all-time {
+  font-weight: bold;
+  color: #333;
   margin-top: 5px;
 }
 
 .all-icon {
-  width: 5rem;
+  width: 2.5rem;
 }
 @keyframes fadeIn {
   from {
@@ -123,4 +147,245 @@
 
 .market-card {
   animation: fadeIn 0.8s ease-in-out;
+}
+
+
+.all-card > .Bullish {
+  background: linear-gradient(135deg, #B2F2BB, #8EE4AF);
+}
+
+.all-card > .Bearish {
+  background: linear-gradient(135deg, #FFB3B3, #FF6F61);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.all-card > .Nifty {
+  background: linear-gradient(135deg, #A7C7E7, #74A9D8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.all-card > .Bank {
+  background: linear-gradient(135deg, #FFD8A8, #FFAD60);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.all-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+
+
+
+/* Dashboard Container */
+.markets-table-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  align-items: flex-start;
+  margin-top: 20px;
+  position: relative;
+  width: 90%;
+}
+.markets-table-container > .Bullish {
+  background: linear-gradient(135deg, #B2F2BB, #8EE4AF);
+}
+
+.markets-table-container > .Bearish {
+  background: linear-gradient(135deg, #FFB3B3, #FF6F61);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.markets-table-container > .Nifty {
+  background: linear-gradient(135deg, #A7C7E7, #74A9D8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.markets-table-container > .Bank {
+  background: linear-gradient(135deg, #FFD8A8, #FFAD60);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Popup Heading */
+.popup-heading {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px 0;
+  width: 75%;
+  border-radius: 10px 10px;
+  background: #999;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: -18px;
+  left: 20px;
+  z-index: 1;
+  display: flex;
+  padding-left: 20px;
+}
+
+
+/* Table Styling */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.admin-table th, .admin-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-table th {
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  background: #f7f7f7;
+}
+
+.admin-table tbody tr {
+  transition: all 0.3s ease-in-out;
+}
+
+.admin-table tbody tr:hover {
+  background: #f2f2f2;
+  transform: scale(1.01);
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .table-container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .popup-heading {
+    width: 95%;
+    font-size: 20px;
+  }
+
+  .admin-table th, .admin-table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+.table-container {
+  width: 80%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 0;
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+}
+
+/* Cute Loading Message */
+.loading-message {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff9800;
+  background: rgba(255, 152, 0, 0.15);
+  border: 3px dashed #ff9800;
+  border-radius: 12px;
+  padding: 10px 20px;
+  text-align: center;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  animation: fadeIn 0.5s ease-in-out, pulse 1.5s infinite alternate;
+}
+
+/* Loading Icon */
+.loading-message::before {
+  content: "⏳";
+  font-size: 25px;
+  animation: spin 1.2s linear infinite;
+}
+
+/* Cute Error Message */
+.error-msg {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff3d00;
+  background: rgba(255, 61, 0, 0.15);
+  border: 3px dashed #ff3d00;
+  border-radius: 12px;
+  padding: 10px 20px;
+  text-align: center;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  animation: fadeIn 0.5s ease-in-out, shake 1.5s infinite alternate;
+}
+
+/* Error Icon */
+.error-msg::before {
+  content: "❌";
+  font-size: 25px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes shake {
+  from {
+    transform: translateX(-3px);
+  }
+  to {
+    transform: translateX(3px);
+  }
+}
+
+.market-table-status {
+  font-weight: bold;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.status-active {
+  color: #28a745; /* Green color */
 }
