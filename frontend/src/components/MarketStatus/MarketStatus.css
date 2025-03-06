@@ -21,6 +21,7 @@
     cursor: pointer;
     font-size: 10px;
     font-weight: bold;
+    margin-top: 15px !important;
 }
 
 .tab.active {
