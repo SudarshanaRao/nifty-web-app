@@ -316,31 +316,6 @@ function MarketStatus() {
 
             {activeTab === "liveBB" && (
                 <>
-                    {!hasToggled ? (
-                            <div className="custom-stocks-container">
-                            <div className="custom-stocks-column custom-bullish-column">
-                                <h3 className="custom-column-title">BULLISH</h3>
-                                {trueBullishStocks.slice(0, 5).map(stock => (
-                                    <div key={stock.companyCode} className="custom-stock-item">
-                                        <span className="custom-stock-name">{stock.companyName}</span>
-                                        <span className="custom-stock-name">{stock.companyPoint}</span>
-                                    </div>
-                                ))}
-                            </div>
-                            
-                            <div className="custom-stocks-column custom-bearish-column">
-                                <h3 className="custom-column-title">BEARISH</h3>
-                                {trueBearishStocks.slice(0, 5).map(stock => (
-                                    <div key={stock.companyCode} className="custom-stock-item">
-                                        <span className="custom-stock-name">{stock.companyName}</span>
-                                        <span className="custom-stock-name">{stock.companyPoint}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    
-                    ) : (
-                        <>
                     {selectedCount === 10 ? "" : <div>
                             <p className="selection-msg">Kindly select 5 BULLISH and 5 BEARISH to proceed</p>
                         </div>
@@ -378,10 +353,7 @@ function MarketStatus() {
                         Proceed
                     </button>
                     </>
-                    )}
-                </>
             )}
-            
         </div>
     );
 }
