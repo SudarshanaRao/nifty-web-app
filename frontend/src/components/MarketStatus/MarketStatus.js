@@ -44,7 +44,6 @@ function MarketStatus() {
         setActiveTab(tab);
         if (tab === "marketStatus") setFilter(null);
         setHasToggled(false);
-        setIsLoading(true); // Show a loading state while fetching data
         setPendingUpdates({})
     
         try {
@@ -60,9 +59,7 @@ function MarketStatus() {
         } catch (error) {
             console.error("Failed to fetch stocks:", error);
             toast.error("Failed to load stock data!", { position: "top-right" });
-        } finally {
-            setIsLoading(false); // Hide loading state after fetching
-        }
+        } 
     };
     
 
