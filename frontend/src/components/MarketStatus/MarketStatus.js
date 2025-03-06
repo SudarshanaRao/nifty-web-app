@@ -231,6 +231,7 @@ function MarketStatus() {
 
     return (
         <div id="marketStatusContainer" className="market-status-container">
+            <div className="markets-header-container">
             <div className="tab-container">
                 <button
                     className={`tab ${activeTab === "marketStatus" ? "active" : ""}`}
@@ -267,6 +268,7 @@ function MarketStatus() {
                     </label>
                 </div>
                 <span className="toggle-text">BULLISH</span>
+            </div>
             </div>
 
             {activeTab === "marketStatus" && (

@@ -8,18 +8,18 @@
 .tab-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-left: 38%;
 }
 
 .tab {
-    padding: 12px 15px;
-    border-radius: 25px;
-    width: 130px;
-    margin: 0 10px;
+    padding: 12px 10px;
+    border-radius: 12px;
+    width: 120px;
+    margin: auto;
     border: none;
     background: #555;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 10px;
     font-weight: bold;
 }
 
@@ -30,20 +30,20 @@
 
 .market-stocks-container {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
     padding: 10px;
 }
 .live-bb-container {
   display: grid !important;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
   padding: 10px;
 }
 .stock-box {
-    width: auto;
+    width: 242px;
     background: #f9f9f9;
-    padding: 10px;
+    padding: 8px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -52,13 +52,13 @@
 }
 
 .stock-symbol {
-    font-size: 16px;
+    font-size: 10px;
     font-weight: bold;
 }
 
 .radio-group {
     display: flex;
-    gap: 15px;
+    gap: 10px;
 }
 .submit-button {
     background-color: #4d4d4d;
@@ -69,6 +69,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     align-self: center;
+    margin-top: 5px !important;
 }
 
 .submit-button:disabled {
@@ -84,20 +85,20 @@
 .radio-group {
     display: flex;
     gap: 5px;
-    margin-top: 10px;
+    margin-top: 5px;
     align-items: center;
 }
 
 .radio-group label {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 2px;
     background: #f3f4f6; /* Light gray background */
-    padding: 8px 16px;
+    padding: 4px 2px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 
@@ -280,7 +281,6 @@
 
   .toggle-switch-container {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
   }
 
@@ -386,4 +386,10 @@
 .custom-stock-name {
   font-size: 1rem;
   font-weight: 500;
+}
+
+.markets-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
