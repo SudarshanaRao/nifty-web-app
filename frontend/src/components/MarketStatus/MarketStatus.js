@@ -352,7 +352,7 @@ function MarketStatus() {
                     
                     <div className='live-bb-container'>
                         {liveBBStocks.map((stock) => (
-                            <div key={stock.companyCode} className={`stock-box ${isStockDisabled(stock) && !selectedStocks[stock.companyCode] ? "disabled-container" : ""}`}>
+                            <div key={stock.companyCode} className={`stock-box live-stock-box ${isStockDisabled(stock) && !selectedStocks[stock.companyCode] ? "disabled-container" : ""}`}>
                                 <input
                                     type="checkbox"
                                     className="live-checkbox"

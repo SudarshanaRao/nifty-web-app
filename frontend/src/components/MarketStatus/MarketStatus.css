@@ -36,7 +36,7 @@
 }
 .live-bb-container {
   display: grid !important;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 6px;
   padding: 10px;
 }
@@ -49,6 +49,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.live-stock-box {
+  width: 200px;
 }
 
 .stock-symbol {
