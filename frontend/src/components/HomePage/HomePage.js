@@ -8,10 +8,11 @@ import UsersInfo from "../UsersInfo/UsersInfo";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { toast } from "react-toastify";
 import Results from "../Results/Results";
+import AllMarkets from "../AllMarkets/AllMarkets";
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const [activeTab, setActiveTab] = useState("markets"); // Default tab is "markets"
+  const [activeTab, setActiveTab] = useState(""); // Default tab is "markets"
   const [result, setResult] = useState(false);
   const navigate = useNavigate();
 
@@ -54,7 +55,7 @@ const HomePage = () => {
       case "results":
         return <Results />;
       default:
-        return <Markets />; // Default to Markets if no tab is selected
+        return <AllMarkets />; // Default to Markets if no tab is selected
     }
   };
 
