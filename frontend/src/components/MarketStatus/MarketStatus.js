@@ -7,11 +7,11 @@ import "./MarketStatus.css";
 function MarketStatus() {
     const [activeTab, setActiveTab] = useState("marketStatus");
     const [stocks, setStocks] = useState([]);
-    const [filter, setFilter] = useState(null);
+    const [filter, setFilter] = useState("BEARISH");
     const [isSubmitActive, setIsSubmitActive] = useState(false);
     const [pendingUpdates, setPendingUpdates] = useState({});
     const [selectedStocks, setSelectedStocks] = useState({});
-    const [hasToggled, setHasToggled] = useState(false);
+    const [hasToggled, setHasToggled] = useState(true);
     const [trueBullishStocks, setTrueBullishStocks] = useState([]);
     const [trueBearishStocks, setTrueBearishStocks] = useState([]);
     const [visibleStocks, setVisibleStocks] = useState(stocks);
@@ -20,6 +20,18 @@ function MarketStatus() {
         setTrueBullishStocks(stocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
         setTrueBearishStocks(stocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
         setVisibleStocks(stocks);
+        const updatedPendingUpdates = Object.fromEntries(
+            stocks.map(stock => [stock.companyCode, filter])
+        );
+    
+        setPendingUpdates(updatedPendingUpdates);
+        setIsSubmitActive(true);
+    
+        // Ensure all stocks are visible with updated status
+        setVisibleStocks(stocks.map(stock => ({
+            ...stock,
+            companyStatus: filter,
+        })));
     }, [stocks]);
 
     useEffect(() => {
@@ -42,24 +54,8 @@ function MarketStatus() {
 
     const handleTabChange = async (tab) => {
         setActiveTab(tab);
-        if (tab === "marketStatus") setFilter(null);
-        setHasToggled(false);
-        setPendingUpdates({})
-    
-        try {
-            const response = await axios.get("https://dev-api.nifty10.com/company");
-            const updatedStocks = response.data.data;
-    
-            setStocks(updatedStocks); // Store fresh API data
-            setVisibleStocks(updatedStocks); // Update UI with latest stocks
-    
-            setTrueBullishStocks(updatedStocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
-            setTrueBearishStocks(updatedStocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
-    
-        } catch (error) {
-            console.error("Failed to fetch stocks:", error);
-            toast.error("Failed to load stock data!", { position: "top-right" });
-        } 
+        setHasToggled(true)
+        handleToggleChange("BEARISH")
     };
     
 
