@@ -66,7 +66,10 @@ const AllMarkets = () => {
       );
       const data = response.data.data || [];
   
-      const today = new Date().toISOString().split("T")[0];
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+      const yesterdayISO = yesterday.toISOString().split("T")[0];
   
       const filteredData = data.filter(
         (item) =>
@@ -74,7 +77,7 @@ const AllMarkets = () => {
           item.active === true &&
           item.freeBid === false &&
           item.createdDate &&
-          item.createdDate.startsWith(today)
+          item.createdDate.startsWith(yesterdayISO)
       );
   
       if (filteredData.length === 0) {
@@ -150,7 +153,7 @@ const AllMarkets = () => {
                       <td>{row.bidName}</td>
                       <td>{row.bidSlots}</td>
                       <td>{row.poolPrize}</td>
-                      <td className="market-table-status status-active">✅ Active</td>
+                      <td className="market-table-status status-active">{row.active ? '✅ Active' : '❌ Inactive'}</td>
                       <td>{row.firstPrize}</td>
                     </tr>
                   ))}
