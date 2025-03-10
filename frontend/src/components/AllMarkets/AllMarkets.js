@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AllMarkets.css";
 import axios from "axios";
-
 const marketImages = {
   Bullish: "bullish.png",
   Bearish: "bearish.png",
@@ -32,7 +31,6 @@ const Card = ({ title, color, image, openTime, closeTime, onClick }) => {
     </div>
   );
 };
-
 const AllMarkets = () => {
   const [marketData, setMarketData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -59,7 +57,6 @@ const AllMarkets = () => {
     setSelectedMarket(marketName);
     setDataLoading(true);
     setErrorMsg("");
-  
     try {
       const response = await axios.get(
         `https://dev-api.nifty10.com/bid/get/allDayBid`

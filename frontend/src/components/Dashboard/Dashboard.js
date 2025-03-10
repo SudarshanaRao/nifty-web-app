@@ -1,11 +1,12 @@
 import './Dashboard.css';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import BoxGraph from './BoxGraph';
 
 const Card = ({ title, color, image, data, growthRate, duration }) => {
     return (
       <div className={'all-card dashboard-card-container'}>
-        <div className="all-card-content">
+        <div className="all-card-content dashboard-content">
           <h2>{title}</h2>
           <div className="all-time-container">
             <div className="all-time-left">
@@ -195,6 +196,7 @@ const Dashboard = () => {
                     growthRate={growthRate}
                 />
             </div>
+            < BoxGraph />
         </div>
     );
 };
