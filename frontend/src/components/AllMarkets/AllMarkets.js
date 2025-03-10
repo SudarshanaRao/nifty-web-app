@@ -38,6 +38,7 @@ const AllMarkets = () => {
   const [tableData, setTableData] = useState([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [isActive, setIsActive] = useState(null)
 
   useEffect(() => {
     const fetchMarketData = async () => {
@@ -95,6 +96,10 @@ const AllMarkets = () => {
       setDataLoading(false);
     }
   };
+
+  const rowSelected = (id) => {
+    setIsActive(id)
+  }
   
   
 
@@ -137,16 +142,14 @@ const AllMarkets = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {tableData.map((row) => (
-                    <tr key={row.dayWiseBidId}>
+                  {tableData.map((row, index) => (
+                    <tr 
+                      key={row.dayWiseBidId} 
+                      onClick={() => rowSelected(row.dayWiseBidId)}
+                      className={isActive === row.dayWiseBidId ? "row-active" : ""}
+                    >
                       {/* <td>{row.bidId}</td> */}
-                      <td>
-                        {new Date(row.createdDate).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </td>
+                      <td>{index + 1}</td>
                       <td>{row.bidName}</td>
                       <td>{row.bidSlots}</td>
                       <td>{row.poolPrize}</td>

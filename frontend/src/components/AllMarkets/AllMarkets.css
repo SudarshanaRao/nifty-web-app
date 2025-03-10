@@ -259,6 +259,9 @@
   background: #f2f2f2;
   transform: scale(1.01);
 }
+.row-active {
+  background: #ddd;
+}
 
 /* Responsive Table */
 @media (max-width: 768px) {
@@ -382,7 +385,6 @@
 
 .market-table-status {
   font-weight: bold;
-  border-radius: 8px;
   text-align: center;
   font-size: 14px;
 }
