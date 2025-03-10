@@ -64,10 +64,6 @@
     font-weight: bold;
   }
   /* Dashboard Styling */
-  .dashboard-container{
-    display: flex;
-    gap: 5px;
-  }
 
   .all-time-res {
     font-size: 32px;

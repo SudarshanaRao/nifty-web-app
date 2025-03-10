@@ -81,7 +81,7 @@ const Dashboard = () => {
                 const last24Count = last24HoursUsersList.length;
                 const prev24Count = prev24HoursUsersList.length;
                 const last24Growth = prev24Count > 0 
-                    ? ((last24Count - prev24Count) / prev24Count) * 100 
+                    ? Math.min(((last24Count - prev24Count) / prev24Count) * 100, 100) 
                     : (last24Count > 0 ? 100 : 0);
                 setLast24HoursGrowth(last24Growth.toFixed(1));
 
@@ -95,7 +95,7 @@ const Dashboard = () => {
                 const lastWeekCount = lastWeekUsers.length;
                 const prevWeekCount = prevWeekUsers.length;
                 const weeklyGrowth = prevWeekCount > 0 
-                    ? ((lastWeekCount - prevWeekCount) / prevWeekCount) * 100 
+                    ? Math.min(((lastWeekCount - prevWeekCount) / prevWeekCount) * 100, 100) 
                     : (lastWeekCount > 0 ? 100 : 0);
                 setGrowthRate(weeklyGrowth.toFixed(1));
 
@@ -108,7 +108,7 @@ const Dashboard = () => {
 
                 // Calculate revenue growth rate
                 const revenueGrowth = prev24Revenue > 0 
-                    ? ((last24Revenue - prev24Revenue) / prev24Revenue) * 100 
+                    ? Math.min(((last24Revenue - prev24Revenue) / prev24Revenue) * 100, 100) 
                     : (last24Revenue > 0 ? 100 : 0);
                 setRevenueGrowthRate(revenueGrowth.toFixed(1));
 
@@ -142,11 +142,13 @@ const Dashboard = () => {
                     .reduce((sum, bid) => sum + (parseFloat(bid.bidName) * bid.totalPlacedBidSlots), 0);
 
                 // Calculate Growth Rate
-                let growth = previousSpent === 0 && currentSpent === 0 ? 0 : 
-                             previousSpent > 0 ? ((currentSpent - previousSpent) / previousSpent) * 100 : 0;
-                
-                setTotalSpent(currentSpent);
+                let growth = previousSpent === 0 && currentSpent === 0 
+                    ? 0 
+                    : previousSpent > 0 
+                        ? Math.min(((currentSpent - previousSpent) / previousSpent) * 100, 100) 
+                        : 0;
                 setGrowthRate(parseFloat(growth.toFixed(2)));
+                setTotalSpent(currentSpent);
 
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -157,8 +159,8 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div className="all-markets-bg-container">
-            <div className="all-cards-container">
+        <div className="all-markets-bg-container dashboard-container">
+            <div className="all-cards-container dashboard-cards-container">
                 <Card
                 key="totalUsers"
                 title="TOTAL USERS"

@@ -104,7 +104,6 @@ function MarketStatus() {
             toast.warn("Please select exactly 10 stocks to proceed!", { position: "top-right" });
             return;
         }
-
         const updatedStockData = stocks.map(stock => ({
             companyId: stock.companyId,
             companyStatus: stock.companyStatus,
@@ -114,9 +113,6 @@ function MarketStatus() {
                 ? selectedBullishStocks.includes(stock) // True only for selected bullish stocks
                 : false, // All other stocks should have liveBB: false
         }));
-        
-        
-    
         try {
             const response = await axios.put(
                 "https://dev-api.nifty10.com/company/bulk/update/company",
