@@ -29,28 +29,44 @@ const BoxGraph = () => {
     try {
       const response = await fetch("https://dev-api.nifty10.com/bid/get/allResult");
       const result = await response.json();
-
+  
       if (!result.data || !Array.isArray(result.data)) {
         setData([]);
         return;
       }
-
+  
       const now = new Date();
-      const timeFrame = 1; // Only last 24 hours
-
+      const currentHour = now.getHours();
+      const currentDate = now.getDate();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+  
+      let cycleStart, cycleEnd;
+  
+      if (currentHour >= 9 && currentHour < 16) {
+        // If time is between 9:00 AM and 4:00 PM, take the last market cycle (Yesterday 4:00 PM to Today 9:00 AM)
+        cycleStart = new Date(currentYear, currentMonth, currentDate - 1, 16, 0, 0);
+        cycleEnd = new Date(currentYear, currentMonth, currentDate, 9, 0, 0);
+      } else if(currentHour >= 16 && currentHour < 24) {
+        // If time is after 4:00 PM or before 9:00 AM, take today's cycle (Today 4:00 PM to Tomorrow 9:00 AM)
+        cycleStart = new Date(currentYear, currentMonth, currentDate, 16, 0, 0);
+        cycleEnd = new Date(currentYear, currentMonth, currentDate + 1, 9, 0, 0);
+      } else {
+        cycleStart = new Date(currentYear, currentMonth, currentDate - 1, 16, 0, 0);
+        cycleEnd = new Date(currentYear, currentMonth, currentDate, 9, 0, 0);
+      }
+  
       const marketWiseData = {};
       const uniqueBidNames = new Set();
-
+  
       result.data.forEach((bid) => {
         const createdDate = new Date(bid.createdDate);
-        const daysDiff = (now - createdDate) / (1000 * 60 * 60 * 24);
-
-        if (daysDiff > timeFrame) return; // Only last 24 hours
-        if (createdDate.getFullYear().toString() !== year) return; // Filter by year
-
+  
+        if (createdDate < cycleStart || createdDate > cycleEnd) return; // Filter based on cycle
+  
         const { bidName, marketName, totalPlacedBidSlots } = bid;
         uniqueBidNames.add(bidName);
-
+  
         if (!marketWiseData[bidName]) {
           marketWiseData[bidName] = {
             bidName,
@@ -60,16 +76,18 @@ const BoxGraph = () => {
             "Bank Nifty Prediction": 0,
           };
         }
-
+  
         if (marketGradients[marketName]) {
           marketWiseData[bidName][marketName] += totalPlacedBidSlots;
         }
+        console.log(marketWiseData[bidName][marketName]);
       });
-
+      
+      
       const formattedData = Array.from(uniqueBidNames)
         .sort((a, b) => a.localeCompare(b))
         .map((bidName) => marketWiseData[bidName]);
-
+  
       setData(formattedData.length > 0 ? formattedData : []);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -77,6 +95,7 @@ const BoxGraph = () => {
       setLoading(false);
     }
   }, [year]);
+  
 
   useEffect(() => {
     fetchData();

@@ -58,44 +58,65 @@ const AllMarkets = () => {
     setSelectedMarket(marketName);
     setDataLoading(true);
     setErrorMsg("");
+
     try {
-      const response = await axios.get(
-        `https://dev-api.nifty10.com/bid/get/allDayBid`
-      );
-      const data = response.data.data || [];
-  
-      const today = new Date();
-      const yesterday = new Date(today);
-      yesterday.setDate(today.getDate() - 1);
-      const yesterdayISO = yesterday.toISOString().split("T")[0];
-  
-      const filteredData = data.filter(
-        (item) =>
-          item.marketName === marketName &&
-          item.active === true &&
-          item.freeBid === false &&
-          item.createdDate &&
-          item.createdDate.startsWith(yesterdayISO)
-      );
-  
-      if (filteredData.length === 0) {
-        setErrorMsg("No data available for today.");
-      }
-  
-      // **Sort numerically using bidName (converted from string to number)**
-      const sortedData = filteredData.sort(
-        (a, b) => Number(a.bidName) - Number(b.bidName)
-      );
-  
-      console.log(sortedData);
-      setTableData(sortedData);
+        const response = await axios.get(
+            `https://dev-api.nifty10.com/bid/get/allDayBid`
+        );
+        const data = response.data.data || [];
+
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentDate = now.getDate();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        let startTime, endTime;
+
+        if (currentHour >= 9 && currentHour < 16) {
+            // Market is closed (9 AM - 4 PM) → Get yesterday's market cycle (Yesterday 4 PM - Today 9 AM)
+            startTime = new Date(currentYear, currentMonth, currentDate - 1, 16, 0, 0);
+            endTime = new Date(currentYear, currentMonth, currentDate, 9, 0, 0);
+        } else {
+            // Market is open (After 4 PM or before 9 AM) → Get today's market cycle (Today 4 PM - Tomorrow 9 AM)
+            startTime = new Date(currentYear, currentMonth, currentDate, 16, 0, 0);
+            endTime = new Date(currentYear, currentMonth, currentDate + 1, 9, 0, 0);
+        }
+
+        // Filter data based on the correct market cycle
+        const filteredData = data.filter((item) => {
+            const itemDate = new Date(item.createdDate);
+            return (
+                item.marketName === marketName &&
+                item.active === true &&
+                item.freeBid === false &&
+                itemDate >= startTime &&
+                itemDate <= endTime
+            );
+        });
+
+        if (filteredData.length === 0) {
+            setErrorMsg("No data available for the selected period.");
+        }
+
+        // **Sort numerically using bidName (converted from string to number)**
+        const sortedData = filteredData.sort(
+            (a, b) => Number(a.bidName) - Number(b.bidName)
+        );
+
+        console.log(sortedData);
+        setTableData(sortedData);
     } catch (error) {
-      setErrorMsg("Failed to load data.");
-      console.error("Error fetching table data:", error);
+        setErrorMsg("Failed to load data.");
+        console.error("Error fetching table data:", error);
     } finally {
-      setDataLoading(false);
+        setDataLoading(false);
     }
-  };
+};
+
+
+
+
 
   const rowSelected = (id) => {
     setIsActive(id)
