@@ -1,0 +1,79 @@
+/* CardItem styling */
+.order-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    width: 220px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: 10px;
+    margin-top: 20px;
+  }
+  
+  .order-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .order-icon {
+    background: #ffe6d5;
+    padding: 25px;
+    border-radius: 10px;
+  }
+  
+  .order-icon img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .order-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .order-info h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .order-footer {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .stats-background {
+    background: #f2f4f8;
+    padding: 10px;
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+  }
+  
+  .increase {
+    color: green;
+    font-weight: bold;
+  }
+
+  .decrease {
+    color: red;
+    font-weight: bold;
+  }
+  /* Dashboard Styling */
+  .dashboard-container{
+    display: flex;
+    gap: 10px;
+  }
+
+  .all-time-res {
+    font-size: 32px;
+    color: #555;
+  }
+
+  .dashboard-card-container {
+    cursor: default;
+  }

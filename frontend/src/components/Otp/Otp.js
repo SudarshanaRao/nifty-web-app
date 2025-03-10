@@ -8,7 +8,7 @@ import "./style.css";
 const Otp = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [generatedOtp, setGeneratedOtp] = useState("");
-  const [userId, setUserId] = useState("556c3d52-e18d-11ef-9b7f-02fd6cfaf985");
+  const [userId] = useState("556c3d52-e18d-11ef-9b7f-02fd6cfaf985");
   const inputRefs = useRef([]);
   const navigate = useNavigate();
 
@@ -31,16 +31,18 @@ const Otp = () => {
   const verifyOtp = async () => {
     try {
       const fullOtp = otp.join(""); // User-entered OTP
+      const otpNumber = Number(fullOtp);
+      
   
-      if (fullOtp != generatedOtp) {
+      if (otpNumber !== generatedOtp) {
         toast.error("Invalid OTP. Please try again.");
         
         return;
       }
   
       const url = `https://dev-api.nifty10.com/nif/user/verifyOtp?Otp=${fullOtp}&userId=${userId}`;
-      const response = await axios.put(url);
-  
+      await axios.put(url);
+      
       toast.success("OTP Verified! Redirecting...");
       localStorage.setItem("isOtpVerfied", "true");
       setTimeout(() => navigate("/home"), 2000);

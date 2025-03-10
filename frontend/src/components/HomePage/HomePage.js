@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./HomePage.css";
-import Markets from "../Market/Markets";
 import Company from "../Company/Company";
 import MarketStatus from "../MarketStatus/MarketStatus";
 import UsersInfo from "../UsersInfo/UsersInfo";
@@ -9,6 +8,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { toast } from "react-toastify";
 import Results from "../Results/Results";
 import AllMarkets from "../AllMarkets/AllMarkets";
+import Dashboard from "../Dashboard/Dashboard";
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -55,7 +55,7 @@ const HomePage = () => {
       case "results":
         return <Results />;
       default:
-        return null; // Default to Markets if no tab is selected
+        return <Dashboard />; // Default to Markets if no tab is selected
     }
   };
 
@@ -140,12 +140,10 @@ const HomePage = () => {
           </header>
         </div>
       </div>
-
       <main id="renderContainer" className="markets-container">
         {renderContent()}
       </main>
     </>
   );
 };
-
 export default HomePage;
