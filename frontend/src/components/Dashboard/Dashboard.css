@@ -144,3 +144,89 @@
   border-radius: 50%;
   margin-right: 6px;
 }
+
+/* PieChart Styling */
+/* Card Styling */
+.pie-chart-card {
+  width: 250px;
+  height: 250px;
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  margin-left: 20px;
+  text-align: center;
+  position: relative;
+}
+
+/* Top Blue Lines */
+.header-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+.small-line {
+  width: 30px;
+  height: 5px;
+  border-radius: 3px;
+}
+.long-line {
+  width: 60px;
+  height: 5px;
+  border-radius: 3px;
+}
+
+.header-lines > .Bullish {
+  background: linear-gradient(135deg, #B2F2BB, #8EE4AF);
+}
+
+.header-lines > .Bearish {
+  background: linear-gradient(135deg, #FFB3B3, #FF6F61);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-lines > .Nifty {
+  background: linear-gradient(135deg, #A7C7E7, #74A9D8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-lines > .Bank {
+  background: linear-gradient(135deg, #FFD8A8, #FFAD60);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Pie Chart Center */
+.pie-chart-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Percentage in Center */
+.percentage-text {
+  position: absolute;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Bottom Text */
+.bottom-text {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.bottom-text p {
+  margin: 0;
+  font-size: 12px;
+  color: #333;
+}
+
+.pie-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
