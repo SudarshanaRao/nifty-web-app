@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./AllMarkets.css";
 import axios from "axios";
 import BidPieChart from "../Dashboard/PieChart";
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 const marketImages = {
   Bullish: "bullish.png",
   Bearish: "bearish.png",
@@ -14,6 +19,7 @@ const Card = ({ title, color, image, openTime, closeTime, onClick }) => {
     <div className={`all-card`} onClick={() => onClick(title)}>
       <div className="all-card-content">
         <h2>{title}</h2>
+        <p className="filled-slots">Filled Slots: 20</p>
         <div className="all-time-container">
           <div className="all-time-left">
             <p className="all-des">Opens today</p>
@@ -50,6 +56,7 @@ const AllMarkets = () => {
         setMarketData(response.data.data || []);
       } catch (error) {
         console.error("Error fetching market data:", error);
+        toast.error("Error fetching data.!");
       } finally {
         setLoading(false);
       }
@@ -75,6 +82,7 @@ const AllMarkets = () => {
     } catch (error) {
         setErrorMsg("Failed to load data.");
         console.error("Error fetching market data:", error);
+        toast.error("Error fetching data.!");
         return [];
     } finally {
         setDataLoading(false);
@@ -107,10 +115,19 @@ const handleMarketClick = async (marketId, marketName) => {
     } catch (error) {
         setErrorMsg("Failed to load data.");
         console.error("Error fetching table data:", error);
+        toast.error("Error fetching data.!");
     } finally {
         setDataLoading(false);
     }
 };
+useEffect(() => {
+  if (selectedMarket && Array.isArray(selectedMarket.bidData)) {
+    setTableData(selectedMarket.bidData);
+  } else {
+    setTableData([]); // ✅ Prevent undefined issues
+  }
+}, [selectedMarket]);
+
 
 
 const rowSelected = async (id, marketId) => {
@@ -128,6 +145,7 @@ const rowSelected = async (id, marketId) => {
 
       if (!data.length) {
           setErrorMsg("No data available for today.");
+          
           return;
       }
 
@@ -145,12 +163,94 @@ const rowSelected = async (id, marketId) => {
   } catch (error) {
       console.error("Error fetching data:", error);
       setErrorMsg("Failed to load data.");
+      toast.error("Error fetching data.!");
+  }
+};
+const changeActiveStatus = async (id, prevStatus) => {
+  try {
+    const newStatus = !prevStatus; // Toggle status
+
+    const response = await fetch(
+      `https://dev-api.nifty10.com/bid/change/daily/bid/status?dayWiseBidId=${id}&status=${newStatus}`,
+      { method: "GET" }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to update status");
+    }
+
+    // ✅ Ensure tableData exists before updating
+    setTableData((prevTable) =>
+      prevTable?.map((row) =>
+        row.dayWiseBidId === id ? { ...row, active: newStatus } : row
+      ) || []
+    );
+
+    // ✅ Ensure selectedMarket and bidData exist
+    if (selectedMarket?.bidData) {
+      setSelectedMarket((prevMarket) => ({
+        ...prevMarket,
+        bidData: prevMarket.bidData?.map((row) =>
+          row.dayWiseBidId === id ? { ...row, active: newStatus } : row
+        ) || [],
+      }));
+    }
+
+    // ✅ Ensure marketData exists before updating
+    setMarketData((prevMarkets) =>
+      prevMarkets?.map((market) =>
+        market.id === selectedMarket?.id
+          ? {
+              ...market,
+              bidData: market.bidData?.map((row) =>
+                row.dayWiseBidId === id ? { ...row, active: newStatus } : row
+              ) || [],
+            }
+          : market
+      ) || []
+    );
+  } catch (error) {
+    toast.error("Error changing status. Please try again.");
   }
 };
 
 
-  
-  
+
+
+const onClickStatus = (id, prevStatus) => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
+
+  swalWithBootstrapButtons.fire({
+    title: "Are you sure?",
+    text: "You want to change the Active Status",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes",
+    cancelButtonText: "No",
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      changeActiveStatus(id, prevStatus); // Call API before showing success message
+      swalWithBootstrapButtons.fire({
+        title: "Changed!",
+        text: "Active Status changed Successfully",
+        icon: "success"
+      });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      swalWithBootstrapButtons.fire({
+        title: "Cancelled",
+        text: "Active Status not changed!",
+        icon: "error"
+      });
+    }
+  });
+};
 
   return (
     <div className="all-markets-bg-container">
@@ -170,6 +270,7 @@ const rowSelected = async (id, marketId) => {
             />
           ))
         )}
+        <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
       </div>
 
       {selectedMarket && (
@@ -202,7 +303,7 @@ const rowSelected = async (id, marketId) => {
                         <td>{row.bidName}</td>
                         <td>{row.bidSlots}</td>
                         <td>{row.poolPrize}</td>
-                        <td className="market-table-status status-active">{row.active ? '✅ Active' : '❌ Inactive'}</td>
+                        <td onClick={() => {onClickStatus(row.dayWiseBidId, row.active)}} className="market-table-status status-active">{row.active ? '✅ Active' : '❌ Inactive'}</td>
                         <td>{row.firstPrize}</td>
                       </tr>
                     ))}

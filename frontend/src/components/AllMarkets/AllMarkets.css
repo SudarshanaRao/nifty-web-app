@@ -399,3 +399,19 @@
   justify-content: space-between;
   width: 100%;
 }
+.admin-table > tbody > tr > td {
+  cursor: pointer;
+}
+.swal2-popup .btn-success {
+  background-color: #28a745 !important; /* Green */
+  color: white !important;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+.swal2-popup .btn-danger {
+  background-color: #dc3545 !important; /* Red */
+  color: white !important;
+  border-radius: 5px;
+  padding: 10px 20px;
+}

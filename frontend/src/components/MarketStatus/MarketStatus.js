@@ -46,21 +46,12 @@ function MarketStatus() {
             });
     }, []);
 
-    
-    
-    
-    
-    
-
     const handleTabChange = async (tab) => {
         setActiveTab(tab);
         setHasToggled(true)
         handleToggleChange("BEARISH")
     };
-    
-
-    
-
+   
     const handleCheckboxChange = (event, companyCode) => {
         setSelectedStocks((prevSelected) => {
 
@@ -213,13 +204,13 @@ function MarketStatus() {
             toast.error("Failed to update market status!", { position: "top-right" });
         }
     };
-    
-    
-    
-    
-
-
-    const liveBBStocks = stocks.filter((stock) => stock.companyStatus === (filter || "BEARISH"));
+    const liveBBStocks = stocks.sort((a, b) => {
+        const statusA = a.companyStatus === (filter || "BEARISH") ? 1 : 0;
+        const statusB = b.companyStatus === (filter || "BEARISH") ? 1 : 0;
+        
+        return statusB - statusA; // Sort bullish (1) before bearish (0)
+      });
+      
 
     return (
         <div id="marketStatusContainer" className="market-status-container">
@@ -240,7 +231,7 @@ function MarketStatus() {
             </div>
             <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
             
-
+            {activeTab === "marketStatus" && (
             <div className="toggle-switch-container">
                 <span className="toggle-text">BEARISH</span>
                 <div>
@@ -261,6 +252,7 @@ function MarketStatus() {
                 </div>
                 <span className="toggle-text">BULLISH</span>
             </div>
+            )}
             </div>
 
             {activeTab === "marketStatus" && (
