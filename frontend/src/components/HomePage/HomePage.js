@@ -9,10 +9,11 @@ import { toast } from "react-toastify";
 import Results from "../Results/Results";
 import AllMarkets from "../AllMarkets/AllMarkets";
 import Dashboard from "../Dashboard/Dashboard";
+import BidsCreation from "../BidsCreation/BidsCreation"
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
-  const [activeTab, setActiveTab] = useState("markets"); // Default tab is "markets"
+  const [activeTab, setActiveTab] = useState("dashboard"); // Default tab is "markets"
   const [result, setResult] = useState(false);
   const navigate = useNavigate();
 
@@ -44,6 +45,8 @@ const HomePage = () => {
 
   const renderContent = () => {
     switch (activeTab) {
+      case "dashboard":
+        return <Dashboard />
       case "markets":
         return <AllMarkets />;
       case "companies":
@@ -54,6 +57,8 @@ const HomePage = () => {
         return <UsersInfo />;
       case "results":
         return <Results />;
+      case "bids-creation":
+        return <BidsCreation />
       default:
         return <Dashboard />; // Default to Markets if no tab is selected
     }
@@ -70,6 +75,12 @@ const HomePage = () => {
           </div>
           <div className="sidebar-menu">
             <ul>
+              <li onClick={() => setActiveTab("dashboard")} className={activeTab === "dashboard" ? "active" : ""}>
+                <Link to="#">
+                <i class="fa-solid fa-user-tie"></i>
+                  <span className={sidebarExpanded ? "visible" : "hidden"}>Dashboard</span>
+                </Link>
+              </li>
               <li onClick={() => setActiveTab("markets")} className={activeTab === "markets" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-chart-line"></i>
@@ -133,7 +144,7 @@ const HomePage = () => {
               <div className="social-icons">
                 <i className="fas fa-bell"></i>
                 <i className="fas fa-envelope"></i>
-                <i className="fa-solid fa-user-tie"></i>
+                <i class="fa-solid fa-user-gear"></i>
               </div>
               <button onClick={handleLogout} className="btn logout">Logout</button>
             </div>

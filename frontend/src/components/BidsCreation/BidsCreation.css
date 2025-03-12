@@ -1,0 +1,117 @@
+/* 1) Container for the entire form */
+.uni-bid-form-container {
+  width: 60%;
+  margin: 30px 200px;
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.uni-1);
+}
+
+/* 2) Heading and message styling */
+.uni-form-heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #fff;
+  background-color: #333;
+  padding: 2% 5%;
+  border-radius: 10px;
+}
+.uni-response-message {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #007bff;
+  font-weight: 500;
+}
+
+/* 3) Grid layout for form fields */
+.uni-bid-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* 4) Form group styling */
+.uni-form-group {
+  display: flex;
+  flex-direction: column;
+  
+}
+
+/* 5) Labels and Inputs */
+.uni-form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+.uni-form-group input,
+.uni-form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* 6) Error Text */
+.uni-error-text {
+  color: #e63946;
+  font-size: 13px;
+  margin-top: 3px;
+}
+/* 8) Prize Breakdown */
+.uni-section-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.uni-prize-breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+.uni-prize-breakdown-table th,
+.uni-prize-breakdown-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+.uni-prize-breakdown-table th {
+  background-color: #f4f4f4;
+}
+
+/* 9) Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.uni-2s ease;
+}
+
+.uni-add-row-button {
+  background-color: #1a1818;
+  color: #fff;
+  padding: 8px 16px;
+}
+.uni-add-row-button:hover {
+  background-color: #343435;
+}
+
+.uni-remove-button {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 6px 10px;
+}
+.uni-remove-button:hover {
+  background-color: #c82333;
+}
+
+.uni-submit-button {
+  display: flex;
+  background-color: #1a1818;
+  color: #fff;
+  padding: 10px 20px;
+  width: 130px;
+}
+.uni-submit-button:hover {
+  background-color: #343435;
+}
