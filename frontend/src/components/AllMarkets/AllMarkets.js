@@ -86,6 +86,8 @@ const handleMarketClick = async (marketId, marketName) => {
     setSelectedMarket(marketName);
     setDataLoading(true);
     setErrorMsg("");
+    setIsActive(false);
+    setSelectedRow(null);
 
     try {
         
@@ -112,50 +114,40 @@ const handleMarketClick = async (marketId, marketName) => {
 
 
 const rowSelected = async (id, marketId) => {
-  if (!isActive) {
-      setIsActive(true);
-      setSelectedRow(id);
-      setErrorMsg(""); // Clear previous errors
+  setIsActive(true); // Always activate on row selection
+  setSelectedRow(id);
+  setErrorMsg(""); // Clear previous errors
 
-      try {
-          const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
-          const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
-          const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
+  try {
+      const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
+      const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
+      const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
 
-          const response = await axios.get(apiUrl);
-          const data = response.data.data || [];
+      const response = await axios.get(apiUrl);
+      const data = response.data.data || [];
 
-          if (!data.length) {
-              setErrorMsg("No data available for today.");
-              return;
-          }
-
-          const selectedBid = data.find((bid) => bid.dayWiseBidId === id && bid.marketId === marketId);
-          
-          if (selectedBid) {
-            const { bidName, bidSlots, dayWiseBidId, totalAvailableCount, marketName } = selectedBid;
-
-            const filledCount = bidSlots - totalAvailableCount; // Placed bids
-            const percentage = bidSlots > 0 ? ((filledCount / bidSlots) * 100).toFixed(2) : "0.00";
-
-            
-            // Calculate remaining bids
-            const completedBids = bidSlots - totalAvailableCount;
-            
-            setSelectedBidData({ bidName, dayWiseBidId, bidSlots, totalAvailableCount, marketName, percentage, completedBids });
-            
-          } else {
-              console.log("Bid not found.");
-          }
-      } catch (error) {
-          console.error("Error fetching data:", error);
-          setErrorMsg("Failed to load data.");
+      if (!data.length) {
+          setErrorMsg("No data available for today.");
+          return;
       }
-  } else {
-      setIsActive(false);
-      setSelectedRow(null);
+
+      const selectedBid = data.find((bid) => bid.dayWiseBidId === id && bid.marketId === marketId);
+
+      if (selectedBid) {
+          const { bidName, bidSlots, dayWiseBidId, totalAvailableCount, marketName } = selectedBid;
+          const completedBids = bidSlots - totalAvailableCount;
+          const percentage = bidSlots > 0 ? ((completedBids / bidSlots) * 100).toFixed(2) : "0.00";
+
+          setSelectedBidData({ bidName, dayWiseBidId, bidSlots, totalAvailableCount, marketName, percentage, completedBids });
+      } else {
+          console.log("Bid not found.");
+      }
+  } catch (error) {
+      console.error("Error fetching data:", error);
+      setErrorMsg("Failed to load data.");
   }
 };
+
 
   
   
@@ -220,7 +212,7 @@ const rowSelected = async (id, marketId) => {
                 <p className="error-msg">{errorMsg}</p>
               )}
             </div>
-            {selectedBidData && <BidPieChart {...selectedBidData} />}
+            {isActive && <BidPieChart {...selectedBidData} />}
         </div>
       )}
       <button className="all-floating-button">☰</button>
