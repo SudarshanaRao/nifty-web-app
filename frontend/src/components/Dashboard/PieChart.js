@@ -46,8 +46,6 @@ const BidPieChart = ({ bidName, bidSlots, totalAvailableCount, completedBids, pe
   // 🎨 Get Colors
   const filledColor = marketGradients[marketName] ? marketGradients[marketName][0] : "#007bff";
   const remainingColor = "#E0E0E0"; // ✅ Fixed Remaining Color
-
-  console.log({ bidName, bidSlots, totalAvailableCount, completedBids, percentage, marketName });
   
   const data = [
     { name: "Completed", value: completedBids, color: filledColor }, // ✅ Filled Progress
@@ -65,7 +63,7 @@ const BidPieChart = ({ bidName, bidSlots, totalAvailableCount, completedBids, pe
       </div>
       
       <div className="pie-chart-container">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width={150} height={150}>
           <PieChart>
             {/* Pie Chart with Only Two Colors */}
             <Pie

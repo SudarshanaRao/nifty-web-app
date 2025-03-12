@@ -132,7 +132,6 @@ const rowSelected = async (id, marketId) => {
 
           const selectedBid = data.find((bid) => bid.dayWiseBidId === id && bid.marketId === marketId);
           
-          
           if (selectedBid) {
             const { bidName, bidSlots, dayWiseBidId, totalAvailableCount, marketName } = selectedBid;
 
@@ -145,7 +144,6 @@ const rowSelected = async (id, marketId) => {
             
             setSelectedBidData({ bidName, dayWiseBidId, bidSlots, totalAvailableCount, marketName, percentage, completedBids });
             
-            console.log(selectedBidData);
           } else {
               console.log("Bid not found.");
           }

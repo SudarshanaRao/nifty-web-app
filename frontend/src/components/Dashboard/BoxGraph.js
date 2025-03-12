@@ -27,67 +27,77 @@ const BoxGraph = () => {
   const fetchAllMarketsData = useCallback(async () => {
     setLoading(true);
     try {
-        const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-") - 6;
+      const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");  
         const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
         const marketIds = [
             "6187ba91-e190-11ef-9b7f-02fd6cfaf985",
             "877c5f82-e190-11ef-9b7f-02fd6cfaf985",
             "97f37603-e190-11ef-9b7f-02fd6cfaf985",
             "9f0c2c24-e190-11ef-9b7f-02fd6cfaf985",
-        ]; // Market IDs
+        ];
 
-        // Fetch data for all markets
-        const apiRequests = marketIds.map(marketId =>
+        const apiRequests = marketIds.map((marketId) =>
             fetch(`https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
-                .then(response => response.json())
+                .then((response) => response.ok ? response.json() : Promise.reject(`API Error: ${marketId}`))
+                .catch((error) => {
+                    console.error("Fetch error:", error);
+                    return { data: [] }; // Return empty data on failure
+                })
         );
 
         const results = await Promise.all(apiRequests);
-        
-        // Flatten the response and handle missing data
-        const allMarketData = results.flatMap(result => result?.data || []);
-        
-        if (allMarketData.length === 0) {
-            console.warn("No market data received");
-        }
+        const allMarketData = results.flatMap((result) => result?.data || []);
 
-        // **Filter out freeBid === false**
-        const filteredData = allMarketData.filter(bid => bid?.freeBid === false);
+        // Filter only active and non-free bids
+        const filteredData = allMarketData.filter((bid) => bid?.active && !bid?.freeBid);
 
-        const marketWiseData = {};
-        const uniqueBidNames = new Set();
+        // Object to store categorized data
+        const categorizedData = {};
 
-        filteredData.forEach((bid) => {
-            const { bidName, marketName, totalAvailableCount, bidSlots } = bid;
+        let highestBidSlots = 0;
 
-            if (!bidName || !marketName || totalAvailableCount == null || bidSlots == null) {
-                console.warn("Skipping invalid bid entry:", bid);
-                return;
+        filteredData.forEach(({ marketName, entryFee, bidSlots, totalAvailableCount }) => {
+            if (!marketName || isNaN(entryFee) || isNaN(bidSlots) || isNaN(totalAvailableCount)) return;
+
+            const completedBidSlots = bidSlots - totalAvailableCount;
+
+            if (bidSlots > highestBidSlots) {
+              highestBidSlots = bidSlots;
             }
 
-            const completedBids = bidSlots - totalAvailableCount + 10;
-            uniqueBidNames.add(bidName);
-
-            if (!marketWiseData[bidName]) {
-                marketWiseData[bidName] = { bidName, Bullish: 0, Bearish: 0, "Nifty Prediction": 0, "Bank Nifty Prediction": 0 };
+            // Initialize entryFee category if not present
+            if (!categorizedData[entryFee]) {
+                categorizedData[entryFee] = {
+                    entryFee: parseFloat(entryFee),
+                    Bullish: 0,
+                    Bearish: 0,
+                    "Nifty Prediction": 0,
+                    "Bank Nifty Prediction": 0,
+                    totalSlots: highestBidSlots
+                };
             }
 
-            if (marketGradients[marketName]) {
-                // Ensure initialization before addition
-                if (!marketWiseData[bidName][marketName]) {
-                    marketWiseData[bidName][marketName] = 0;
-                }
-                marketWiseData[bidName][marketName] += completedBids;
+            // Map market names to categories
+            const categoryMap = {
+                bullish: "Bullish",
+                bearish: "Bearish",
+                "nifty prediction": "Nifty Prediction",
+                "bank nifty prediction": "Bank Nifty Prediction",
+            };
+
+            const categoryKey = Object.keys(categoryMap).find((key) =>
+                marketName.toLowerCase().includes(key)
+            );
+
+            if (categoryKey) {
+                categorizedData[entryFee][categoryMap[categoryKey]] += completedBidSlots;
             }
         });
 
-        const formattedData = Array.from(uniqueBidNames)
-            .sort((a, b) => a.localeCompare(b))
-            .map((bidName) => marketWiseData[bidName]);
+        // Convert object to structured array format
+        const transformedData = Object.values(categorizedData);
 
-        console.log("Formatted Data:", formattedData);
-        
-        setData(formattedData.length > 0 ? formattedData : []);
+        setData(transformedData);
     } catch (error) {
         console.error("Error fetching data:", error);
     } finally {
@@ -99,6 +109,7 @@ useEffect(() => {
     fetchAllMarketsData();
 }, [fetchAllMarketsData]);
 
+  
 
 
   return (
@@ -127,8 +138,9 @@ useEffect(() => {
           <p className="error-msg">No data available</p>
         </div>
       ) : (
+        
         <ResponsiveContainer width="100%" height={330} margin={{ bottom: 50 }}>
-          <BarChart data={data} barSize={20}>
+          <BarChart data={data} barSize={20} margin={{ top: 20, right: 30, left: 20, bottom: 30 }}>
             <defs>
               <linearGradient id="bullishGradient" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#B2F2BB" />
@@ -149,25 +161,26 @@ useEffect(() => {
             </defs>
 
             <XAxis 
-              dataKey="bidName" 
+              dataKey="entryFee"
               axisLine={true} 
-              tick={{ fill: "#aaa" }} 
+              tick={{ fill: "#aaa" }}
               label={{
-                value: "Entry Fee", 
+                value: "Entry Fee",
                 position: "outsideBottom",
-                dy: 10, 
+                dy: 10,
                 fill: "#666",
                 fontSize: 14,
                 fontWeight: "bold",
-              }} 
+              }}
             />
 
             <YAxis 
               axisLine={true} 
               tick={{ fill: "#aaa" }} 
-              domain={[0, 200]} 
+              domain={[0, "dataMax"]} 
+              dataKey="totalSlots"
               label={{
-                value: "Bid Slots", 
+                value: "Number of Bids",
                 angle: -90, 
                 position: "insideLeft",
                 fill: "#666",
@@ -175,8 +188,7 @@ useEffect(() => {
                 dy: 0,
                 fontSize: 14,
                 fontWeight: "bold",
-                margin: "10px",
-              }} 
+              }}
             />
 
             <Tooltip
@@ -184,7 +196,7 @@ useEffect(() => {
                 if (!payload || payload.length === 0) return null;
                 return (
                   <div className="custom-tooltip">
-                    <p className="tooltip-title">{payload[0].payload.bidName}</p>
+                    <p className="tooltip-title">Entry Fee: {payload[0].payload.entryFee}</p>
                     {payload.map((entry, index) => (
                       <div key={index} className="tooltip-item">
                         <span

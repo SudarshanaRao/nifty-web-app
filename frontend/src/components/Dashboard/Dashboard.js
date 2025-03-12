@@ -112,43 +112,61 @@ const Dashboard = () => {
                     : (last24Revenue > 0 ? 100 : 0);
                 setRevenueGrowthRate(revenueGrowth.toFixed(1));
 
-                const response_2 = await axios.get("https://dev-api.nifty10.com/bid/get/allResult");
-                const bids = response_2.data;
+                const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
 
-                const last24Hours = new Date(now);
-                last24Hours.setHours(last24Hours.getHours() - 24);
+                    const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
+                    const marketIds = [
+                        "6187ba91-e190-11ef-9b7f-02fd6cfaf985",
+                        "877c5f82-e190-11ef-9b7f-02fd6cfaf985",
+                        "97f37603-e190-11ef-9b7f-02fd6cfaf985",
+                        "9f0c2c24-e190-11ef-9b7f-02fd6cfaf985",
+                    ]; // Market IDs
 
-                const last48Hours = new Date(now);
-                last48Hours.setHours(last48Hours.getHours() - 48);
+                    // Fetch data for all markets
+                    const apiRequests = marketIds.map(marketId =>
+                        fetch(`https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
+                            .then(response => response.json())
+                    );
 
-                // Current 24 Hours Spent
-                const currentSpent = bids
-                    .filter(bid => 
-                        new Date(bid.createdDate) >= last24Hours &&
-                        !bid.freeBid &&
-                        bid.active
-                    )
-                    .reduce((sum, bid) => sum + (parseFloat(bid.bidName) * bid.totalPlacedBidSlots), 0);
+                    const marketData = await Promise.all(apiRequests);
+                    
+                    // Flatten the data if necessary
+                    const bids = marketData.flat(); // Assuming each API returns an array
 
+                    const last24Hours = new Date(now);
+                    last24Hours.setHours(last24Hours.getHours() - 24);
 
-                // Previous 24 Hours Spent
-                const previousSpent = bids
-                    .filter(bid => 
-                        new Date(bid.createdDate) >= last48Hours &&
-                        new Date(bid.createdDate) < last24Hours &&
-                        !bid.freeBid &&
-                        bid.active
-                    )
-                    .reduce((sum, bid) => sum + (parseFloat(bid.bidName) * bid.totalPlacedBidSlots), 0);
+                    const last48Hours = new Date(now);
+                    last48Hours.setHours(last48Hours.getHours() - 48);
 
-                // Calculate Growth Rate
-                let growth = previousSpent === 0 && currentSpent === 0 
-                    ? 0 
-                    : previousSpent > 0 
-                        ? Math.min(((currentSpent - previousSpent) / previousSpent) * 100, 100) 
-                        : 0;
-                setGrowthRate(parseFloat(growth.toFixed(2)));
-                setTotalSpent(currentSpent);
+                    // Current 24 Hours Spent
+                    const currentSpent = bids
+                        .filter(bid => 
+                            new Date(bid.createdDate) >= last24Hours &&
+                            !bid.freeBid &&
+                            bid.active
+                        )
+                        .reduce((sum, bid) => sum + (parseFloat(bid.bidName) * (bid.bidSlots - bid.totalAvailableBidCount)), 0);
+
+                    // Previous 24 Hours Spent
+                    const previousSpent = bids
+                        .filter(bid => 
+                            new Date(bid.createdDate) >= last48Hours &&
+                            new Date(bid.createdDate) < last24Hours &&
+                            !bid.freeBid &&
+                            bid.active
+                        )
+                        .reduce((sum, bid) => sum + (parseFloat(bid.bidName) * (bid.bidSlots - bid.totalAvailableBidCount)), 0);
+
+                    // Calculate Growth Rate
+                    let growth = previousSpent === 0 && currentSpent === 0 
+                        ? 0 
+                        : previousSpent > 0 
+                            ? Math.min(((currentSpent - previousSpent) / previousSpent) * 100, 100) 
+                            : 0;
+
+                    setGrowthRate(parseFloat(growth.toFixed(2)));
+                    setTotalSpent(currentSpent);
 
             } catch (error) {
                 console.error("Error fetching user data:", error);
