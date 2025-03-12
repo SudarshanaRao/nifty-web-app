@@ -11,14 +11,9 @@ function MarketStatus() {
     const [isSubmitActive, setIsSubmitActive] = useState(false);
     const [pendingUpdates, setPendingUpdates] = useState({});
     const [selectedStocks, setSelectedStocks] = useState({});
-    const [hasToggled, setHasToggled] = useState(true);
-    const [trueBullishStocks, setTrueBullishStocks] = useState([]);
-    const [trueBearishStocks, setTrueBearishStocks] = useState([]);
     const [visibleStocks, setVisibleStocks] = useState(stocks);
 
     useEffect(() => {
-        setTrueBullishStocks(stocks.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
-        setTrueBearishStocks(stocks.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
         setVisibleStocks(stocks);
         const updatedPendingUpdates = Object.fromEntries(
             stocks.map(stock => [stock.companyCode, filter])
@@ -32,7 +27,7 @@ function MarketStatus() {
             ...stock,
             companyStatus: filter,
         })));
-    }, [stocks]);
+    }, [filter, stocks]);
 
     useEffect(() => {
         axios
@@ -48,7 +43,6 @@ function MarketStatus() {
 
     const handleTabChange = async (tab) => {
         setActiveTab(tab);
-        setHasToggled(true)
         handleToggleChange("BEARISH")
     };
    
@@ -118,8 +112,6 @@ function MarketStatus() {
             toast.success("Live BB status updated successfully!", { position: "top-right" });
 
             setStocks(updatedStockData);
-            setTrueBullishStocks(updatedStockData.filter(stock => stock.companyStatus === "BULLISH" && stock.liveBB));
-            setTrueBearishStocks(updatedStockData.filter(stock => stock.companyStatus === "BEARISH" && stock.liveBB));
             
             // Reset selection after successful API call
             setSelectedStocks({});
@@ -133,7 +125,6 @@ function MarketStatus() {
     
     const handleToggleChange = (newFilter) => {
             setFilter(newFilter);
-            setHasToggled(true);
             setFilter(newFilter);
         
             const defaultStatus = newFilter.toUpperCase(); // "BULLISH" or "BEARISH"

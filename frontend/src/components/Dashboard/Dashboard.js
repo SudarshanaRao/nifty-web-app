@@ -129,6 +129,19 @@ const Dashboard = () => {
                     );
 
                     const marketData = await Promise.all(apiRequests);
+                    const allBids = marketData.flatMap((item) => item.data);
+                    const selectedBids = allBids.filter((bid) => bid.active === true && bid.freeBid === false);
+                    const resultValues = selectedBids.map((bid) => ({
+                        ...bid,
+                        calculatedValue: bid.entryFee * (bid.bidSlots - bid.totalAvailableCount),
+                    }));
+                    const totalMoneySpent = resultValues.reduce(
+                        (sum, bid) => sum + (bid.entryFee * (bid.bidSlots - bid.totalAvailableCount)), 
+                        0
+                      );
+                      console.log(totalSpent);
+                      
+                    setTotalSpent(totalMoneySpent)
                     
                     // Flatten the data if necessary
                     const bids = marketData.flat(); // Assuming each API returns an array
@@ -211,7 +224,7 @@ const Dashboard = () => {
                     title="Total Spent (Last 24 Hrs)"
                     color="Bank"
                     image="./total-spent.png"
-                    data={totalSpent.toLocaleString()} // Format for better readability
+                    data={totalSpent} // Format for better readability
                     duration="Last 24hrs"
                     growthRate={growthRate}
                 />

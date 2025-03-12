@@ -54,7 +54,7 @@ function Company() {
     };
 
     const handleEditChange = (e) => {
-        const { name, value, type } = e.target;
+        const { name, value } = e.target;
     
         setEditCompanyData((prev) => ({
             ...prev,
