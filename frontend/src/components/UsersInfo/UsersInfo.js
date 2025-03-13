@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./UsersInfo.css";
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const UsersInfo = () => {
   const [users, setUsers] = useState([]);
@@ -8,33 +12,39 @@ const UsersInfo = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [displayedUsersData, setDisplayedUsersData] = useState([]);
   const usersPerPage = 10;
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch(
-          "https://dev-api.nifty10.com/nif/user/list/user?size=1000"
-        );
-        const data = await response.json();
-
-        if (data?.data?.content) {
-          setUsers(data.data.content);
-          setFilteredUsers(data.data.content);
-        } else {
-          setError("Invalid API response");
-        }
-      } catch (error) {
-        setError("Error fetching users. Please try again later.");
-      } finally {
-        setLoading(false);
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch(
+        "https://dev-api.nifty10.com/nif/user/list/user?size=1000"
+      );
+      const data = await response.json();
+      
+      console.log("Fetched Users:", data); // ✅ Debugging API response
+      
+      if (data?.data?.content) {
+        setUsers(data.data.content);
+        setFilteredUsers(data.data.content);
+      } else {
+        setError("Invalid API response");
       }
-    };
-    
+    } catch (error) {
+      setError("Error fetching users. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  
+  // ✅ Run fetchUsers when the component mounts
+  useEffect(() => {
     fetchUsers();
   }, []);
+  
 
   useEffect(() => {
     if (!searchQuery) {
@@ -52,12 +62,92 @@ const UsersInfo = () => {
     }
   }, [searchQuery, users]);
 
+  
+
+  const changeActiveStatus = async (id, name, prevStatus) => {
+    try {
+      const newStatus = !prevStatus; // Toggle status
+  
+      const response = await axios.post(
+        "https://dev-api.nifty10.com/nif/user/user/updateUser",
+        { userId: id, name: name, isActive: newStatus }, // Ensure correct field name
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      console.log("Update Response:", response.data); // ✅ Debugging API response
+  
+      if (response.status === 200) {
+        toast.success("Active Status changed successfully!");
+  
+        // ✅ Update users locally instead of re-fetching
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.userId === id ? { ...user, name: user.name || name, isActive: newStatus } : user
+          )
+        );
+      } else {
+        throw new Error("Failed to update status");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      toast.error("Error changing status. Please try again.");
+    }
+  };
+  
+  
+  
+  
+
+  const onClickStatus = (id, name, prevStatus) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+  
+    swalWithBootstrapButtons.fire({
+      title: "Are you sure?",
+      text: "You want to change the Active Status",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        changeActiveStatus(id, name, prevStatus); // Call API before showing success message
+        swalWithBootstrapButtons.fire({
+          title: "Changed!",
+          text: "Active Status changed Successfully",
+          icon: "success"
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire({
+          title: "Cancelled",
+          text: "Active Status not changed!",
+          icon: "error"
+        });
+      }
+    });
+  };
+
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-  const startIndex = currentPage * usersPerPage;
-  const displayedUsers = filteredUsers.slice(startIndex, startIndex + usersPerPage);
+  useEffect(() => {
+    const startIndex = currentPage * usersPerPage;
+    setDisplayedUsersData(filteredUsers.slice(startIndex, startIndex + usersPerPage));
+  }, [filteredUsers, currentPage]); // ✅ Added currentPage
+  
 
   return (
     <div className="users-info__container">
+      <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
       <div className="top-container">
         <div className="users-search-wrapper">
           <div className="users-search-box">
@@ -100,7 +190,7 @@ const UsersInfo = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {displayedUsers.map((user, index) => (
+                  {displayedUsersData.map((user, index) => (
                     <tr key={index} className="users-info__row">
                       <td>{user.name || "N/A"}</td>
                       <td>{user.mobileNo || "N/A"}</td>
@@ -108,7 +198,7 @@ const UsersInfo = () => {
                       <td>{user.createdDate ? new Date(user.createdDate).toLocaleDateString() : "N/A"}</td>
                       <td>₹{user.investedMoney?.toLocaleString("en-IN") || "0"}</td>
                       <td>{user.points !== null && user.points !== undefined ? user.points.toFixed(2) : "0.00"}</td>
-                      <td className="users-info__status">{user.isActive ? '✅ Active' : '❌ Inactive'}</td>
+                      <td onClick={() => {onClickStatus(user.userId, user.name, user.isActive)}} className="users-info__status">{user.isActive ? '✅ Active' : '❌ Inactive'}</td>
                       <td>₹{user.earnedMoney?.toLocaleString("en-IN") || "0"}</td>
                     </tr>
                   ))}

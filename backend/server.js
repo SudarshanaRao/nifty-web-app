@@ -6,8 +6,15 @@ const app = express();
 const PORT = 4000;
 const API_BASE_URL = "https://dev-api.nifty10.com"
 
-// Enable CORS for frontend requests
-app.use(cors());
+// Enable CORS with explicit settings
+app.use(
+    cors({
+      origin: "http://localhost:3000", // Allow requests from frontend
+      methods: "GET,POST,PUT,DELETE",
+      allowedHeaders: "Content-Type,Authorization",
+      credentials: true, // Allow cookies if needed
+    })
+  );
 
 app.get("/get/company", async (req, res) => {
     try {
