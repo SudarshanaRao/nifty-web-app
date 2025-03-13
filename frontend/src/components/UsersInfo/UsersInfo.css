@@ -224,3 +224,24 @@
   font-size: 14px;
   font-weight: bold;
 }
+
+/* Loading and Error Styles */
+.users-info__loading,
+.users-info__error {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.users-info__loading {
+  color: #4d4d4d;
+  background: rgba(23, 23, 24, 0.1);
+}
+
+.users-info__error {
+  color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.1);
+}
