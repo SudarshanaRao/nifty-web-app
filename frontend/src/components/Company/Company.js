@@ -3,6 +3,7 @@ import axios from "axios";
 import "./company.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 function Company() {
     const [stocks, setStocks] = useState([]);
@@ -69,18 +70,44 @@ function Company() {
     
 
     const handleEditConfirmation = (stock) => {
-        const confirmed = window.confirm(`Do you want to edit ${stock.companyName}?`);
-        if (confirmed) {
-            setIsEditing(true);
-            setEditCompanyData({
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger",
+          },
+          buttonsStyling: false,
+        });
+      
+        swalWithBootstrapButtons
+          .fire({
+            title: "Are you sure?",
+            text: "You want to Edit Company Details",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            reverseButtons: true,
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              setIsEditing(true);
+              setEditCompanyData({
                 companyName: stock.companyName,
                 companyId: stock.companyId,
                 active: stock.active,
                 companyCode: stock.companyCode,
                 companyPoint: stock.companyPoint,
-            });
-        }
-    };
+              });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Company details not updated!",
+                icon: "error",
+              });
+            }
+          });
+      };
+      
 
     // Open modal and reset form data
     const handleAddCompany = () => {
@@ -98,6 +125,13 @@ function Company() {
 
     const handleEditCompanySubmit = async (e) => {
         e.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger",
+            },
+            buttonsStyling: false,
+        });
 
         try {
             const payload = {
@@ -106,8 +140,6 @@ function Company() {
                 companyPoint: parseFloat(editCompanyData.companyPoint) || 0,
                 companyName: editCompanyData.companyName
             };
-
-            console.log("Sending payload:", payload);
 
             const response = await axios.post(
                 "https://dev-api.nifty10.com/company/update/company?userId=556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
@@ -131,10 +163,20 @@ function Company() {
                         : prevStocks.filter(company => company.companyId !== response.data.data.companyId) // Remove inactive company
                 );
             }
+            swalWithBootstrapButtons.fire({
+                title: "Updated.!",
+                text: "Company changes Updated successfully",
+                icon: "success",
+              });
 
         } catch (error) {
             console.error("Error adding company:", error.response?.data || error.message);
             toast.error("Failed to add company. Try again!", { position: "top-right" });
+            swalWithBootstrapButtons.fire({
+                title: "Oops",
+                text: "Something Went Wrong..!",
+                icon: "error",
+              });
         }
     };
 

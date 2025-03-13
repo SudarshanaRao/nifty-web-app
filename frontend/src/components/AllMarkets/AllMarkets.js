@@ -14,21 +14,20 @@ const marketImages = {
   "Bank Nifty Prediction": "bank-nifty-prediction.png",
 };
 
-const Card = ({ title, color, image, openTime, closeTime, onClick }) => {
+const Card = ({ title, image, bidSlots, filledSlots, onClick }) => {
   return (
     <div className={`all-card`} onClick={() => onClick(title)}>
       <div className="all-card-content">
         <h2>{title}</h2>
-        <p className="filled-slots">Filled Slots: 20</p>
         <div className="all-time-container">
           <div className="all-time-left">
-            <p className="all-des">Opens today</p>
-            <p className="all-time">@ {openTime}</p>
+            <p className="all-des">Filled Slots</p>
+            <p className="all-time">{filledSlots}</p>
           </div>
           <div className="all-timer-line"></div>
           <div className="all-time-right">
-            <p className="all-des">Closes tomorrow</p>
-            <p className="all-time">@ {closeTime}</p>
+            <p className="all-des">Bid Slots</p>
+            <p className="all-time">{bidSlots}</p>
           </div>
         </div>
       </div>
@@ -48,6 +47,58 @@ const AllMarkets = () => {
   const [isActive, setIsActive] = useState(false)
   const [selectedRow, setSelectedRow] = useState(null)
   const [selectedBidData, setSelectedBidData] = useState(null)
+  const [filledSlotsData, setFilledSlotsData] = useState({});
+  const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
+
+  async function getFilledSlots() {
+    const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
+    
+    const marketIds = [
+      "6187ba91-e190-11ef-9b7f-02fd6cfaf985",
+      "877c5f82-e190-11ef-9b7f-02fd6cfaf985",
+      "97f37603-e190-11ef-9b7f-02fd6cfaf985",
+      "9f0c2c24-e190-11ef-9b7f-02fd6cfaf985",
+    ];
+  
+    let slotsData = {};
+  
+    for (const marketId of marketIds) {
+      const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
+  
+      try {
+        const response = await axios.get(apiUrl);
+        const data = response.data.data || [];        
+  
+        let totalFilledSlots = 0;
+        let overallBidSlots = 0; // To store sum of bidSlots for active bids
+  
+        data.forEach((market) => {
+          if (market.active && !market.freeBid) { // Consider only active bids
+            overallBidSlots += market.bidSlots;
+            totalFilledSlots += (market.bidSlots - market.totalAvailableCount);
+          }
+        });
+  
+        slotsData[marketId] = { 
+          filledSlots: totalFilledSlots, 
+          bidSlots: overallBidSlots  // Fix: Store sum of active bidSlots, not just first entry
+        };
+  
+      } catch (error) {
+        console.error("Error fetching filled slots:", error);
+        slotsData[marketId] = { filledSlots: 0, bidSlots: 0 }; // Default to 0 in case of error
+      }
+    }
+  
+    console.log(slotsData);
+    setFilledSlotsData(slotsData);
+  }
+  
+  useEffect(() => {
+    getFilledSlots();
+  }, [marketData]);
+  
+  
 
   useEffect(() => {
     const fetchMarketData = async () => {
@@ -71,7 +122,7 @@ const AllMarkets = () => {
     try {
         const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
         const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
-        const apiUrl = `https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
+        const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
 
         const response = await axios.get(apiUrl);
         const data = response.data.data || [];
@@ -137,8 +188,7 @@ const rowSelected = async (id, marketId) => {
 
   try {
       const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
-      const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
-      const apiUrl = `https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
+      const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
 
       const response = await axios.get(apiUrl);
       const data = response.data.data || [];
@@ -266,12 +316,15 @@ const onClickStatus = (id, prevStatus) => {
               image={marketImages[market.marketName] || "default.png"}
               openTime={market.openingTime}
               closeTime={market.closingTime}
-              onClick={() => {handleMarketClick(market.marketId, market.marketName)}}
+              filledSlots={filledSlotsData?.[market.marketId]?.filledSlots || 0} 
+              bidSlots={filledSlotsData?.[market.marketId]?.bidSlots || 0} 
+              onClick={() => handleMarketClick(market.marketId, market.marketName)}
             />
           ))
         )}
         <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
       </div>
+
 
       {selectedMarket && (
         <div className="markets-table-container">

@@ -14,4 +14,18 @@
   flex-direction: column;
   justify-content: flex-start;
 }
-  
+.result-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px !important;
+}
+
+.results-card {
+  width: 400px !important;
+  margin: 10px !important;
+  height: 130px !important;
+}
+
+.results-card h2 {
+  margin-top: 0px !important;
+}

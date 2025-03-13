@@ -123,13 +123,14 @@
 
 .all-des {
   color: #777;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .all-time {
   font-weight: bold;
   color: #333;
   margin-top: 5px;
+  font-size: 18px;
 }
 
 .all-icon {
@@ -414,4 +415,86 @@
   color: white !important;
   border-radius: 5px;
   padding: 10px 20px;
+}
+
+.all-card {
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  margin: 10px 0px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 265px;
+  background: rgba(255, 255, 255, 0.9); /* Slight translucency */
+  border-radius: 12px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+
+  /* ✨ Subtle background pattern & gradient */
+  background-image: 
+    linear-gradient(135deg, rgba(200, 200, 200, 0.05) 25%, transparent 0),
+    radial-gradient(circle at top right, rgba(0, 0, 0, 0.03) 10%, transparent 30%),
+    url('https://www.transparenttextures.com/patterns/cubes.png'); /* Subtle cube pattern */
+  background-size: 100% 100%, cover, 120px 120px; 
+}
+
+.all-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Card title */
+.all-card h2 {
+  margin-top: 30px;
+  color: #444;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* Data container */
+.all-time-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 0px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.all-time-left, .all-time-right {
+  text-align: center;
+  font-size: 10px;
+  margin: 0 10px;
+}
+
+/* Vertical line */
+.all-timer-line {
+  width: 2px;
+  height: 25px;
+  border-left: 2px dashed #4f4f4f;
+}
+
+/* Card Icon */
+.all-card-icon {
+  position: absolute;
+  top: -15px;
+  left: 15px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
 }
