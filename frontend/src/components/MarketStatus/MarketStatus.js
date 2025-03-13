@@ -89,19 +89,20 @@ function MarketStatus() {
             toast.warn("Please select exactly 10 stocks to proceed!", { position: "top-right" });
             return;
         }
+    
         const updatedStockData = stocks.map(stock => ({
-            companyId: stock.companyId,
-            companyStatus: stock.companyStatus,
+            ...stock, // Keep all original properties
             liveBB: stock.companyStatus === "BEARISH"
                 ? selectedBearishStocks.includes(stock) // True only for selected bearish stocks
                 : stock.companyStatus === "BULLISH"
                 ? selectedBullishStocks.includes(stock) // True only for selected bullish stocks
-                : false, // All other stocks should have liveBB: false
+                : false, // Default to false for all others
         }));
+    
         try {
             const response = await axios.put(
                 "https://dev-api.nifty10.com/company/bulk/update/company",
-                updatedStockData,
+                updatedStockData.map(({ companyId, companyStatus, liveBB }) => ({ companyId, companyStatus, liveBB })), // Send only necessary data
                 {
                     params: { userId: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985" },
                     headers: { "Content-Type": "application/json" },
@@ -110,18 +111,19 @@ function MarketStatus() {
     
             console.log("Proceed API Response:", response.data);
             toast.success("Live BB status updated successfully!", { position: "top-right" });
-
-            setStocks(updatedStockData);
-            
+    
+            setStocks(updatedStockData); // ✅ Keeps full stock object to prevent UI issues
+    
             // Reset selection after successful API call
             setSelectedStocks({});
-            handleTabChange("liveBB")
-            
+            handleTabChange("liveBB");
+    
         } catch (error) {
             console.error("API Error:", error.response?.data || error.message);
             toast.error("Failed to update Live BB status!", { position: "top-right" });
         }
     };
+    
     
     const handleToggleChange = (newFilter) => {
             setFilter(newFilter);

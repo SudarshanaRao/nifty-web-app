@@ -37,80 +37,71 @@ const Dashboard = () => {
     const [growthRate, setGrowthRate] = useState(0);
     const [last24HoursUsers, setLast24HoursUsers] = useState(0);
     const [last24HoursGrowth, setLast24HoursGrowth] = useState(0);
-    const [totalRevenue, setTotalRevenue] = useState(0);
-    const [revenueGrowthRate, setRevenueGrowthRate] = useState(0);
+    const [lastWeekGrowth, setLastWeekGrowth] = useState(0);
     const [totalSpent, setTotalSpent] = useState(0);
+    const [totalRevenue, setTotalRevenue] = useState(0);
+    const [lastWeekRevenueGrowth, setLastWeekRevenueGrowth] = useState(0);
+    const [lastWeekSpentGrowth, setLastWeekSpentGrowth] = useState(0);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get("https://dev-api.nifty10.com/nif/user/list/activeUser");
+                const response = await axios.get("https://prod-api.nifty10.com/nif/user/list/activeUser");
                 const users = response.data.data || [];
 
                 setTotalUsers(users.length); // Total users count
 
                 // Get date ranges
                 const now = new Date();
-                
-                // Last 24 hours
-                const last24HoursStart = new Date(now.getTime() - (24 * 60 * 60 * 1000));
-                
-                // Previous 24 hours (24-48 hours ago)
-                const prev24HoursStart = new Date(now.getTime() - (48 * 60 * 60 * 1000));
-                const prev24HoursEnd = last24HoursStart;
+                const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+                const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                const prevWeekStart = new Date(lastWeek.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-                // Last Week and Previous Week
-                const lastWeekStart = new Date();
-                lastWeekStart.setDate(now.getDate() - 7);
+                // Filter users
+                const newUsersLast24Hrs = users.filter(user => new Date(user.createdDate) >= twentyFourHoursAgo);
+                const newUsersLastWeek = users.filter(user => new Date(user.createdDate) >= lastWeek);
 
-                const twoWeeksAgoStart = new Date();
-                twoWeeksAgoStart.setDate(now.getDate() - 14);
-                const twoWeeksAgoEnd = new Date();
-                twoWeeksAgoEnd.setDate(now.getDate() - 8);
+                // Get previous period counts
+                const prev24HrsUsers = users.filter(user => 
+                    new Date(user.createdDate) >= new Date(twentyFourHoursAgo.getTime() - 24 * 60 * 60 * 1000) &&
+                    new Date(user.createdDate) < twentyFourHoursAgo
+                ).length;
 
-                // Users in last 24 hours
-                const last24HoursUsersList = users.filter(user => new Date(user.createdDate) >= last24HoursStart);
-                setLast24HoursUsers(last24HoursUsersList.length);
-
-                // Users in previous 24 hours
-                const prev24HoursUsersList = users.filter(user => 
-                    new Date(user.createdDate) >= prev24HoursStart && new Date(user.createdDate) < prev24HoursEnd
-                );
-
-                // Calculate growth rate for last 24 hours
-                const last24Count = last24HoursUsersList.length;
-                const prev24Count = prev24HoursUsersList.length;
-                const last24Growth = prev24Count > 0 
-                    ? Math.min(((last24Count - prev24Count) / prev24Count) * 100, 100) 
-                    : (last24Count > 0 ? 100 : 0);
-                setLast24HoursGrowth(last24Growth.toFixed(1));
-
-                // Users in the last week and previous week
-                const lastWeekUsers = users.filter(user => new Date(user.createdDate) >= lastWeekStart);
                 const prevWeekUsers = users.filter(user => 
-                    new Date(user.createdDate) >= twoWeeksAgoStart && new Date(user.createdDate) <= twoWeeksAgoEnd
-                );
+                    new Date(user.createdDate) >= new Date(lastWeek.getTime() - 7 * 24 * 60 * 60 * 1000) &&
+                    new Date(user.createdDate) < lastWeek
+                ).length;
 
-                // Calculate weekly growth rate
-                const lastWeekCount = lastWeekUsers.length;
-                const prevWeekCount = prevWeekUsers.length;
-                const weeklyGrowth = prevWeekCount > 0 
-                    ? Math.min(((lastWeekCount - prevWeekCount) / prevWeekCount) * 100, 100) 
-                    : (lastWeekCount > 0 ? 100 : 0);
-                setGrowthRate(weeklyGrowth.toFixed(1));
+                // Calculate total revenue (sum of all investedMoney)
+                const finalTotalRevenue = users.reduce((sum, user) => sum + (user.investedMoney || 0), 0);
 
-                const totalRevenueGenerated = users.reduce((sum, user) => sum + (user.investedMoney || 0), 0);
-                setTotalRevenue(totalRevenueGenerated);
+                // Get last week's revenue
+                const lastWeekRevenue = newUsersLastWeek.reduce((sum, user) => sum + (user.investedMoney || 0), 0);
 
-                // Revenue in last 24 hours
-                const last24Revenue = last24HoursUsersList.reduce((sum, user) => sum + (user.investedMoney || 0), 0);
-                const prev24Revenue = prev24HoursUsersList.reduce((sum, user) => sum + (user.investedMoney || 0), 0);
+                // Get previous week's revenue
+                const prevWeekRevenue = users
+                    .filter(user => new Date(user.createdDate) >= prevWeekStart && new Date(user.createdDate) < lastWeek)
+                    .reduce((sum, user) => sum + (user.investedMoney || 0), 0);
 
-                // Calculate revenue growth rate
-                const revenueGrowth = prev24Revenue > 0 
-                    ? Math.min(((last24Revenue - prev24Revenue) / prev24Revenue) * 100, 100) 
-                    : (last24Revenue > 0 ? 100 : 0);
-                setRevenueGrowthRate(revenueGrowth.toFixed(1));
+
+                // Function to calculate growth percentage (capped at 100%)
+                const calculateGrowth = (newCount, prevCount) => {
+                    if (prevCount === 0) return newCount > 0 ? 100 : 0;
+                    let growth = ((newCount - prevCount) / prevCount) * 100;
+                    return Math.min(growth, 100); // Ensure it doesn't exceed 100%
+                };
+
+                // Calculate growth percentages
+                const last24HrsGrowth = calculateGrowth(newUsersLast24Hrs.length, prev24HrsUsers);
+                const lastWeekGrowth = calculateGrowth(newUsersLastWeek.length, prevWeekUsers);
+                const lastWeekRevenueGrowth = calculateGrowth(lastWeekRevenue, prevWeekRevenue);
+
+                setLast24HoursUsers(newUsersLast24Hrs.length);
+                setLast24HoursGrowth(last24HrsGrowth.toFixed(2)); // Round to 2 decimal places
+                setLastWeekGrowth(lastWeekGrowth.toFixed(2));
+                setTotalRevenue(finalTotalRevenue)
+                setLastWeekRevenueGrowth(lastWeekRevenueGrowth)
+
 
                 const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
 
@@ -124,7 +115,7 @@ const Dashboard = () => {
 
                     // Fetch data for all markets
                     const apiRequests = marketIds.map(marketId =>
-                        fetch(`https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
+                        fetch(`https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
                             .then(response => response.json())
                     );
 
@@ -135,51 +126,54 @@ const Dashboard = () => {
                         ...bid,
                         calculatedValue: bid.entryFee * (bid.bidSlots - bid.totalAvailableCount),
                     }));
-                    const totalMoneySpent = resultValues.reduce(
-                        (sum, bid) => sum + (bid.entryFee * (bid.bidSlots - bid.totalAvailableCount)), 
-                        0
-                      );
-                      console.log(totalSpent);
+
+                    const totalCalculatedValue = resultValues.reduce((sum, bid) => sum + bid.calculatedValue, 0);
                       
-                    setTotalSpent(totalMoneySpent)
+                    setTotalSpent(totalCalculatedValue)
                     
-                    // Flatten the data if necessary
-                    const bids = marketData.flat(); // Assuming each API returns an array
+                     // Flatten and preprocess data
+                    const bids = marketData.flatMap(m => m.data || []);
+                    const last24Hours = now.getTime() - 24 * 60 * 60 * 1000;
+                    const last48Hours = now.getTime() - 48 * 60 * 60 * 1000;
+                    const totalSpentLastWeek = now.getTime() - 7 * 24 * 60 * 60 * 1000;
+                    const totalSpentPrevWeekStart = totalSpentLastWeek - 7 * 24 * 60 * 60 * 1000;
 
-                    const last24Hours = new Date(now);
-                    last24Hours.setHours(last24Hours.getHours() - 24);
+                    // Preprocess bids with validated dates
+                    const processedBids = bids
+                        .map(bid => {
+                            const createdDate = bid.createdDate ? new Date(bid.createdDate).getTime() : null;
+                            return {
+                                createdDate,
+                                bidName: parseFloat(bid.bidName) || 0, // Ensure numeric value
+                                bidSlots: bid.bidSlots || 0,
+                                totalAvailableBidCount: bid.totalAvailableCount || 0,
+                                freeBid: !!bid.freeBid,
+                                active: bid.active ?? true
+                            };
+                        })
+                        .filter(bid => bid.createdDate && !isNaN(bid.createdDate)); // Remove invalid dates
 
-                    const last48Hours = new Date(now);
-                    last48Hours.setHours(last48Hours.getHours() - 48);
+                    // **Calculate spending in different time ranges**
+                    const calculateSpent = (start, end) =>
+                        processedBids
+                            .filter(bid => bid.createdDate >= start && (!end || bid.createdDate < end) && !bid.freeBid && bid.active)
+                            .reduce((sum, bid) => sum + (bid.bidName * (bid.bidSlots - bid.totalAvailableBidCount)), 0);
 
-                    // Current 24 Hours Spent
-                    const currentSpent = bids
-                        .filter(bid => 
-                            new Date(bid.createdDate) >= last24Hours &&
-                            !bid.freeBid &&
-                            bid.active
-                        )
-                        .reduce((sum, bid) => sum + (parseFloat(bid.bidName) * (bid.bidSlots - bid.totalAvailableBidCount)), 0);
+                    const currentSpent = calculateSpent(last24Hours);
+                    const previousSpent = calculateSpent(last48Hours, last24Hours);
+                    const lastWeekSpent = calculateSpent(totalSpentLastWeek);
+                    const prevWeekSpent = calculateSpent(totalSpentPrevWeekStart, totalSpentLastWeek);
 
-                    // Previous 24 Hours Spent
-                    const previousSpent = bids
-                        .filter(bid => 
-                            new Date(bid.createdDate) >= last48Hours &&
-                            new Date(bid.createdDate) < last24Hours &&
-                            !bid.freeBid &&
-                            bid.active
-                        )
-                        .reduce((sum, bid) => sum + (parseFloat(bid.bidName) * (bid.bidSlots - bid.totalAvailableBidCount)), 0);
+                    // **Calculate Growth Rate (Capped at 100%)**
+                    const calculateTotalSpentGrowth = (newValue, prevValue) => {
+                        if (prevValue === 0) return newValue > 0 ? 100 : 0;
+                        return Math.min(((newValue - prevValue) / prevValue) * 100, 100);
+                    };
 
-                    // Calculate Growth Rate
-                    let growth = previousSpent === 0 && currentSpent === 0 
-                        ? 0 
-                        : previousSpent > 0 
-                            ? Math.min(((currentSpent - previousSpent) / previousSpent) * 100, 100) 
-                            : 0;
-
-                    setGrowthRate(parseFloat(growth.toFixed(2)));
-                    setTotalSpent(currentSpent);
+                    const totalSpentLastWeekGrowth = calculateTotalSpentGrowth(lastWeekSpent, prevWeekSpent);
+                    setLastWeekSpentGrowth(totalSpentLastWeekGrowth)
+                    
+                    
 
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -198,7 +192,7 @@ const Dashboard = () => {
                 color="Bullish"
                 image="./total-users.png"
                 data={totalUsers.toString()}
-                growthRate= {growthRate}
+                growthRate= {lastWeekGrowth}
                 duration="Last Week"
                 />
                 <Card
@@ -216,17 +210,17 @@ const Dashboard = () => {
                     color="Nifty"
                     image="./total-revenue.png"
                     data={`₹ ${totalRevenue.toLocaleString()}`}
-                    growthRate={revenueGrowthRate}
-                    duration="Last 24hrs"
+                    growthRate={lastWeekRevenueGrowth}
+                    duration="Last week"
                 />
                 <Card
                     key="totalSpent"
                     title="Total Spent (Last 24 Hrs)"
                     color="Bank"
                     image="./total-spent.png"
-                    data={totalSpent} // Format for better readability
-                    duration="Last 24hrs"
-                    growthRate={growthRate}
+                    data={`₹ ${totalSpent.toLocaleString()}`} // Format for better readability
+                    duration="Last week"
+                    growthRate={lastWeekSpentGrowth}
                 />
             </div>
             < BoxGraph />
