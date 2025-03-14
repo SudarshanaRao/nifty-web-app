@@ -2,6 +2,7 @@ import './Dashboard.css';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BoxGraph from './BoxGraph';
+import Todo from '../Todo/Todo'
 
 const Card = ({ title, color, image, data, growthRate, duration }) => {
     return (
@@ -34,7 +35,6 @@ const Card = ({ title, color, image, data, growthRate, duration }) => {
 
 const Dashboard = () => {
     const [totalUsers, setTotalUsers] = useState(0);
-    const [growthRate, setGrowthRate] = useState(0);
     const [last24HoursUsers, setLast24HoursUsers] = useState(0);
     const [last24HoursGrowth, setLast24HoursGrowth] = useState(0);
     const [lastWeekGrowth, setLastWeekGrowth] = useState(0);
@@ -133,8 +133,6 @@ const Dashboard = () => {
                     
                      // Flatten and preprocess data
                     const bids = marketData.flatMap(m => m.data || []);
-                    const last24Hours = now.getTime() - 24 * 60 * 60 * 1000;
-                    const last48Hours = now.getTime() - 48 * 60 * 60 * 1000;
                     const totalSpentLastWeek = now.getTime() - 7 * 24 * 60 * 60 * 1000;
                     const totalSpentPrevWeekStart = totalSpentLastWeek - 7 * 24 * 60 * 60 * 1000;
 
@@ -159,8 +157,6 @@ const Dashboard = () => {
                             .filter(bid => bid.createdDate >= start && (!end || bid.createdDate < end) && !bid.freeBid && bid.active)
                             .reduce((sum, bid) => sum + (bid.bidName * (bid.bidSlots - bid.totalAvailableBidCount)), 0);
 
-                    const currentSpent = calculateSpent(last24Hours);
-                    const previousSpent = calculateSpent(last48Hours, last24Hours);
                     const lastWeekSpent = calculateSpent(totalSpentLastWeek);
                     const prevWeekSpent = calculateSpent(totalSpentPrevWeekStart, totalSpentLastWeek);
 
@@ -223,7 +219,10 @@ const Dashboard = () => {
                     growthRate={lastWeekSpentGrowth}
                 />
             </div>
-            < BoxGraph />
+            <div className='dashboard-graph-todo'>
+                < BoxGraph />
+                <Todo />
+            </div>
         </div>
     );
 };

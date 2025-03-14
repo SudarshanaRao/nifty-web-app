@@ -63,7 +63,7 @@ const DayPerformance = ({ trend, onBack }) => {
           </tbody>
         </table>
       ) : (
-        <p className="no-data-message">No {trend.toLowerCase()} stocks available</p>
+        <p className="no-data-message">No {trend} stocks available</p>
       )}
 
       <button className="performance-submit-btn" disabled={loading}>Submit</button>

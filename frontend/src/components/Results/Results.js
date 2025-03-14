@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./Results.css";
 import DayPerformance from "../DayPerformance/DayPerformance";
 import { ToastContainer, toast } from "react-toastify";
@@ -47,12 +47,6 @@ const Results = () => {
     fetchCompaniesData();
   }, []);
 
-  useEffect(() => {
-    if (marketData.length > 0) {
-      fetchBidsData();
-    }
-  }, [marketData]);
-
   // Fetch Market Data
   const fetchMarketData = async () => {
     try {
@@ -77,7 +71,7 @@ const Results = () => {
       };
   
       companies.forEach((company) => {
-        const status = company.companyStatus.toUpperCase();
+        const status = (company.companyStatus || "").toUpperCase();
   
         if (status === "BULLISH") categorizedCompanies["Bullish"]++;
         if (status === "BEARISH") categorizedCompanies["Bearish"]++;
@@ -94,7 +88,7 @@ const Results = () => {
   
 
   // Fetch Bids Data
-  const fetchBidsData = async () => {
+  const fetchBidsData = useCallback(async () => {
     const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
     const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
     let bidsInfo = {};
@@ -109,7 +103,7 @@ const Results = () => {
       responses.forEach((response, index) => {
         if (response.status === "fulfilled") {
           const bids = response.value.data.data || [];
-          const activeBids = bids.filter((bid) => bid.active).length;
+          const activeBids = bids.filter((bid) => bid.active && !bid.freeBid).length;
           bidsInfo[marketData[index].marketId] = { activeBids };
         } else {
           console.error(`Error fetching bids for ${marketData[index].marketName}:`, response.reason);
@@ -123,9 +117,15 @@ const Results = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [marketData]);
 
-  const handleMarketClick = (marketId, marketName) => {
+  useEffect(() => {
+    if (marketData.length > 0) {
+      fetchBidsData();
+    }
+  }, [marketData, fetchBidsData]);
+
+  const handleMarketClick = (marketName) => {
     setSelectedMarket(marketName);
   };
 
@@ -142,7 +142,7 @@ const Results = () => {
               image={marketImages[marketName] || "default.png"}
               activeBids={bidsData[marketId]?.activeBids || 0}
               companyCount={companiesData[marketName] || 0}
-              onClick={() => handleMarketClick(marketId, marketName)}
+              onClick={() => handleMarketClick(marketName)}
             />
           ))
         )}
