@@ -10,6 +10,7 @@ import Results from "../Results/Results";
 import AllMarkets from "../AllMarkets/AllMarkets";
 import Dashboard from "../Dashboard/Dashboard";
 import BidsCreation from "../BidsCreation/BidsCreation"
+import HolidayConfig from "../HolidayConfig/HolidayConfig";
 
 const HomePage = () => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
@@ -59,6 +60,8 @@ const HomePage = () => {
         return <Results />;
       case "bids-creation":
         return <BidsCreation />
+      case "holiday-config":
+        return <HolidayConfig />
       default:
         return <Dashboard />; // Default to Markets if no tab is selected
     }
@@ -93,10 +96,10 @@ const HomePage = () => {
                   <span className={sidebarExpanded ? "visible" : "hidden"}>All Companies</span>
                 </Link>
               </li>
-              <li onClick={() => setActiveTab("market-bids")} className={activeTab === "market-bids" ? "active" : ""}>
+              <li onClick={() => setActiveTab("holiday-config")} className={activeTab === "holiday-config" ? "active" : ""}>
                 <Link to="#">
-                  <i className="fas fa-list"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>Market Bids</span>
+                  <i class="fa-solid fa-calendar-check"></i>
+                  <span className={sidebarExpanded ? "visible" : "hidden"}>Holiday Config</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("bids-creation")} className={activeTab === "bids-creation" ? "active" : ""}>

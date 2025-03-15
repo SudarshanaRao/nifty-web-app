@@ -146,8 +146,6 @@ function Company() {
                 payload,
                 { headers: { "accept": "application/json", "Content-Type": "application/json" } }
             );
-
-            console.log("API Response:", response.data);
             toast.success("Company added successfully!", { position: "top-right" });
 
             setIsEditing(false);
@@ -192,8 +190,6 @@ function Company() {
                 companyPoint: parseFloat(companyData.companyPoint) || 0,
                 createdBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985"
             };
-    
-            console.log("Sending payload:", payload);
     
             const response = await axios.post(
                 "https://dev-api.nifty10.com/company/create?userId=556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
