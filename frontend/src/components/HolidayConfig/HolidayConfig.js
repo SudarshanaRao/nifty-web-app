@@ -11,6 +11,8 @@ const HolidayConfig = () => {
   const [toDate, setToDate] = useState("");
   const [holidays, setHolidays] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
 
   useEffect(() => {
     fetchHolidays();
@@ -102,6 +104,13 @@ const HolidayConfig = () => {
     return date.toLocaleDateString("en-GB"); // Converts to DD-MM-YYYY
   };
 
+  const filteredHolidays = holidays.filter((holiday) => {
+    const date = new Date(holiday.holidayDate);
+    const monthMatches = selectedMonth ? date.getMonth() + 1 === parseInt(selectedMonth) : true;
+    const yearMatches = selectedYear ? date.getFullYear() === parseInt(selectedYear) : true;
+    return monthMatches && yearMatches;
+  });
+
   return (
     <div className="uni-bid-form-container holiday-conif">
       <h2 className="uni-form-heading">Holiday Configuration</h2>
@@ -157,8 +166,22 @@ const HolidayConfig = () => {
 
       <div className="uni-holiday-list">
         <h3 className="uni-form-heading">Holiday List</h3>
-        <div className="table-container">
-          <table className="admin-table">
+        <div className="sort-options">
+          <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
+            <option value="">All Months</option>
+            {[...Array(12)].map((_, i) => (
+              <option key={i + 1} value={i + 1}>{new Date(0, i).toLocaleString("en", { month: "long" })}</option>
+            ))}
+          </select>
+          <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+            <option value="">All Years</option>
+            {[...new Set(holidays.map((h) => new Date(h.holidayDate).getFullYear()))].map((year) => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+        <div className="table-container holiday-config-table">
+          <table className="admin-table holidays-table">
             <thead>
               <tr>
                 <th>Sl. No</th>
@@ -171,8 +194,8 @@ const HolidayConfig = () => {
           <div className="holiday-table">
             <table className="admin-table">
               <tbody>
-                {holidays.length > 0 ? (
-                  holidays.map((holiday, index) => (
+                {filteredHolidays.length > 0 ? (
+                  filteredHolidays.map((holiday, index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{holiday.name}</td>

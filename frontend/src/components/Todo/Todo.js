@@ -10,13 +10,11 @@ const Todo = () => {
   const [editId, setEditId] = useState(null);
   const [editValue, setEditValue] = useState("");
 
-  // Load todos from localStorage
   useEffect(() => {
     const savedTodos = JSON.parse(localStorage.getItem("todos")) || [];
     setTodos(savedTodos);
   }, []);
 
-  // Save todos to localStorage
   const updateLocalStorage = (newTodos) => {
     setTodos(newTodos);
     localStorage.setItem("todos", JSON.stringify(newTodos));
@@ -66,7 +64,6 @@ const Todo = () => {
     <div className="todo-container">
       <h1 className="todo-title">Get Things Done!</h1>
 
-      {/* Add Todo Form */}
       <form onSubmit={addTodo} className="todo-form">
         <input
           type="text"
@@ -77,39 +74,45 @@ const Todo = () => {
         />
         <button type="submit" className="todo-btn">Add Task</button>
       </form>
+
       <div className="todo-list-container">
-      {/* Todo List */}
-      {todos.map((todo) => (
-        <div key={todo.id} className={`todo-item ${todo.completed ? "completed" : ""}`}>
-          {editId === todo.id ? (
-            <form onSubmit={saveEdit} className="edit-form">
+        {todos.map((todo) => (
+          <div key={todo.id} className={`todo-item ${todo.completed ? "completed" : ""}`}>
+            <div className="todo-left">
               <input
-                type="text"
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                className="edit-input"
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleComplete(todo.id)}
+                className="todo-checkbox"
               />
-              <button type="submit" className="todo-btn">Save</button>
-            </form>
-          ) : (
-            <>
-              <p onClick={() => toggleComplete(todo.id)}>{todo.task}</p>
-              <div className="todo-icons">
-                <FontAwesomeIcon
-                  className="edit-icon"
-                  icon={faPenToSquare}
-                  onClick={() => startEdit(todo.id, todo.task)}
-                />
-                <FontAwesomeIcon
-                  className="delete-icon"
-                  icon={faTrash}
-                  onClick={() => deleteTodo(todo.id)}
-                />
-              </div>
-            </>
-          )}
-        </div>
-      ))}
+              {editId === todo.id ? (
+                <form onSubmit={saveEdit} className="edit-form">
+                  <input
+                    type="text"
+                    value={editValue}
+                    onChange={(e) => setEditValue(e.target.value)}
+                    className="edit-input"
+                  />
+                  <button type="submit" className="todo-btn">Save</button>
+                </form>
+              ) : (
+                <p className={todo.completed ? "strike-through todo-text" : "todo-text"}>{todo.task}</p>
+              )}
+            </div>
+            <div className="todo-icons">
+              <FontAwesomeIcon
+                className="edit-icon"
+                icon={faPenToSquare}
+                onClick={() => startEdit(todo.id, todo.task)}
+              />
+              <FontAwesomeIcon
+                className="delete-icon"
+                icon={faTrash}
+                onClick={() => deleteTodo(todo.id)}
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -90,7 +90,6 @@ const AllMarkets = () => {
       }
     }
   
-    console.log(slotsData);
     setFilledSlotsData(slotsData);
   }
   

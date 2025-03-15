@@ -1,108 +1,125 @@
 /* General Styles */
 .todo-container {
-    max-width: 400px;
-    margin: 0 auto;
-    height: 400px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    overflow-y: auto;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.9); /* Slight translucency */
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
-
-    /* ✨ Subtle background pattern & gradient */
-    background-image: 
-      linear-gradient(135deg, rgba(200, 200, 200, 0.05) 25%, transparent 0),
-      radial-gradient(circle at top right, rgba(0, 0, 0, 0.03) 10%, transparent 30%),
-      url('https://www.transparenttextures.com/patterns/cubes.png'); /* Subtle cube pattern */
-    background-size: 100% 100%, cover, 120px 120px; 
+  max-width: 400px;
+  margin: 0 auto;
+  height: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  overflow-y: auto;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  background-image: 
+    linear-gradient(135deg, rgba(200, 200, 200, 0.05) 25%, transparent 0),
+    radial-gradient(circle at top right, rgba(0, 0, 0, 0.03) 10%, transparent 30%),
+    url('https://www.transparenttextures.com/patterns/cubes.png');
+  background-size: 100% 100%, cover, 120px 120px; 
 }
 
-  
-  /* Title */
-  .todo-title {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  /* Input and Button */
-  .todo-form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .todo-input,
-  .edit-input {
-    flex: 1;
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    height: 40px !important;
-  }
-  
-  .todo-btn {
-    background-color: #1a1818;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 4px !important;
-  }
-  
-  .todo-btn:hover {
-    background-color: #343435;
-  }
-  
-  /* Todo List */
-  .todo-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 5px 0;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .todo-item.completed p {
-    text-decoration: line-through;
-    color: gray;
-  }
-  
-  /* Icons */
-  .todo-icons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .edit-icon {
-    color: #007bff;
-    cursor: pointer;
-  }
-  
-  .edit-icon:hover {
-    color: #0056b3;
-  }
-  
-  .delete-icon {
-    color: #dc3545;
-    cursor: pointer;
-  }
-  
-  .delete-icon:hover {
-    color: #c82333;
-  }
-  
-  /* Edit Form */
-  .edit-form {
-    display: flex;
-    gap: 10px;
-  }
-  
+/* Title */
+.todo-title {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Input and Button */
+.todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.todo-input,
+.edit-input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  height: 40px !important;
+}
+
+.todo-btn {
+  background-color: #1a1818;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 4px !important;
+}
+
+.todo-btn:hover {
+  background-color: #343435;
+}
+
+/* Todo List */
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Align checkbox and text on the left */
+.todo-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Ensure checkbox is properly aligned */
+.todo-checkbox {
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+/* Ensure the task text is aligned */
+.todo-text {
+  font-size: 16px;
+}
+
+/* Completed Task */
+.strike-through {
+  text-decoration: line-through;
+  color: gray;
+}
+
+/* Icons */
+.todo-icons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Edit and Delete icons */
+.edit-icon {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.edit-icon:hover {
+  color: #0056b3;
+}
+
+.delete-icon {
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  color: #c82333;
+}
+
+/* Edit Form */
+.edit-form {
+  display: flex;
+  gap: 10px;
+}
