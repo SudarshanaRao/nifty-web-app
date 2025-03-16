@@ -61,7 +61,7 @@ const Results = () => {
   // Fetch Companies Data
   const fetchCompaniesData = async () => {
     try {
-      const response = await axios.get("https://dev-api.nifty10.com/company");
+      const response = await axios.get("https://prod-api.nifty10.com/company");
       const companies = response.data.data || [];
       const categorizedCompanies = {
         Bullish: 0,
@@ -95,7 +95,7 @@ const Results = () => {
 
     try {
       const requests = marketData.map(({ marketId }) =>
-        axios.get(`https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
+        axios.get(`https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
       );
 
       const responses = await Promise.allSettled(requests);

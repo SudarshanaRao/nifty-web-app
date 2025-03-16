@@ -63,7 +63,7 @@ const AllMarkets = () => {
     let slotsData = {};
   
     for (const marketId of marketIds) {
-      const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
+      const apiUrl = `https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
   
       try {
         const response = await axios.get(apiUrl);
@@ -121,7 +121,7 @@ const AllMarkets = () => {
     try {
         const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
         const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
-        const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
+        const apiUrl = `https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
 
         const response = await axios.get(apiUrl);
         const data = response.data.data || [];
@@ -187,7 +187,7 @@ const rowSelected = async (id, marketId) => {
 
   try {
       const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
-      const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
+      const apiUrl = `https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
 
       const response = await axios.get(apiUrl);
       const data = response.data.data || [];
@@ -220,7 +220,7 @@ const changeActiveStatus = async (id, prevStatus) => {
     const newStatus = !prevStatus; // Toggle status
 
     const response = await fetch(
-      `https://dev-api.nifty10.com/bid/change/daily/bid/status?dayWiseBidId=${id}&status=${newStatus}`,
+      `https://prod-api.nifty10.com/bid/change/daily/bid/status?dayWiseBidId=${id}&status=${newStatus}`,
       { method: "GET" }
     );
 

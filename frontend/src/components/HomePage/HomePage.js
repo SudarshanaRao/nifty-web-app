@@ -13,7 +13,6 @@ import BidsCreation from "../BidsCreation/BidsCreation"
 import HolidayConfig from "../HolidayConfig/HolidayConfig";
 
 const HomePage = () => {
-  const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard"); // Default tab is "markets"
   const [result, setResult] = useState(false);
   const navigate = useNavigate();
@@ -32,11 +31,6 @@ const HomePage = () => {
       setResult(true);
     }
   }, [navigate, result]);
-
-  const handleNavbar = () => {
-    if (window.innerWidth < 800) return;
-    setSidebarExpanded(!sidebarExpanded);
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("userToken");
@@ -69,67 +63,67 @@ const HomePage = () => {
 
   return (
     <>
-      <div className={`app-container ${sidebarExpanded ? "sidebar-expanded" : "sidebar-collapsed"}`}>
+      <div className={`app-container sidebar-expanded`}>
         {/* Sidebar */}
-        <div className={`sidebar ${sidebarExpanded ? "expanded" : "collapsed"}`}>
+        <div className={`sidebar expanded`}>
           <div className="sidebar-header">
-            <img src="Nifty10-logo.png" alt="logo" className="logo" onClick={handleNavbar} />
-            <span className={sidebarExpanded ? "visible" : "hidden"}>Nifty10</span>
+            <img src="Nifty10-logo.png" alt="logo" className="logo" />
+            <span className="visible">Nifty10</span>
           </div>
           <div className="sidebar-menu">
             <ul>
               <li onClick={() => setActiveTab("dashboard")} className={activeTab === "dashboard" ? "active" : ""}>
                 <Link to="#">
                 <i class="fa-solid fa-user-tie"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>Dashboard</span>
+                  <span className="visible">Dashboard</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("markets")} className={activeTab === "markets" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-chart-line"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>All Markets</span>
+                  <span className="visible">All Markets</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("companies")} className={activeTab === "companies" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-building"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>All Companies</span>
+                  <span className="visible">All Companies</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("holiday-config")} className={activeTab === "holiday-config" ? "active" : ""}>
                 <Link to="#">
                   <i class="fa-solid fa-calendar-check"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>Holiday Config</span>
+                  <span className="visible">Holiday Config</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("bids-creation")} className={activeTab === "bids-creation" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-clipboard"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>Bids Creation</span>
+                  <span className="visible">Bids Creation</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("market-status")} className={activeTab === "market-status" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-folder-open"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>Market Status</span>
+                  <span className="visible">Market Status</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("results")} className={activeTab === "results" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-clock"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>Results</span>
+                  <span className="visible">Results</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("users-info")} className={activeTab === "users-info" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-users"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>Users Info</span>
+                  <span className="visible">Users Info</span>
                 </Link>
               </li>
               <li onClick={() => setActiveTab("bids-update")} className={activeTab === "bids-update" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-cogs"></i>
-                  <span className={sidebarExpanded ? "visible" : "hidden"}>Bids Update</span>
+                  <span className="visible">Bids Update</span>
                 </Link>
               </li>
             </ul>

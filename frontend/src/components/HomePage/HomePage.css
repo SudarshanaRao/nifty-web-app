@@ -27,13 +27,6 @@ header {
 
 
 }
-#sidebar-toggle {
-    display: none;
-}
-
-.sidebar-toggle i{
-    font-size: 1.4rem;
-}
 
 /* Ensure dashboard does not shift */
 .main-content {
@@ -41,16 +34,6 @@ header {
     /* transition: margin-left 0.5s; */
     margin-left: var(--sidebar-width);
     transition: margin-left var(--transition-speed);
-}
-
-#sidebar-toggle:checked ~ .main-content {
-    /* margin-left: 60px; Adjusted when sidebar is collapsed */
-    margin-left: var(--sidebar-collapsed-width);
-}
-
-#sidebar-toggle:checked ~ .main-content header {
-    left: 60px;
-    width: calc(100% - 60px);
 }
 
 
@@ -83,10 +66,6 @@ header {
     font-weight: bold;
   }
   
-.hidden {
-    display: none;
-}
-
 .sidebar {
     height: 100%;
     width: 240px;
@@ -132,30 +111,6 @@ header {
 
 .sidebar a span:last-child {
     padding-left: .6rem;
-}
-
-#sidebar-toggle:checked ~ .sidebar {
-    width: 60px;
-}
-
-#sidebar-toggle:checked ~ .sidebar .sidebar-header h3 span,
-#sidebar-toggle:checked ~ .sidebar li span:last-child {
-    display: none;
-}
-
-#sidebar-toggle:checked ~ .sidebar .sidebar-header,
-#sidebar-toggle:checked ~ .sidebar li {
-    display: flex;
-    justify-content: center;
-}
-
-#sidebar-toggle:checked ~ .main-content {
-    margin-left: 60px;
-}
-
-#sidebar-toggle:checked ~ .main-content header {
-    left: 40px;
-    width: calc(100% - 80px);
 }
 
 .main-content {
@@ -277,77 +232,9 @@ main {
     padding: .4rem 1rem;
 }
 
-
-@media only screen and (max-width: 800px) {
-    .sidebar {
-        width: 60px;
-        z-index: 150;
-    }
-
-    .sidebar .sidebar-header h3 span,
-    .sidebar li span:last-child {
-        display: none;
-    }
-
-    .sidebar .sidebar-header,
-    .sidebar li {
-        display: flex;
-        justify-content: center;
-    }
-
-    .main-content {
-        margin-left: 60px;
-    }
-
-    .main-content header {
-        left: 60px;
-        width: calc(100% - 60px);
-    }
-    
-    #sidebar-toggle:checked ~ .sidebar {
-        width: 240px;
-    }
-
-    #sidebar-toggle:checked ~ .sidebar .sidebar-header h3 span,
-    #sidebar-toggle:checked ~ .sidebar li span:last-child {
-        display: inline;
-    }
-
-    #sidebar-toggle:checked ~ .sidebar .sidebar-header {
-        display: flex;
-        justify-content: space-between;
-    }
-    
-    #sidebar-toggle:checked ~ .sidebar li {
-        display: block;
-    }
-
-    #sidebar-toggle:checked ~ .main-content {
-        margin-left: 60px;
-    }
-
-    #sidebar-toggle:checked ~ .main-content header {
-        left: 60px;
-    }
-}
-
-
-
-@media only screen and (max-width: 450px) {
-    main {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-}
-
-
   .sidebar {
     width: 250px;
     transition: width 0.3s ease;
-  }
-  
-  .sidebar.closed {
-    width: 60px;
   }
   
   .main-content {
@@ -375,10 +262,6 @@ main {
   
   .sidebar.expanded {
     width: 250px;
-  }
-  
-  .sidebar-collapsed {
-    background-color: transparent;
   }
 
   .markets-container {

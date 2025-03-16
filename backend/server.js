@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const app = express();
 const PORT = 4000;
-const API_BASE_URL = "https://dev-api.nifty10.com"
+const API_BASE_URL = "https://prod-api.nifty10.com"
 
 // Enable CORS with explicit settings
 app.use(

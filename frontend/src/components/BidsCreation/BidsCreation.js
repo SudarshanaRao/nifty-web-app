@@ -31,7 +31,7 @@ const BidCreationForm = () => {
   useEffect(() => {
     const fetchMarkets = async () => {
       try {
-        const response = await axios.get("https://dev-api.nifty10.com/market");
+        const response = await axios.get("https://prod-api.nifty10.com/market");
         if (response.data?.data) {
           setMarkets(response.data.data);
         }

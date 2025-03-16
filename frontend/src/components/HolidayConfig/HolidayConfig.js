@@ -20,7 +20,7 @@ const HolidayConfig = () => {
 
   const fetchHolidays = async () => {
     try {
-      const response = await axios.get("https://dev-api.nifty10.com/bid/holiday/configuration");
+      const response = await axios.get("https://prod-api.nifty10.com/bid/holiday/configuration");
       setHolidays(response.data.data || []);
     } catch (err) {
       setError("Failed to fetch holidays.");
