@@ -10,12 +10,91 @@ import Results from "../Results/Results";
 import AllMarkets from "../AllMarkets/AllMarkets";
 import Dashboard from "../Dashboard/Dashboard";
 import BidsCreation from "../BidsCreation/BidsCreation"
+import axios from "axios";
 import HolidayConfig from "../HolidayConfig/HolidayConfig";
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState("dashboard"); // Default tab is "markets"
   const [result, setResult] = useState(false);
   const navigate = useNavigate();
+  const [notifications, setNotifications] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [announcement, setAnnouncement] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMsgDropdownOpen, setIsMsgDropdownOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+        try {
+            const response = await axios.get("http://localhost:4000/get/notifications");
+            const filteredNotifications = (response.data.data || [])
+                .filter(notif => notif.title === "Notification")
+                .map(notif => ({
+                    ...notif,
+                    formattedTimestamp: new Date(notif.createdTimestamp).toLocaleDateString("en-GB") + " " +
+                        new Date(notif.createdTimestamp).toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                        })
+                }));
+
+                const filteredMessages = (response.data.data || [])
+                .filter(notif => notif.title === "Message")
+                .map(notif => ({
+                    ...notif,
+                    formattedTimestamp: new Date(notif.createdTimestamp).toLocaleDateString("en-GB") + " " +
+                        new Date(notif.createdTimestamp).toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                        })
+                }));
+
+                const filteredAnnouncements = (response.data.data || [])
+                .filter(notif => notif.title === "Announcement")
+                .map(notif => ({
+                    ...notif,
+                    formattedTimestamp: new Date(notif.createdTimestamp).toLocaleDateString("en-GB") + " " +
+                        new Date(notif.createdTimestamp).toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                        })
+                }));
+
+            setNotifications(filteredNotifications);
+            setMessages(filteredMessages)
+            setAnnouncement(filteredAnnouncements)
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
+    };
+
+    fetchNotifications();
+}, []);
+
+const toggleMsgDropdown = () => {
+  setIsMsgDropdownOpen(!isMsgDropdownOpen);
+  setIsDropdownOpen(false); // Close notifications when opening messages
+  setIsSettingsOpen(false);
+};
+const toggleSettingsDropdown = () => {
+  setIsSettingsOpen(!isSettingsOpen);
+  setIsDropdownOpen(false);
+  setIsMsgDropdownOpen(false);
+};
+
+const toggleNotificationDropdown = () => {
+  setIsDropdownOpen(!isDropdownOpen);
+  setIsMsgDropdownOpen(false); // Close messages when opening notifications
+  setIsSettingsOpen(false);
+};
+
+const NotificationUnreadCount = notifications.filter((notif) => !notif.active).length;
+const MsgUnreadCount = messages.filter((msg) => !msg.active).length;
+const AnnouncementUnreadCount = announcement.filter((ann) => !ann.active).length;
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isOtpVerfied");
@@ -133,18 +212,69 @@ const HomePage = () => {
         {/* Main Content */}
         <div id="mainContent" className="main-content">
           <header id="headerContent">
-            <div className="search-wrapper">
-              {/* <div className="search-box">
-                <i className="fas fa-search"></i>
-                <input className="search-input" type="search" placeholder="Search" />
-              </div> */}
-              <div className="social-icons">
-                <i className="fas fa-bell"></i>
-                <i className="fas fa-envelope"></i>
-                <i class="fa-solid fa-user-gear"></i>
-              </div>
-              <button onClick={handleLogout} className="btn logout">Logout</button>
+          <div className="search-wrapper">
+            <div className="social-icons">
+            <div className="notification-wrapper">
+              <i className="fas fa-megaphone"> 
+              <img src="/megaphone.png" alt="megaphone" className="social-icon-megaphone" />
+              {AnnouncementUnreadCount > 0 && <span className="notification-count">{AnnouncementUnreadCount}</span>}
+              </i>
+              {/* Message Icon */}
+              <i className="fas fa-envelope" onClick={toggleMsgDropdown}>
+                {MsgUnreadCount > 0 && <span className="notification-count">{MsgUnreadCount}</span>}
+              </i>
+
+              {isMsgDropdownOpen && (
+                <div className="notification-dropdown msg-dropdown">
+                  {messages.length > 0 ? (
+                    messages.map((msg) => (
+                      <div key={msg.id} className={`notification-item ${msg.active ? "read" : "unread"}`}>
+                        <p>{msg.notification}</p>
+                        <span className="timestamp">{msg.formattedTimestamp}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-notifications">No new messages</p>
+                  )}
+                </div>
+              )}
+
+              {/* Notification Icon */}
+              <i className="fas fa-bell" onClick={toggleNotificationDropdown}>
+                {NotificationUnreadCount > 0 && <span className="notification-count">{NotificationUnreadCount}</span>}
+              </i>
+
+              {isDropdownOpen && (
+                <div className="notification-dropdown">
+                  {notifications.length > 0 ? (
+                    notifications.map((notif) => (
+                      <div key={notif.id} className={`notification-item ${notif.active ? "read" : "unread"}`}>
+                        <p>{notif.notification}</p>
+                        <span className="timestamp">{notif.formattedTimestamp}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-notifications">No new notifications</p>
+                  )}
+                </div>
+              )}
+
+              {/* Settings Icon */}
+              <i
+                className={`fa-solid fa-user-gear settings-icon ${isSettingsOpen ? "rotate" : ""}`}
+                onClick={toggleSettingsDropdown}
+              ></i>
+
+              {isSettingsOpen && (
+                <div className="settings-dropdown">
+                  <button onClick={handleLogout} className="logout-btn">Logout</button>
+                </div>
+              )}
             </div>
+
+            </div>
+            {/* <button onClick={handleLogout} className="btn logout">Logout</button> */}
+          </div>
           </header>
         </div>
       </div>

@@ -133,16 +133,11 @@ header {
 }
 
 .search-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     gap: 0.5rem; /* Spacing between icon & input */
     width: 100%; /* Prevents taking full space */
     flex-shrink: 1;
     margin-bottom: 8px;
     top: 0;
-    
-    
 }
 .logout {
     height: 35px;
@@ -182,9 +177,6 @@ header {
   }
 
 .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
     color: #fff !important;
     flex-shrink: 0; /* Prevents shrinking */
 }
@@ -192,7 +184,6 @@ header {
 .social-icons i {
     font-size: 1.4rem;
     cursor: pointer;
-    margin-left: 20px;
 }
 .avatar-toggle {
     font-size: 0.2rem;
@@ -284,14 +275,6 @@ main {
         left: 150px;
     }
 }
-#mainContent {
-    position: fixed;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 6%;
-}
 
 #renderContainer {
     position: absolute;   
@@ -311,3 +294,134 @@ main {
     z-index: 1;
 }
 
+.notification-wrapper {
+    position: relative;
+    cursor: pointer;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .fas.fa-bell {
+    font-size: 20px;
+    position: relative;
+  }
+
+  .fas.fa-envelope {
+    font-size: 20px;
+    position: relative;
+  }
+  
+  .notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .notification-dropdown {
+    position: fixed; /* Ensure it stays on top */
+    top: 60px; /* Adjust this based on your header */
+    right: 200px; /* Position near the bell icon */
+    background: black;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 12px;
+    padding: 15px;
+    z-index: 9999; /* High value to appear above everything */
+  }
+
+  .msg-dropdown {
+    right: 250px;
+  }
+  
+  .notification-item {
+    padding: 12px;
+    border-bottom: 1px solid #000;
+    background: #fff !important;
+    color: #000;
+    transition: background 0.3s ease-in-out;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .notification-item:hover {
+    background: #ccc !important;
+  }
+  
+  .notification-item.unread {
+    background: rgba(255, 223, 0, 0.15);
+    font-weight: bold;
+  }
+  
+  .notification-item.read {
+    background: #f9f9f9;
+  }
+  
+  .timestamp {
+    font-size: 12px;
+    color: gray;
+    margin-top: 10px !important;
+    display: block;
+  }
+  
+  .no-notifications {
+    padding: 15px;
+    text-align: center;
+    color: #ff4d4d;
+    font-weight: 500;
+  }
+  
+  .settings-icon {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  
+  .settings-dropdown {
+    position: fixed;
+    top:   55px;
+    right: 150px;
+    background: black;
+    border: 1px solid #000;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .logout-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .logout-btn:hover {
+    background: darkred;
+  }
+  
+  .fas.fa-megaphone {
+    
+    font-size: 20px;
+    position: relative;
+  }
+.social-icon-megaphone {
+    width: 2.5rem;
+}
