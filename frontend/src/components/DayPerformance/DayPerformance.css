@@ -21,7 +21,6 @@
     flex: 1;
     text-align: center;
 }
-
 .performance-back-btn {
     background: #000;
     border: none;
@@ -33,7 +32,6 @@
     width: 55px;
     height: 40px;
 }
-
 .performance-subtitle {
     font-size: 16px;
     margin-bottom: 15px;
@@ -49,7 +47,6 @@
     padding: 10px;
     text-align: left;
 }
-
 .performance-input {
     width: 100%;
     padding: 8px;
@@ -57,7 +54,6 @@
     border-radius: 5px;
     font-size: 14px;
 }
-
 .performance-submit-btn {
     width: 100%;
     background: black;
@@ -84,7 +80,6 @@
     align-items: center;
     height: 100px;
   }
-  
   .performance-loader {
     width: 40px;
     height: 40px;
@@ -93,9 +88,7 @@
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
-  
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
-  
+  }  
