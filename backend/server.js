@@ -48,7 +48,7 @@ app.get("/get/market", async (req, res) => {
 
 app.get("/get/notifications", async (req, res) => {
     try {
-        const response = await axios.get(`https://prod-api.nifty10.com/api/notifications/dashboard`, {
+        const response = await axios.get(`${API_BASE_URL}/api/notifications/dashboard`, {
             headers: {
                 "Content-Type": "application/json",
             },
