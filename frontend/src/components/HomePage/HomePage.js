@@ -12,6 +12,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import BidsCreation from "../BidsCreation/BidsCreation"
 import axios from "axios";
 import HolidayConfig from "../HolidayConfig/HolidayConfig";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState("dashboard"); // Default tab is "markets"
@@ -19,10 +20,12 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [announcement, setAnnouncement] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMsgDropdownOpen, setIsMsgDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isAnnouncementOpen, setIsAnnouncementOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -64,9 +67,11 @@ const HomePage = () => {
                         })
                 }));
 
+                
+
             setNotifications(filteredNotifications);
             setMessages(filteredMessages)
-            setAnnouncement(filteredAnnouncements)
+            setAnnouncements(filteredAnnouncements)
         } catch (error) {
             console.error("Error fetching notifications:", error);
         }
@@ -79,22 +84,32 @@ const toggleMsgDropdown = () => {
   setIsMsgDropdownOpen(!isMsgDropdownOpen);
   setIsDropdownOpen(false); // Close notifications when opening messages
   setIsSettingsOpen(false);
+  setIsAnnouncementOpen(false);
 };
 const toggleSettingsDropdown = () => {
   setIsSettingsOpen(!isSettingsOpen);
   setIsDropdownOpen(false);
   setIsMsgDropdownOpen(false);
+  setIsAnnouncementOpen(false);
 };
 
 const toggleNotificationDropdown = () => {
   setIsDropdownOpen(!isDropdownOpen);
   setIsMsgDropdownOpen(false); // Close messages when opening notifications
   setIsSettingsOpen(false);
+  setIsAnnouncementOpen(false);
 };
+
+const toggleAnnouncement = () => {
+  setIsAnnouncementOpen(!isAnnouncementOpen);
+  setIsDropdownOpen(false);
+  setIsMsgDropdownOpen(false);
+  setIsSettingsOpen(false);
+}
 
 const NotificationUnreadCount = notifications.filter((notif) => !notif.active).length;
 const MsgUnreadCount = messages.filter((msg) => !msg.active).length;
-const AnnouncementUnreadCount = announcement.filter((ann) => !ann.active).length;
+const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).length;
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isOtpVerfied");
@@ -215,10 +230,34 @@ const AnnouncementUnreadCount = announcement.filter((ann) => !ann.active).length
           <div className="search-wrapper">
             <div className="social-icons">
             <div className="notification-wrapper">
-              <i className="fas fa-megaphone"> 
+              <i className="fas fa-megaphone" onClick={toggleAnnouncement}> 
               <img src="/megaphone.png" alt="megaphone" className="social-icon-megaphone" />
               {AnnouncementUnreadCount > 0 && <span className="notification-count">{AnnouncementUnreadCount}</span>}
               </i>
+              {isAnnouncementOpen && (
+                <div className="announcement-popup">
+                  {announcements.length > 0 ? (
+                    announcements.map((announcement) => (
+                      <div className="announcement-content" key={announcement.id}>
+                        <button className="close-btn" onClick={() => setIsAnnouncementOpen(false)}>✖</button>
+                        <div className="announcement-icon-wrapper">
+                          <img src="/megaphone.png" alt="megaphone" className="announcement-icon" />
+                          <div className="waves"></div>
+                        </div>
+                        <p className="announcement-text">
+                          {announcement.notification}  {/* Dynamically set the announcement message */}
+                        </p>
+                      </div>
+                      ))
+                    ) : (
+                      <p className="no-notifications">No new messages</p>
+                    )}
+                </div>
+              )}
+
+
+
+
               {/* Message Icon */}
               <i className="fas fa-envelope" onClick={toggleMsgDropdown}>
                 {MsgUnreadCount > 0 && <span className="notification-count">{MsgUnreadCount}</span>}

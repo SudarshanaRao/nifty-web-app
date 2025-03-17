@@ -425,3 +425,87 @@ main {
 .social-icon-megaphone {
     width: 2.5rem;
 }
+.announcement-popup {
+  position: fixed;
+  top: 65px;
+  right: 108px;
+  background: linear-gradient(to right, black, red);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 300px;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: -25px;
+  right: -12px;
+  background: white;
+  color: black;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.announcement-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.announcement-icon-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.announcement-icon {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  z-index: 2;
+}
+
+.waves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 30%, transparent);
+  animation: waveAnimation 1.5s infinite ease-in-out;
+}
+
+@keyframes waveAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.announcement-text {
+  font-size: 16px;
+  max-width: 250px;
+  font-weight: bold;
+  text-align: center;
+}
