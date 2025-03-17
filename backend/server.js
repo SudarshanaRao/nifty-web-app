@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const app = express();
 const PORT = 4000;
-const API_BASE_URL = "https://prod-api.nifty10.com"
+const API_BASE_URL = "https://dev-api.nifty10.com"
 
 // Enable CORS with explicit settings
 app.use(
@@ -48,7 +48,7 @@ app.get("/get/market", async (req, res) => {
 
 app.get("/get/notifications", async (req, res) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/api/notifications/dashboard`, {
+        const response = await axios.get(`https://prod-api.nifty10.com/api/notifications/dashboard`, {
             headers: {
                 "Content-Type": "application/json",
             },
