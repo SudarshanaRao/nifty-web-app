@@ -10,7 +10,6 @@ import {
 } from "recharts";
 import "./Dashboard.css";
 
-
 const marketGradients = {
   Bullish: "linear-gradient(135deg, #B2F2BB, #8EE4AF)",
   Bearish: "linear-gradient(135deg, #FFB3B3, #FF6F61)",
@@ -18,115 +17,125 @@ const marketGradients = {
   "Bank Nifty Prediction": "linear-gradient(135deg, #FFD8A8, #FFAD60)",
 };
 
-
 const BoxGraph = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [year, setYear] = useState("2025");
+  // Default to today's date in the input format yyyy-mm-dd
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  });
 
+  // Fetch market data based on the selected date.
   const fetchAllMarketsData = useCallback(async () => {
     setLoading(true);
     try {
-      const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");  
-        const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
-        const marketIds = [
-            "6187ba91-e190-11ef-9b7f-02fd6cfaf985",
-            "877c5f82-e190-11ef-9b7f-02fd6cfaf985",
-            "97f37603-e190-11ef-9b7f-02fd6cfaf985",
-            "9f0c2c24-e190-11ef-9b7f-02fd6cfaf985",
-        ];
+      // Convert the selectedDate from yyyy-mm-dd to dd-mm-yyyy format as required by the API.
+      const dateObj = new Date(selectedDate);
+      const day = dateObj.getDate().toString().padStart(2, "0");
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+      const year = dateObj.getFullYear();
+      const formattedDate = `${day}-${month}-${year}`;
 
-        const apiRequests = marketIds.map((marketId) =>
-            fetch(`https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
-                .then((response) => response.ok ? response.json() : Promise.reject(`API Error: ${marketId}`))
-                .catch((error) => {
-                    console.error("Fetch error:", error);
-                    return { data: [] }; // Return empty data on failure
-                })
+      const userId = "556c3d52-e18d-11ef-9b7f-02fd6cfaf985";
+      const marketIds = [
+        "6187ba91-e190-11ef-9b7f-02fd6cfaf985",
+        "877c5f82-e190-11ef-9b7f-02fd6cfaf985",
+        "97f37603-e190-11ef-9b7f-02fd6cfaf985",
+        "9f0c2c24-e190-11ef-9b7f-02fd6cfaf985",
+      ];
+
+      const apiRequests = marketIds.map((marketId) =>
+        fetch(
+          `https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`
+        )
+          .then((response) =>
+            response.ok ? response.json() : Promise.reject(`API Error: ${marketId}`)
+          )
+          .catch((error) => {
+            console.error("Fetch error:", error);
+            return { data: [] }; // Return empty data on failure
+          })
+      );
+
+      const results = await Promise.all(apiRequests);
+      const allMarketData = results.flatMap((result) => result?.data || []);
+
+      // Filter only active and non-free bids
+      const filteredData = allMarketData.filter((bid) => bid?.active && !bid?.freeBid);
+
+      // Object to store categorized data
+      const categorizedData = {};
+      let highestBidSlots = 0;
+
+      filteredData.forEach(({ marketName, entryFee, bidSlots, totalAvailableCount }) => {
+        if (!marketName || isNaN(entryFee) || isNaN(bidSlots) || isNaN(totalAvailableCount))
+          return;
+
+        const completedBidSlots = bidSlots - totalAvailableCount;
+
+        if (bidSlots > highestBidSlots) {
+          highestBidSlots = bidSlots;
+        }
+
+        // Initialize the entryFee category if not present
+        if (!categorizedData[entryFee]) {
+          categorizedData[entryFee] = {
+            entryFee: parseFloat(entryFee),
+            Bullish: 0,
+            Bearish: 0,
+            "Nifty Prediction": 0,
+            "Bank Nifty Prediction": 0,
+            totalSlots: highestBidSlots,
+          };
+        }
+
+        // Map market names to categories
+        const categoryMap = {
+          bullish: "Bullish",
+          bearish: "Bearish",
+          "nifty prediction": "Nifty Prediction",
+          "bank nifty prediction": "Bank Nifty Prediction",
+        };
+
+        const categoryKey = Object.keys(categoryMap).find((key) =>
+          marketName.toLowerCase().includes(key)
         );
 
-        const results = await Promise.all(apiRequests);
-        const allMarketData = results.flatMap((result) => result?.data || []);
+        if (categoryKey) {
+          categorizedData[entryFee][categoryMap[categoryKey]] += completedBidSlots;
+        }
+      });
 
-        // Filter only active and non-free bids
-        const filteredData = allMarketData.filter((bid) => bid?.active && !bid?.freeBid);
+      // Convert the object to an array for recharts
+      const transformedData = Object.values(categorizedData);
 
-        // Object to store categorized data
-        const categorizedData = {};
-
-        let highestBidSlots = 0;
-
-        filteredData.forEach(({ marketName, entryFee, bidSlots, totalAvailableCount }) => {
-            if (!marketName || isNaN(entryFee) || isNaN(bidSlots) || isNaN(totalAvailableCount)) return;
-
-            const completedBidSlots = bidSlots - totalAvailableCount;
-
-            if (bidSlots > highestBidSlots) {
-              highestBidSlots = bidSlots;
-            }
-
-            // Initialize entryFee category if not present
-            if (!categorizedData[entryFee]) {
-                categorizedData[entryFee] = {
-                    entryFee: parseFloat(entryFee),
-                    Bullish: 0,
-                    Bearish: 0,
-                    "Nifty Prediction": 0,
-                    "Bank Nifty Prediction": 0,
-                    totalSlots: highestBidSlots
-                };
-            }
-
-            // Map market names to categories
-            const categoryMap = {
-                bullish: "Bullish",
-                bearish: "Bearish",
-                "nifty prediction": "Nifty Prediction",
-                "bank nifty prediction": "Bank Nifty Prediction",
-            };
-
-            const categoryKey = Object.keys(categoryMap).find((key) =>
-                marketName.toLowerCase().includes(key)
-            );
-
-            if (categoryKey) {
-                categorizedData[entryFee][categoryMap[categoryKey]] += completedBidSlots;
-            }
-        });
-
-        // Convert object to structured array format
-        const transformedData = Object.values(categorizedData);
-
-        setData(transformedData);
+      setData(transformedData);
     } catch (error) {
-        console.error("Error fetching data:", error);
+      console.error("Error fetching data:", error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-}, []);
+  }, [selectedDate]);
 
-useEffect(() => {
+  useEffect(() => {
     fetchAllMarketsData();
-}, [fetchAllMarketsData]);
-
-  
-
+  }, [fetchAllMarketsData]);
 
   return (
     <div className="chart-container">
       <div className="chart-header">
         <h3>Market-Wise Bid Analysis</h3>
         <div className="time-filters">
-          <span className="active">Last 24hrs</span>
+          <span className="active">Selected Date:</span>
+          {/* Date picker to select a date */}
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            className="date-picker"
+          />
         </div>
-        <select
-          className="year-select"
-          onChange={(e) => setYear(e.target.value)}
-          value={year}
-        >
-          <option value="2025">2025 Year</option>
-          <option value="2024">2024 Year</option>
-        </select>
       </div>
 
       {loading ? (
@@ -138,9 +147,12 @@ useEffect(() => {
           <p className="error-msg">No data available</p>
         </div>
       ) : (
-        
         <ResponsiveContainer width="100%" height={330} margin={{ bottom: 50 }}>
-          <BarChart data={data} barSize={20} margin={{ top: 20, right: 30, left: 20, bottom: 30 }}>
+          <BarChart
+            data={data}
+            barSize={20}
+            margin={{ top: 10, right: 30, left: 20, bottom: 20 }}
+          >
             <defs>
               <linearGradient id="bullishGradient" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#B2F2BB" />
@@ -160,9 +172,9 @@ useEffect(() => {
               </linearGradient>
             </defs>
 
-            <XAxis 
+            <XAxis
               dataKey="entryFee"
-              axisLine={true} 
+              axisLine={true}
               tick={{ fill: "#aaa" }}
               label={{
                 value: "Entry Fee",
@@ -174,17 +186,17 @@ useEffect(() => {
               }}
             />
 
-            <YAxis 
-              axisLine={true} 
-              tick={{ fill: "#aaa" }} 
-              domain={[0, "dataMax"]} 
+            <YAxis
+              axisLine={true}
+              tick={{ fill: "#aaa" }}
+              domain={[0, "dataMax"]}
               dataKey="totalSlots"
               label={{
                 value: "Number of Bids",
-                angle: -90, 
+                angle: -90,
                 position: "insideLeft",
                 fill: "#666",
-                dx: 7,  
+                dx: 7,
                 dy: 0,
                 fontSize: 14,
                 fontWeight: "bold",
@@ -196,7 +208,9 @@ useEffect(() => {
                 if (!payload || payload.length === 0) return null;
                 return (
                   <div className="custom-tooltip">
-                    <p className="tooltip-title">Entry Fee: {payload[0].payload.entryFee}</p>
+                    <p className="tooltip-title">
+                      Entry Fee: {payload[0].payload.entryFee}
+                    </p>
                     {payload.map((entry, index) => (
                       <div key={index} className="tooltip-item">
                         <span
@@ -222,10 +236,26 @@ useEffect(() => {
 
             <Legend />
 
-            <Bar dataKey="Bullish" fill="url(#bullishGradient)" radius={[5, 5, 0, 0]} />
-            <Bar dataKey="Bearish" fill="url(#bearishGradient)" radius={[5, 5, 0, 0]} />
-            <Bar dataKey="Nifty Prediction" fill="url(#niftyGradient)" radius={[5, 5, 0, 0]} />
-            <Bar dataKey="Bank Nifty Prediction" fill="url(#bankNiftyGradient)" radius={[5, 5, 0, 0]} />
+            <Bar
+              dataKey="Bullish"
+              fill="url(#bullishGradient)"
+              radius={[5, 5, 0, 0]}
+            />
+            <Bar
+              dataKey="Bearish"
+              fill="url(#bearishGradient)"
+              radius={[5, 5, 0, 0]}
+            />
+            <Bar
+              dataKey="Nifty Prediction"
+              fill="url(#niftyGradient)"
+              radius={[5, 5, 0, 0]}
+            />
+            <Bar
+              dataKey="Bank Nifty Prediction"
+              fill="url(#bankNiftyGradient)"
+              radius={[5, 5, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
       )}

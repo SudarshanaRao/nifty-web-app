@@ -6,20 +6,24 @@ import "react-toastify/dist/ReactToastify.css";
 
 const BidCreationForm = () => {
   const generateBidCode = () => `#MB${Math.floor(1000 + Math.random() * 9000)}`;
+  
   const [formData, setFormData] = useState({
+    // Removed bidName input from UI.
+    // bidName will be auto-set from entryFee.
     bidName: "",
     bidCode: generateBidCode(),
     entryFee: "",
     poolPrize: "",
     firstPrize: "",
     bidSlots: "",
-    individualBidCount: "15",  
+    individualBidCount: "",  // No default value now.
     guaranteedBidCount: "0",   
     newDayBid: "MANUAL",       
     companyRequired: true,     
     bankRequired: false,       
     marketId: "",
     marketName: "",
+    bidType:"REGULAR",
     createdBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
     active: true,
     prizeMasterList: [],
@@ -42,12 +46,33 @@ const BidCreationForm = () => {
     fetchMarkets();
   }, []);
 
+  // Update field values. If entryFee changes, also set bidName to that value.
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData((prev) => {
+      const updated = {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      };
+
+      // When entryFee is updated, automatically update bidName.
+      if (name === "entryFee") {
+        updated.bidName = value;
+      }
+
+      // If the firstPrize field is updated, update the first row in prizeMasterList
+      if (name === "firstPrize") {
+        let newPrizeMasterList = [...prev.prizeMasterList];
+        if (newPrizeMasterList.length === 0) {
+          newPrizeMasterList.push({ level: 1, prize: value, userCount: "" });
+        } else {
+          newPrizeMasterList[0] = { ...newPrizeMasterList[0], prize: value };
+        }
+        updated.prizeMasterList = newPrizeMasterList;
+      }
+      
+      return updated;
+    });
   };
 
   const handleMarketChange = (e) => {
@@ -94,7 +119,7 @@ const BidCreationForm = () => {
   const validateForm = () => {
     let newErrors = {};
     const requiredFields = [
-      "bidName",
+      // Removed bidName from validation as it's auto-generated.
       "entryFee",
       "poolPrize",
       "firstPrize",
@@ -109,11 +134,39 @@ const BidCreationForm = () => {
       }
     });
 
+    // Validate each prize level for required fields
     formData.prizeMasterList.forEach((prize, index) => {
-      if (!prize.prize || !prize.userCount) {
-        newErrors[`prize_${index}`] = "Both prize and user count are required";
+      if (!prize.prize && prize.prize !== 0) {
+        newErrors[`prize_${index}`] = "Prize amount is required";
+      }
+      if (!prize.userCount && prize.userCount !== 0) {
+        newErrors[`prizeUser_${index}`] = "User count is required";
       }
     });
+
+    // Validate descending order for prize amounts (level 2 onwards should not exceed previous level)
+    for (let i = 1; i < formData.prizeMasterList.length; i++) {
+      const prevPrize = parseFloat(formData.prizeMasterList[i - 1].prize);
+      const currentPrize = parseFloat(formData.prizeMasterList[i].prize);
+      if (!isNaN(prevPrize) && !isNaN(currentPrize) && currentPrize > prevPrize) {
+        newErrors[`prize_${i}`] = `Prize for level ${i + 1} cannot be greater than level ${i} prize`;
+      }
+    }
+
+    // Validate total prize cost (prize amount * user count for each level) does not exceed the prize pool
+    const totalPrizeCost = formData.prizeMasterList.reduce((acc, prize) => {
+      const prizeAmount = parseFloat(prize.prize);
+      const userCount = parseFloat(prize.userCount);
+      if (!isNaN(prizeAmount) && !isNaN(userCount)) {
+        return acc + prizeAmount * userCount;
+      }
+      return acc;
+    }, 0);
+    const poolPrizeValue = parseFloat(formData.poolPrize);
+    if (!isNaN(poolPrizeValue) && totalPrizeCost > poolPrizeValue) {
+      newErrors["prizeTotal"] =
+        "Total cost of prizes (prize amount * user count) exceeds the prize pool";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -128,7 +181,7 @@ const BidCreationForm = () => {
       console.log("🚀 Sending Request JSON:", JSON.stringify(formData, null, 2));
       
       if (formData.marketId === "bullish_bearish") {
-        // If Bullish & Bearish is selected, create bids for both
+        // If Bullish & Bearish is selected, create bids for both markets
         await Promise.all(
           [
             { marketId: "6187ba91-e190-11ef-9b7f-02fd6cfaf985", marketName: "Bullish" },
@@ -144,7 +197,7 @@ const BidCreationForm = () => {
           })
         );
       } else {
-        // Normal case for a single marketId
+        // Normal case for a single market
         const selectedMarket = markets.find((m) => m.marketId === formData.marketId);
         const bidData = { ...formData, marketName: selectedMarket?.marketName || "" };
         const response = await axios.post(
@@ -156,6 +209,7 @@ const BidCreationForm = () => {
       }
   
       toast.success("Bid Created successfully!", { position: "top-right" });
+      // Reset the form after submission
       setFormData({
         bidName: "",
         bidCode: generateBidCode(),
@@ -163,13 +217,14 @@ const BidCreationForm = () => {
         poolPrize: "",
         firstPrize: "",
         bidSlots: "",
-        individualBidCount: "15",  
+        individualBidCount: "",  
         guaranteedBidCount: "0",   
         newDayBid: "MANUAL",       
         companyRequired: true,     
         bankRequired: false,       
         marketId: "",
         marketName: "",
+        bidType:"REGULAR",
         createdBy: "556c3d52-e18d-11ef-9b7f-02fd6cfaf985",
         active: true,
         prizeMasterList: [],
@@ -179,29 +234,13 @@ const BidCreationForm = () => {
       toast.error("Failed to add Bid. Try again!", { position: "top-right" });
     }
   };
-  
 
   return (
     <div className="uni-bid-form-container">
       <h2 className="uni-form-heading">Bid Creation</h2>
       <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
 
-      {/* Use our custom grid class instead of Tailwind spacing classes */}
       <form onSubmit={handleSubmit} className="uni-bid-form-grid">
-        {/* Bid Name */}
-        <div className="uni-form-group">
-          <label>Bid Name</label>
-          <input
-            type="text"
-            name="bidName"
-            value={formData.bidName}
-            onChange={handleChange}
-            placeholder="Enter Bid Name"
-            required
-          />
-          {errors.bidName && <p className="uni-error-text">{errors.bidName}</p>}
-        </div>
-
         {/* Entry Fee */}
         <div className="uni-form-group">
           <label>Entry Fee</label>
@@ -228,6 +267,7 @@ const BidCreationForm = () => {
             required
           />
           {errors.poolPrize && <p className="uni-error-text">{errors.poolPrize}</p>}
+          {errors.prizeTotal && <p className="uni-error-text">{errors.prizeTotal}</p>}
         </div>
 
         {/* First Prize */}
@@ -258,6 +298,20 @@ const BidCreationForm = () => {
           {errors.bidSlots && <p className="uni-error-text">{errors.bidSlots}</p>}
         </div>
 
+        {/* Individual Bid Count */}
+        <div className="uni-form-group">
+          <label>Individual Bid Count</label>
+          <input
+            type="number"
+            name="individualBidCount"
+            value={formData.individualBidCount}
+            onChange={handleChange}
+            placeholder="Enter Individual Bid Count"
+            required
+          />
+          {errors.individualBidCount && <p className="uni-error-text">{errors.individualBidCount}</p>}
+        </div>
+
         {/* Market */}
         <div className="uni-form-group">
           <label>Market</label>
@@ -277,51 +331,44 @@ const BidCreationForm = () => {
         <div className="uni-form-group">
           <label>Active</label>
           <div className="company-radio-group">
-            
-              <input
-                type="radio"
-                name="active"
-                value="true"
-                className="company-radio-input"
-                checked={formData.active === true}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    active: e.target.value === "true",
-                  }))
-                }
-              />
-              <label className="company-radio-label">
-              True
-            </label>
-            
-              <input
-                type="radio"
-                name="active"
-                value="false"
-                className="company-radio-input"
-                checked={formData.active === false}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    active: e.target.value === "true",
-                  }))
-                }
-              />
-              <label className="company-radio-label">
-              False
-            </label>
+            <input
+              type="radio"
+              name="active"
+              value="true"
+              className="company-radio-input"
+              checked={formData.active === true}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  active: e.target.value === "true",
+                }))
+              }
+            />
+            <label className="company-radio-label">True</label>
+            <input
+              type="radio"
+              name="active"
+              value="false"
+              className="company-radio-input"
+              checked={formData.active === false}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  active: e.target.value === "true",
+                }))
+              }
+            />
+            <label className="company-radio-label">False</label>
           </div>
         </div>
 
         {/* Hidden Fields */}
-        <input type="hidden" name="individualBidCount" value={formData.individualBidCount} />
         <input type="hidden" name="guaranteedBidCount" value={formData.guaranteedBidCount} />
         <input type="hidden" name="newDayBid" value={formData.newDayBid} />
         <input type="hidden" name="companyRequired" value={formData.companyRequired} />
         <input type="hidden" name="bankRequired" value={formData.bankRequired} />
-
-        {/* Prize Breakdown (Full width) */}
+        <input type="hidden" name="bidType" value={formData.bidType} />
+        {/* Prize Breakdown */}
         <div className="uni-form-group" style={{ gridColumn: "1 / span 2" }}>
           <h3 className="uni-section-title">Prize Breakdown</h3>
           <table className="uni-prize-breakdown-table">
@@ -344,6 +391,8 @@ const BidCreationForm = () => {
                       value={prize.prize}
                       onChange={(e) => handlePrizeChange(index, "prize", e.target.value)}
                       required
+                      // Disable editing of first prize as it is auto-filled from the First Prize field
+                      disabled={index === 0}
                     />
                   </td>
                   <td>
@@ -354,18 +403,23 @@ const BidCreationForm = () => {
                       onChange={(e) => handlePrizeChange(index, "userCount", e.target.value)}
                       required
                     />
+                    {errors[`prizeUser_${index}`] && (
+                      <p className="uni-error-text">{errors[`prizeUser_${index}`]}</p>
+                    )}
                     {errors[`prize_${index}`] && (
                       <p className="uni-error-text">{errors[`prize_${index}`]}</p>
                     )}
                   </td>
                   <td>
-                    <button
-                      type="button"
-                      className="uni-remove-button"
-                      onClick={() => removePrizeLevel(index)}
-                    >
-                      Remove
-                    </button>
+                    {index !== 0 && (
+                      <button
+                        type="button"
+                        className="uni-remove-button"
+                        onClick={() => removePrizeLevel(index)}
+                      >
+                        Remove
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -376,7 +430,7 @@ const BidCreationForm = () => {
           </button>
         </div>
 
-        {/* Submit Button (Full width) */}
+        {/* Submit Button */}
         <div className="uni-form-group" style={{ gridColumn: "1 / span 2", textAlign: "right" }}>
           <button type="submit" className="uni-submit-button">
             Create Bid

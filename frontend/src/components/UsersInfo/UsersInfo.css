@@ -38,6 +38,14 @@
   width: 78vw;
 }
 
+/* ===== Horizontal Scroll for Small Screens ===== */
+@media (max-width: 768px) {
+  .users-info__table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
 /* ===== Table Styling ===== */
 .users-info__table {
   width: 78vw;
@@ -45,6 +53,13 @@
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
+}
+
+/* Responsive update for table width */
+@media (max-width: 768px) {
+  .users-info__table {
+    width: 100%;
+  }
 }
 
 /* ===== Table Header ===== */
@@ -143,6 +158,11 @@
   align-items: center;
 }
 
+/* ===== Align Name Column to Left ===== */
+.users-info__name {
+  text-align: left;
+}
+
 /* ===== Responsive Design ===== */
 @media (max-width: 768px) {
   .users-info__container {
@@ -225,7 +245,7 @@
   font-weight: bold;
 }
 
-/* Loading and Error Styles */
+/* ===== Loading and Error Styles ===== */
 .users-info__loading,
 .users-info__error {
   text-align: center;

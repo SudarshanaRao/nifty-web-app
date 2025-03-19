@@ -20,7 +20,7 @@ const HolidayConfig = () => {
 
   const fetchHolidays = async () => {
     try {
-      const response = await axios.get("https://prod-api.nifty10.com/bid/holiday/configuration");
+      const response = await axios.get("https://dev-api.nifty10.com/bid/holiday/configuration");
       setHolidays(response.data.data || []);
     } catch (err) {
       setError("Failed to fetch holidays.");
@@ -55,27 +55,32 @@ const HolidayConfig = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!holidayName || !fromDate || !toDate) {
       setError("Please fill in all the fields.");
       return;
     }
-  
+
     const startDate = new Date(fromDate);
     const endDate = new Date(toDate);
-  
+
     if (endDate < startDate) {
       setError("To Date cannot be earlier than From Date.");
       return;
     }
-  
+
     let currentDate = new Date(startDate);
     let failedRequests = 0;
-  
+
     while (currentDate <= endDate) {
-      const formattedDate = currentDate.toISOString().split("T")[0].split("-").reverse().join("-"); // Convert to DD-MM-YYYY
+      const formattedDate = currentDate
+        .toISOString()
+        .split("T")[0]
+        .split("-")
+        .reverse()
+        .join("-"); // Convert to DD-MM-YYYY
       const apiUrl = `https://dev-api.nifty10.com/bid/holiday/configuration?date=${formattedDate}&name=${holidayName}`;
-  
+
       try {
         await axios.post(apiUrl);
         toast.success("Holiday added successfully!", { position: "top-right" });
@@ -83,10 +88,10 @@ const HolidayConfig = () => {
         failedRequests++;
         toast.error("Error fetching data.!");
       }
-  
+
       currentDate.setDate(currentDate.getDate() + 1); // Move to next day
     }
-  
+
     if (failedRequests === 0) {
       fetchHolidays();
       setHolidayName("");
@@ -98,7 +103,7 @@ const HolidayConfig = () => {
       setError("Some holidays failed to be added. Please try again.");
     }
   };
-  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-GB"); // Converts to DD-MM-YYYY
@@ -110,6 +115,9 @@ const HolidayConfig = () => {
     const yearMatches = selectedYear ? date.getFullYear() === parseInt(selectedYear) : true;
     return monthMatches && yearMatches;
   });
+
+  // Get today's date in YYYY-MM-DD format for the min attribute
+  const todayDate = new Date().toISOString().split("T")[0];
 
   return (
     <div className="uni-bid-form-container holiday-conif">
@@ -145,6 +153,7 @@ const HolidayConfig = () => {
             value={fromDate}
             onChange={handleFromDateChange}
             required
+            min={todayDate}  // Prevent selection of past dates
           />
         </div>
 
