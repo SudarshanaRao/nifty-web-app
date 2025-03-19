@@ -25,7 +25,20 @@ const HomePage = () => {
   const [isMsgDropdownOpen, setIsMsgDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAnnouncementOpen, setIsAnnouncementOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsCollapsed(true);
+      } else {
+        setIsCollapsed(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -157,33 +170,33 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
 
   return (
     <>
-      <div className={`app-container sidebar-expanded`}>
-        {/* Sidebar */}
-        <div className={`sidebar expanded`}>
-          <div className="sidebar-header">
-            <img src="Nifty10-logo.png" alt="logo" className="logo" />
-            <span className="visible">Nifty10</span>
-          </div>
-          <div className="sidebar-menu">
-            <ul>
-              <li onClick={() => setActiveTab("dashboard")} className={activeTab === "dashboard" ? "active" : ""}>
-                <Link to="#">
-                <i class="fa-solid fa-user-tie"></i>
-                  <span className="visible">Dashboard</span>
-                </Link>
-              </li>
-              <li onClick={() => setActiveTab("markets")} className={activeTab === "markets" ? "active" : ""}>
-                <Link to="#">
-                  <i className="fas fa-chart-line"></i>
-                  <span className="visible">All Markets</span>
-                </Link>
-              </li>
-              <li onClick={() => setActiveTab("companies")} className={activeTab === "companies" ? "active" : ""}>
-                <Link to="#">
-                  <i className="fas fa-building"></i>
-                  <span className="visible">All Companies</span>
-                </Link>
-              </li>
+      <div className={`app-container ${isCollapsed ? "sidebar-collapsed" : "sidebar-expanded"}`}>
+      {/* Sidebar */}
+      <div className={`sidebar ${isCollapsed ? "collapsed" : "expanded"}`}>
+        <div className="sidebar-header">
+          <img src="Nifty10-logo.png" alt="logo" className="logo" onClick={() => setIsCollapsed(!isCollapsed)}/>
+          {!isCollapsed && <span className="visible">Nifty10</span>}
+        </div>
+        <div className="sidebar-menu">
+          <ul>
+            <li onClick={() => setActiveTab("dashboard")} className={activeTab === "dashboard" ? "active" : ""}>
+              <Link to="#">
+                <i className="fa-solid fa-user-tie"></i>
+                {!isCollapsed && <span className="visible">Dashboard</span>}
+              </Link>
+            </li>
+            <li onClick={() => setActiveTab("markets")} className={activeTab === "markets" ? "active" : ""}>
+              <Link to="#">
+                <i className="fas fa-chart-line"></i>
+                {!isCollapsed && <span className="visible">All Markets</span>}
+              </Link>
+            </li>
+            <li onClick={() => setActiveTab("companies")} className={activeTab === "companies" ? "active" : ""}>
+              <Link to="#">
+                <i className="fas fa-building"></i>
+                {!isCollapsed && <span className="visible">All Companies</span>}
+              </Link>
+            </li>
               <li onClick={() => setActiveTab("holiday-config")} className={activeTab === "holiday-config" ? "active" : ""}>
                 <Link to="#">
                   <i class="fa-solid fa-calendar-check"></i>
@@ -193,31 +206,31 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
               <li onClick={() => setActiveTab("bids-creation")} className={activeTab === "bids-creation" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-clipboard"></i>
-                  <span className="visible">Bids Creation</span>
+                  {!isCollapsed && <span className="visible">Bids Creation</span>}
                 </Link>
               </li>
               <li onClick={() => setActiveTab("market-status")} className={activeTab === "market-status" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-folder-open"></i>
-                  <span className="visible">Market Status</span>
+                  {!isCollapsed && <span className="visible">Market Status</span> }
                 </Link>
               </li>
               <li onClick={() => setActiveTab("results")} className={activeTab === "results" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-clock"></i>
-                  <span className="visible">Results</span>
+                  {!isCollapsed && <span className="visible">Results</span> }
                 </Link>
               </li>
               <li onClick={() => setActiveTab("users-info")} className={activeTab === "users-info" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-users"></i>
-                  <span className="visible">Users Info</span>
+                  {!isCollapsed && <span className="visible">Users Info</span>}
                 </Link>
               </li>
               <li onClick={() => setActiveTab("bids-update")} className={activeTab === "bids-update" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-cogs"></i>
-                  <span className="visible">Bids Update</span>
+                  {!isCollapsed && <span className="visible">Bids Update</span>}
                 </Link>
               </li>
             </ul>
@@ -226,7 +239,7 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
 
         {/* Main Content */}
         <div id="mainContent" className="main-content">
-          <header id="headerContent">
+          <header id="headerContent" className={`header-content ${isCollapsed ? "collapsed-header-content" : "expanded-header-content"}`}>
           <div className="search-wrapper">
             <div className="social-icons">
             <div className="notification-wrapper">
@@ -317,7 +330,7 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
           </header>
         </div>
       </div>
-      <main id="renderContainer" className="markets-container">
+      <main id="renderContainer" className={`markets-container ${isCollapsed ? "collapsed-content" : "expanded-content"}`}>
         {renderContent()}
       </main>
     </>
