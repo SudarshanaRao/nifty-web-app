@@ -579,6 +579,10 @@ main {
   .main-content {
       margin-left: var(--sidebar-collapsed-width);
   }
+  .announcement-popup {
+    top: 65px;
+    right: 40px;
+  }
 }
 .sidebar.collapsed {
   width: 80px;
@@ -635,8 +639,10 @@ main {
 }
 @media (max-width: 768px) {
   .header-content {
+    width: 80% !important; /* Adjust width dynamically */
     margin-left: -130px !important;
-    width: 750px !important;
+    margin-right: auto !important;
+    text-align: center; /* Centers content */
   }
   .chart-container {
     width: 500px !important;
@@ -644,5 +650,15 @@ main {
   .todo-container {
     margin-left: 0px !important;
     width: 300px !important;
+  }
+  .settings-dropdown {
+    top:   60px;
+    right: 30px;
+  }
+  .msg-dropdown {
+    right: 40px;
+  }
+  .notification-dropdown {
+    right: 40px;
   }
 }

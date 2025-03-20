@@ -123,3 +123,17 @@
   display: flex;
   gap: 10px;
 }
+
+@media (max-width: 768px) {
+  .todo-container {
+    margin-left: 25px !important;
+    max-width: 500px;
+    width: 100% !important;
+  }
+}
+@media (max-width: 480px) {
+  .todo-container {
+    width: 400px !important;
+    border-radius: 16px;
+  }
+}

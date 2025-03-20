@@ -233,3 +233,76 @@
 .dashboard-graph-todo {
   display: flex;
 }
+
+/* Cards Container */
+.all-cards-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cards in one row by default */
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Responsive grid breakpoints */
+@media (max-width: 1024px) {
+  .all-cards-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 cards in a row */
+  }
+  .dashboard-graph-todo {
+    flex-direction: row; /* Stacks elements */
+  }
+  .chart-container {
+    width: 420px !important;
+    margin-right: 0px;
+  }
+}
+
+@media (max-width: 768px) {
+  .all-cards-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 cards in a row */
+  }
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .dashboard-graph-todo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start !important;
+  }
+  .chart-container {
+    width: 520px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .all-cards-container {
+    grid-template-columns: repeat(1, 1fr); /* 1 card in a row */
+  }
+  .chart-container {
+    width: 400px !important;
+  }
+}
+
+/* Graph and To-do Container */
+.dashboard-graph-todo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centers items */
+  align-items: center;
+  gap: 20px;
+}
+
+/* Chart Container */
+.chart-container {
+  max-width: 100%; /* Ensures responsiveness */
+  width: 700px;
+  margin-right: 0px;
+}
+
+@media (max-width: 1024px) {
+  .chart-container {
+    width: 100%;
+  }
+}

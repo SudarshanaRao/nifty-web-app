@@ -100,7 +100,7 @@ const Dashboard = () => {
                 setLast24HoursGrowth(last24HrsGrowth.toFixed(2)); // Round to 2 decimal places
                 setLastWeekGrowth(lastWeekGrowth.toFixed(2));
                 setTotalRevenue(finalTotalRevenue)
-                setLastWeekRevenueGrowth(lastWeekRevenueGrowth)
+                setLastWeekRevenueGrowth(lastWeekRevenueGrowth.toFixed(2))
 
 
                 const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
