@@ -63,7 +63,7 @@ const AllMarkets = () => {
     let slotsData = {};
   
     for (const marketId of marketIds) {
-      const apiUrl = `https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
+      const apiUrl = `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`;
   
       try {
         const response = await axios.get(apiUrl);

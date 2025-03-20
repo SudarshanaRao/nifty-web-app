@@ -12,7 +12,6 @@ import Dashboard from "../Dashboard/Dashboard";
 import BidsCreation from "../BidsCreation/BidsCreation"
 import axios from "axios";
 import HolidayConfig from "../HolidayConfig/HolidayConfig";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState("dashboard"); // Default tab is "markets"
