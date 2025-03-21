@@ -306,3 +306,31 @@
     width: 100%;
   }
 }
+
+.user-stats-label {
+  font-size: 14px;
+  color: #777;
+}
+
+.user-stats-value {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+.vertical-line {
+  width: 2px;
+  height: 25px;
+  border-left: 2px dashed #4f4f4f;
+}
+.user-stats-left, .user-stats-right {
+  text-align: center;
+  font-size: 10px;
+  margin: 0 10px;
+}
+.all-time-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 3px;
+  font-size: 14px;
+}

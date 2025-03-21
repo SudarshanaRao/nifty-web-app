@@ -5,7 +5,7 @@ import BoxGraph from './BoxGraph';
 import Todo from '../Todo/Todo'
 
 
-const Card = ({ title, color, image, data, growthRate, duration }) => {
+const Card = ({ title, color, image, data, growthRate, duration, isUserCard, newUsers, totalUsers }) => {
     return (
       <div className={'all-card dashboard-card-container'}>
         <div className="all-card-content dashboard-content">
@@ -13,6 +13,21 @@ const Card = ({ title, color, image, data, growthRate, duration }) => {
           <div className="all-time-container">
             <div className="all-time-left">
               <p className="all-time-res">{data}</p>
+              {isUserCard ? (
+                <div className='all-time-stats'>
+                    <div className="user-stats-left">
+                        <p className="user-stats-label">New Users</p>
+                        <p className="user-stats-value">{newUsers}</p>
+                    </div>
+                    <div className="vertical-line"></div>
+                    <div className="user-stats-right">
+                        <p className="user-stats-label">Total Users</p>
+                        <p className="user-stats-value">{totalUsers}</p>
+                    </div>
+                </div>
+              ) : (
+                <p className="all-time">{totalUsers}</p>
+              )}
             </div>
           </div>
         </div>
@@ -43,6 +58,7 @@ const Dashboard = () => {
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [lastWeekRevenueGrowth, setLastWeekRevenueGrowth] = useState(0);
     const [lastWeekSpentGrowth, setLastWeekSpentGrowth] = useState(0);
+    const [userPoints, setUserPoints] = useState(0);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -51,6 +67,12 @@ const Dashboard = () => {
                 const users = response.data.data || [];
 
                 setTotalUsers(users.length); // Total users count
+
+                const totalUserPoints = users.reduce((total, user) => total + (user.points || 0), 0);
+
+                const formattedPoints = totalUserPoints.toLocaleString("en-IN", { minimumFractionDigits: 2 });
+                setUserPoints(formattedPoints);
+
 
                 // Get date ranges
                 const now = new Date();
@@ -184,20 +206,22 @@ const Dashboard = () => {
         <div className="all-markets-bg-container dashboard-container">
             <div className="all-cards-container dashboard-cards-container">
                 <Card
-                key="totalUsers"
-                title="TOTAL USERS"
-                color="Bullish"
-                image="./total-users.png"
-                data={totalUsers.toString()}
-                growthRate= {lastWeekGrowth}
-                duration="Last Week"
+                    key="userStats"
+                    title="USER STATS"
+                    image="./total-users.png"
+                    color="Bullish"
+                    newUsers={last24HoursUsers}
+                    totalUsers={totalUsers}
+                    growthRate={lastWeekGrowth}
+                    duration="Last Week"
+                    isUserCard={true}
                 />
                 <Card
-                    key="last24HoursUsers"
-                    title="NEW USERS"
+                    key="Payouts"
+                    title="PAYOUTS"
                     color="Bearish"
-                    image="./24hrs-users.png"
-                    data={last24HoursUsers.toString()}
+                    image="./payouts.png"
+                    data={userPoints.toString()}
                     growthRate= {last24HoursGrowth}
                     duration="Last 24hrs"
                 />

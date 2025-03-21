@@ -226,12 +226,12 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
                   {!isCollapsed && <span className="visible">Users Info</span>}
                 </Link>
               </li>
-              <li onClick={() => setActiveTab("bids-update")} className={activeTab === "bids-update" ? "active" : ""}>
+              {/* <li onClick={() => setActiveTab("bids-update")} className={activeTab === "bids-update" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-cogs"></i>
                   {!isCollapsed && <span className="visible">Bids Update</span>}
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
