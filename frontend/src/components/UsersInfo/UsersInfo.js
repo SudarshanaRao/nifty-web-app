@@ -333,7 +333,7 @@ const UsersInfo = () => {
             <tbody>
               {displayedUsersData.map((user, index) => (
                 <tr key={index} className="users-info__row">
-                  <td className="users-info__name">{user.name || "N/A"}</td>
+                  <td className="users-info__name" title={user.name}>{user.name || "N/A"}</td>
                   <td>{user.mobileNo || "N/A"}</td>
                   <td>{user.email || "N/A"}</td>
                   <td>

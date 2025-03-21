@@ -161,6 +161,12 @@
 /* ===== Align Name Column to Left ===== */
 .users-info__name {
   text-align: left;
+  max-width: 150px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* ===== Responsive Design ===== */
