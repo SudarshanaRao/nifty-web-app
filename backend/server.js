@@ -9,7 +9,7 @@ const API_BASE_URL = "https://prod-api.nifty10.com"
 // Enable CORS with explicit settings
 app.use(
     cors({
-      origin: "http://localhost:3000", // Allow requests from frontend
+      origin: "*", // Allow requests from frontend
       methods: "GET,POST,PUT,DELETE",
       allowedHeaders: "Content-Type,Authorization",
       credentials: true, // Allow cookies if needed
