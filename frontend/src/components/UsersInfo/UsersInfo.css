@@ -167,6 +167,7 @@
   text-overflow: ellipsis;
   display: inline-block;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 /* ===== Responsive Design ===== */
