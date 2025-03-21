@@ -20,7 +20,7 @@ const UsersInfo = () => {
       setLoading(true);
       setError(null);
       const response = await fetch(
-        "https://dev-api.nifty10.com/nif/user/list/user?size=1000"
+        "https://prod-api.nifty10.com/nif/user/list/user?size=1000"
       );
       const data = await response.json();
 

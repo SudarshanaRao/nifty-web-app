@@ -47,7 +47,7 @@ const BoxGraph = () => {
 
       const apiRequests = marketIds.map((marketId) =>
         fetch(
-          `https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`
+          `https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`
         )
           .then((response) =>
             response.ok ? response.json() : Promise.reject(`API Error: ${marketId}`)

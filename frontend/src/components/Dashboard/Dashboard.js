@@ -4,6 +4,7 @@ import axios from "axios";
 import BoxGraph from './BoxGraph';
 import Todo from '../Todo/Todo'
 
+
 const Card = ({ title, color, image, data, growthRate, duration }) => {
     return (
       <div className={'all-card dashboard-card-container'}>
@@ -46,7 +47,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get("https://dev-api.nifty10.com/nif/user/list/activeUser");
+                const response = await axios.get("https://prod-api.nifty10.com/nif/user/list/activeUser");
                 const users = response.data.data || [];
 
                 setTotalUsers(users.length); // Total users count
@@ -115,7 +116,7 @@ const Dashboard = () => {
 
                     // Fetch data for all markets
                     const apiRequests = marketIds.map(marketId =>
-                        fetch(`https://dev-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
+                        fetch(`https://prod-api.nifty10.com/bid/market?Date=${formattedDate}&marketId=${marketId}&userId=${userId}`)
                             .then(response => response.json())
                     );
 

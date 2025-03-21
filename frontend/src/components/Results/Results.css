@@ -15,7 +15,7 @@
   justify-content: flex-start;
 }
 .result-cards-container {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   gap: 10px !important;
 }

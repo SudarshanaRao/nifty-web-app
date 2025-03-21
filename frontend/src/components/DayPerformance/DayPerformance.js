@@ -9,7 +9,7 @@ const DayPerformance = ({ trend, onBack }) => {
     const fetchStocks = async () => {
       setLoading(true);
       try {
-        const response = await fetch("https://dev-api.nifty10.com/company");
+        const response = await fetch("https://prod-api.nifty10.com/company");
         const data = await response.json();
 
         if (data?.data && Array.isArray(data.data)) {
