@@ -77,9 +77,11 @@
 .users-info__row td {
   padding: 10px;
   border-bottom: 1px solid #ddd;
-  font-size: 13px;
+  font-size: 14px;
   color: #333;
   text-align: center ; /* Forces left alignment for all cells */
+  font-family: arial;
+  font-weight: 500;
 }
 .users-info__table td.users-info__name {
   text-align: left;
