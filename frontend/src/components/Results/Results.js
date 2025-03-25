@@ -12,9 +12,8 @@ const marketImages = {
   "Bank Nifty Prediction": "bank-nifty-prediction.png",
 };
 
-// Card Component
-const Card = ({ title, image, activeBids, companyCount, onClick }) => (
-  <div className="all-card results-card" onClick={() => onClick(title)}>
+const Card = ({ title, image, activeBids, companyCount, marketId, onClick }) => (
+  <div className="all-card results-card" onClick={() => onClick(title, marketId)}>
     <div className="all-card-content">
       <h2>{title}</h2>
       <div className="all-time-container">
@@ -41,6 +40,7 @@ const Results = () => {
   const [companiesData, setCompaniesData] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedMarket, setSelectedMarket] = useState(null);
+  const [selectedMarketId, setSelectedMarketId] = useState(null);
 
   useEffect(() => {
     fetchMarketData();
@@ -69,23 +69,21 @@ const Results = () => {
         "Nifty Prediction": 0,
         "Bank Nifty Prediction": 0,
       };
-  
+
       companies.forEach((company) => {
         const status = (company.companyStatus || "").toUpperCase();
-  
         if (status === "BULLISH") categorizedCompanies["Bullish"]++;
         if (status === "BEARISH") categorizedCompanies["Bearish"]++;
         if (status === "NIFTY PREDICTION") categorizedCompanies["Nifty Prediction"]++;
         if (status === "BANK NIFTY PREDICTION") categorizedCompanies["Bank Nifty Prediction"]++;
       });
-  
+
       setCompaniesData(categorizedCompanies);
     } catch (error) {
       console.error("Error fetching companies data:", error);
       toast.error("Error fetching companies data!");
     }
   };
-  
 
   // Fetch Bids Data
   const fetchBidsData = useCallback(async () => {
@@ -125,8 +123,26 @@ const Results = () => {
     }
   }, [marketData, fetchBidsData]);
 
-  const handleMarketClick = (marketName) => {
+  // Automatically select Bullish market if none is selected
+  useEffect(() => {
+    if (marketData.length > 0 && !selectedMarket) {
+      const bullishMarket = marketData.find((m) =>
+        m.marketName.toLowerCase().includes("bullish")
+      );
+      if (bullishMarket) {
+        setSelectedMarket(bullishMarket.marketName);
+        setSelectedMarketId(bullishMarket.marketId);
+        localStorage.setItem("selectedMarketId", bullishMarket.marketId);
+      }
+    }
+  }, [marketData, selectedMarket]);
+
+  // When a card is clicked, store both the market name and its ID
+  const handleMarketClick = (marketName, marketId) => {
+    console.log("Selected Market:", marketName, "Market ID:", marketId);
     setSelectedMarket(marketName);
+    setSelectedMarketId(marketId);
+    localStorage.setItem("selectedMarketId", marketId);
   };
 
   return (
@@ -142,7 +158,8 @@ const Results = () => {
               image={marketImages[marketName] || "default.png"}
               activeBids={bidsData[marketId]?.activeBids || 0}
               companyCount={companiesData[marketName] || 0}
-              onClick={() => handleMarketClick(marketName)}
+              marketId={marketId}
+              onClick={handleMarketClick}
             />
           ))
         )}
@@ -150,7 +167,14 @@ const Results = () => {
       </div>
       {selectedMarket && (
         <div className="results-form-container">
-          <DayPerformance trend={selectedMarket.toUpperCase()} onBack={() => setSelectedMarket(null)} />
+          <DayPerformance
+            trend={selectedMarket.toUpperCase()}
+            marketId={selectedMarketId || localStorage.getItem("selectedMarketId")}
+            onBack={() => {
+              setSelectedMarket(null);
+              setSelectedMarketId(null);
+            }}
+          />
         </div>
       )}
     </div>

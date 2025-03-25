@@ -68,6 +68,11 @@
 .performance-submit-btn:hover {
     background: #333;
 }
+.performance-submit-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6; /* Optional: Makes the button look visually disabled */
+  }
+  
 
 .no-data-message {
     color: red;

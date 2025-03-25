@@ -7,6 +7,46 @@
   padding: 20px;
   background-color: #f4f4f4;
 }
+/* Ensure buttons are properly spaced */
+.swal2-actions {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 10px !important;
+}
+
+/* Remove outline/border from buttons */
+.swal2-confirm, .swal2-cancel {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Improve button styling */
+.swal2-confirm {
+  background-color: #28a745 !important; /* Green */
+  color: white !important;
+  padding: 8px 16px !important;
+  font-size: 16px !important;
+  border-radius: 6px !important;
+}
+
+.swal2-cancel {
+  background-color: #dc3545 !important; /* Red */
+  color: white !important;
+  padding: 8px 16px !important;
+  font-size: 16px !important;
+  border-radius: 6px !important;
+}
+
+/* Fix hover effects */
+.swal2-confirm:hover {
+  background-color: #218838 !important;
+}
+
+.swal2-cancel:hover {
+  background-color: #c82333 !important;
+}
+
 
 .all-card {
   color: #333;
