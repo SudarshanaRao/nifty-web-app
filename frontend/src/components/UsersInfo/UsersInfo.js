@@ -18,7 +18,7 @@ const UsersInfo = () => {
   const [error, setError] = useState(null);
 
   // Show 20 users per page
-  const usersPerPage = 20;
+  const usersPerPage = 30;
 
   // Fetch Users
   const fetchUsers = async () => {
@@ -323,7 +323,7 @@ const UsersInfo = () => {
                     (sortOrder === "asc" ? "▲" : "▼")}
                 </th>
                 <th onClick={() => handleSort("points")}>
-                  Wallet (Points){" "}
+                  Wallet{" "}
                   {sortField === "points" && (sortOrder === "asc" ? "▲" : "▼")}
                 </th>
                 <th>Earned Money</th>

@@ -6,10 +6,7 @@
   background: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(5, 5, 5, 0.1);
-  text-align: center;
 }
-
-/* ===== Title Styling ===== */
 .users-info__title {
   font-size: 24px;
   color: #333;
@@ -82,8 +79,18 @@
   border-bottom: 1px solid #ddd;
   font-size: 13px;
   color: #333;
+  text-align: center ; /* Forces left alignment for all cells */
 }
-
+.users-info__table td.users-info__name {
+  text-align: left;
+  max-width: 150px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
 /* ===== Alternating Row Colors ===== */
 .users-info__row:nth-child(odd) {
   background: #f2f2f2;
@@ -103,12 +110,11 @@
   color: green;
   cursor: pointer;
 }
-
 .users-info__status.inactive {
   color: red;
 }
 
-/* ===== Search Box Styling ===== */
+/* ===== Search Box ===== */
 .users-search-box {
   display: flex;
   justify-content: center;
@@ -158,16 +164,17 @@
   align-items: center;
 }
 
-/* ===== Align Name Column to Left ===== */
+/* ===== Force Name Column Left Alignment ===== */
+
+/* ===== Align Name Column to Left + Ellipsis ===== */
 .users-info__name {
-  text-align: left;
+  text-align: left !important;
   max-width: 150px; 
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+  overflow: hidden;
   display: inline-block;
   vertical-align: middle;
-  cursor: pointer;
 }
 
 /* ===== Responsive Design ===== */
@@ -218,6 +225,7 @@
   }
 }
 
+/* ===== Pagination Container ===== */
 .pagination-container {
   display: flex;
   justify-content: center;
@@ -271,4 +279,36 @@
 .users-info__error {
   color: #ff4d4d;
   background: rgba(255, 77, 77, 0.1);
+}
+
+/* ===== Sort Arrows ===== */
+.sort-arrows {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  vertical-align: middle; 
+  color: white;
+}
+
+.arrow {
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0.3;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.arrow.up {
+  margin-top: -10px;
+  margin-bottom: 1px;
+}
+
+.arrow.down {
+  margin-top: 1px;
+}
+
+.arrow.active {
+  opacity: 1;
+  font-weight: bold;
 }
