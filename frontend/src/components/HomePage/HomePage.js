@@ -12,6 +12,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import BidsCreation from "../BidsCreation/BidsCreation"
 import axios from "axios";
 import HolidayConfig from "../HolidayConfig/HolidayConfig";
+import { Analytics } from "@vercel/analytics/react"
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState("dashboard"); // Default tab is "markets"
@@ -344,6 +345,7 @@ const AnnouncementUnreadCount = announcements.filter((ann) => ann.active).length
       </div>
       <main id="renderContainer" className={`markets-container ${isCollapsed ? "collapsed-content" : "expanded-content"}`}>
         {renderContent()}
+        <Analytics />
       </main>
     </>
   );
