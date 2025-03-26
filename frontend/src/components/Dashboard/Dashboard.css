@@ -333,7 +333,7 @@
 
 @media (max-width: 768px) {
   .dashboard-card-container {
-    width: 250px;
+    width: 220px;
   }
   .all-time-stats {
     gap: 0px;

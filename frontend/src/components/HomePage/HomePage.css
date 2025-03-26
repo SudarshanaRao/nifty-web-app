@@ -668,7 +668,8 @@ main {
   }
   .markets-container {
     margin-left: -180px;
-    height: calc(100vh);
+    height: 100vh; /* Change from calc(100vh) to 100% */
+    max-height: calc(100vh - 60px);
     overflow-y: auto;
     position: relative;
     z-index: 800;
