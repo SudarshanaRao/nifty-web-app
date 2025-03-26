@@ -249,7 +249,7 @@ main {
     left: 250px;
     top: 0;
     width: 100% !important;
-    height: auto !important;
+    height: 90vh !important;
 }
 
 
@@ -669,7 +669,7 @@ main {
   .markets-container {
     margin-left: -180px;
     height: calc(100vh);
-    overflow-y: hidden;
+    overflow-y: auto;
     position: relative;
     z-index: 800;
     width: 500px !important;
