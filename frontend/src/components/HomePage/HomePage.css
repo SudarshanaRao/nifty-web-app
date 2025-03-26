@@ -39,7 +39,7 @@ header {
 
 .sidebar {
     height: 100vh; /* Ensure sidebar takes full height */
-    overflow-y: auto; /* Enable scrolling if items exceed height */
+    overflow-y: hidden; /* Enable scrolling if items exceed height */
     scrollbar-width: thin;
   }
   
@@ -75,7 +75,7 @@ header {
     z-index: 100;
     background: var(--main-color);
     color: #fff;
-    overflow-y: auto;
+    overflow-y: hidden;
     transition: width 500ms;
 }
 
@@ -498,7 +498,6 @@ main {
   z-index: 100;
   background: var(--main-color);
   color: #fff;
-  overflow-y: auto;
   transition: width var(--transition-speed);
 }
 
@@ -630,10 +629,6 @@ main {
 }
 
 @media (max-width: 768px) {
-  .markets-container {
-    margin-left: -180px;
-    width: 500px !important;
-  }
   #renderContainer {
     width: 500px !important;
   }
@@ -670,6 +665,14 @@ main {
   }
   .notification-dropdown {
     right: 40px;
+  }
+  .markets-container {
+    margin-left: -180px;
+    height: calc(100vh);
+    overflow-y: hidden;
+    position: relative;
+    z-index: 800;
+    width: 500px !important;
   }
 }
 

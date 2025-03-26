@@ -261,12 +261,7 @@
   .all-cards-container {
     grid-template-columns: repeat(2, 1fr); /* 2 cards in a row */
   }
-  .dashboard-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  
   .dashboard-graph-todo {
     display: flex;
     align-items: center;
@@ -334,4 +329,44 @@
   justify-content: space-between;
   gap: 3px;
   font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-card-container {
+    width: 250px;
+  }
+  .all-time-stats {
+    gap: 0px;
+    font-size: 8px;
+  }
+  .user-stats-left, .user-stats-right {
+    font-size: 6px;
+  }
+  .user-stats-value {
+    font-size: 14px;
+  }
+  .user-stats-label {
+    font-size: 12px;
+  }
+  .dashboard-graph-todo {
+    gap: 10px;
+  }
+  .percentage-text {
+    font-size: 10px;
+  }
+  .all-time-res {
+    font-size: 16px;
+  }
+  .stats-background {
+    font-size: 10px;
+  }
+  .all-cards-container {
+    gap: 10px;
+  }
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 }
