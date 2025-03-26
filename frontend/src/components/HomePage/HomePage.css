@@ -442,6 +442,13 @@ main {
   justify-content: center;
 }
 
+.announcement-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .announcement-icon {
   width: 60px;
   height: 60px;
@@ -474,6 +481,12 @@ main {
   max-width: 250px;
   font-weight: bold;
   text-align: center;
+}
+.announcement-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
 }
 /* Sidebar Styles */
 .sidebar {
@@ -566,15 +579,12 @@ main {
 /* Responsive Design */
 @media (max-width: 768px) {
   .sidebar {
-    width: 80px !important;
     transition: width 0.3s ease;
     overflow: hidden;
+    height: 100vh !important;
+    max-width: 500px;
   }
   
-  .sidebar .sidebar-header span,
-  .sidebar .sidebar-menu span {
-      display: none;
-  }
   
   .main-content {
       margin-left: var(--sidebar-collapsed-width);
@@ -661,4 +671,29 @@ main {
   .notification-dropdown {
     right: 40px;
   }
+}
+
+/* Fixed header styling */
+.header-content {
+  position: fixed;
+  top: 0;
+  left: 4;
+  right: 0;
+  width: 78%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensures it stays on top */
+  transition: all 0.3s ease-in-out;
+}
+
+.announcement-text {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  margin: 5px 0;
+  padding: 8px;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.announcement-text:hover {
+  background: rgba(255, 255, 255, 0.3);
 }

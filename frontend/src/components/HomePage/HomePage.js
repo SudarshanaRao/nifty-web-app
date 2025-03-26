@@ -119,9 +119,9 @@ const toggleAnnouncement = () => {
   setIsSettingsOpen(false);
 }
 
-const NotificationUnreadCount = notifications.filter((notif) => !notif.active).length;
-const MsgUnreadCount = messages.filter((msg) => !msg.active).length;
-const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).length;
+const NotificationUnreadCount = notifications.filter((notif) => notif.active).length;
+const MsgUnreadCount = messages.filter((msg) => msg.active).length;
+const AnnouncementUnreadCount = announcements.filter((ann) => ann.active).length;
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isOtpVerfied");
@@ -173,7 +173,7 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
       {/* Sidebar */}
       <div className={`sidebar ${isCollapsed ? "collapsed" : "expanded"}`}>
         <div className="sidebar-header">
-          <img src="Nifty10-logo.png" alt="logo" className="logo" onClick={() => setIsCollapsed(!isCollapsed)}/>
+          <img src="Nifty10-logo.png" alt="logo" className="logo" onClick={() => setIsCollapsed((prev) => !prev)}/>
           {!isCollapsed && <span className="visible">Nifty10</span>}
         </div>
         <div className="sidebar-menu">
@@ -248,24 +248,31 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
               </i>
               {isAnnouncementOpen && (
                 <div className="announcement-popup">
-                  {announcements.length > 0 ? (
-                    announcements.map((announcement) => (
-                      <div className="announcement-content" key={announcement.id}>
-                        <button className="close-btn" onClick={() => setIsAnnouncementOpen(false)}>✖</button>
-                        <div className="announcement-icon-wrapper">
-                          <img src="/megaphone.png" alt="megaphone" className="announcement-icon" />
-                          <div className="waves"></div>
-                        </div>
-                        <p className="announcement-text">
-                          {announcement.notification}  {/* Dynamically set the announcement message */}
-                        </p>
-                      </div>
-                      ))
-                    ) : (
-                      <p className="no-notifications">No new messages</p>
-                    )}
+                  <button className="close-btn" onClick={() => setIsAnnouncementOpen(false)}>✖</button>
+                <div className="announcement-text-wrapper">  
+                  <div className="announcement-icon-wrapper">
+                    <img src="/megaphone.png" alt="megaphone" className="announcement-icon" />
+                    <div className="waves"></div>
+                  </div>
+
+                  {announcements.filter(announcement => announcement.active).length > 0 ? (
+                    <ul className="announcement-list">
+                      {announcements
+                        .filter(announcement => announcement.active) 
+                        .map((announcement) => (
+                          <li key={announcement.id} className="announcement-text">
+                            {announcement.notification}
+                          </li>
+                        ))}
+                    </ul>
+                  ) : (
+                    <p className="no-notifications">No new messages</p>
+                  )}
+                  </div>
                 </div>
               )}
+
+
 
 
 
@@ -277,18 +284,21 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
 
               {isMsgDropdownOpen && (
                 <div className="notification-dropdown msg-dropdown">
-                  {messages.length > 0 ? (
-                    messages.map((msg) => (
-                      <div key={msg.id} className={`notification-item ${msg.active ? "read" : "unread"}`}>
-                        <p>{msg.notification}</p>
-                        <span className="timestamp">{msg.formattedTimestamp}</span>
-                      </div>
-                    ))
+                  {messages.filter(msg => msg.active).length > 0 ? (
+                    messages
+                      .filter(msg => msg.active)
+                      .map((msg) => (
+                        <div key={msg.id} className="notification-item">
+                          <p>{msg.notification}</p>
+                          <span className="timestamp">{msg.formattedTimestamp}</span>
+                        </div>
+                      ))
                   ) : (
                     <p className="no-notifications">No new messages</p>
                   )}
                 </div>
               )}
+
 
               {/* Notification Icon */}
               <i className="fas fa-bell" onClick={toggleNotificationDropdown}>
@@ -297,18 +307,21 @@ const AnnouncementUnreadCount = announcements.filter((ann) => !ann.active).lengt
 
               {isDropdownOpen && (
                 <div className="notification-dropdown">
-                  {notifications.length > 0 ? (
-                    notifications.map((notif) => (
-                      <div key={notif.id} className={`notification-item ${notif.active ? "read" : "unread"}`}>
-                        <p>{notif.notification}</p>
-                        <span className="timestamp">{notif.formattedTimestamp}</span>
-                      </div>
-                    ))
+                  {notifications.filter((notif) => notif.active).length > 0 ? (
+                    notifications
+                      .filter((notif) => notif.active)
+                      .map((notif) => (
+                        <div key={notif.id} className="notification-item read">
+                          <p>{notif.notification}</p>
+                          <span className="timestamp">{notif.formattedTimestamp}</span>
+                        </div>
+                      ))
                   ) : (
                     <p className="no-notifications">No new notifications</p>
                   )}
                 </div>
               )}
+
 
               {/* Settings Icon */}
               <i
