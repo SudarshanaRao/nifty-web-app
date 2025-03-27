@@ -239,6 +239,6 @@
     margin-top: 10px;
   }
   input {
-    width: auto !important;
+    width: 100% !important;
   }
 }
