@@ -24,8 +24,6 @@
 header {
     left: 240px; /* Aligns header with sidebar */
     width: calc(100% - 240px);
-
-
 }
 
 /* Ensure dashboard does not shift */
@@ -50,7 +48,7 @@ header {
   }
   
   .sidebar-menu ul li {
-    padding: 8px 15px;
+    padding: 4px 15px;
     cursor: pointer;
     transition: background 0.3s;
   }
@@ -667,6 +665,7 @@ main {
     right: 40px;
   }
   .markets-container {
+    margin-top: 0px;
     margin-left: -180px;
     height: 100vh; /* Change from calc(100vh) to 100% */
     max-height: calc(100vh - 60px);
@@ -674,6 +673,25 @@ main {
     position: relative;
     z-index: 800;
     width: 500px !important;
+  }
+  .notification-wrapper {
+    justify-content: flex-start;
+  }
+  .header-content {
+    display: none;
+  }
+  .sidebar-menu ul li {
+    padding: 4px 15px;
+  }
+  .sidebar-menu ul li:first-child {
+    margin-top: 20px;
+  }
+  
+}
+
+@media (min-width: 769px) {
+  .admin-settings {
+    display: none;
   }
 }
 

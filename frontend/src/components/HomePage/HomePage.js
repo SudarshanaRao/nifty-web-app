@@ -226,6 +226,13 @@ const AnnouncementUnreadCount = announcements.filter((ann) => ann.active).length
                   {!isCollapsed && <span className="visible">Users Info</span>}
                 </Link>
               </li>
+              <li onClick={() => setActiveTab("admin-settings")} className={activeTab === "admin-settings" ? "active admin-settings" : "admin-settings"}>
+                  <Link to="#">
+                    <i className="fa-solid fa-user-gear settings-icon"></i>
+                    {!isCollapsed && <span className="visible">Admin</span>}
+                  </Link>
+                </li>
+              
               {/* <li onClick={() => setActiveTab("bids-update")} className={activeTab === "bids-update" ? "active" : ""}>
                 <Link to="#">
                   <i className="fas fa-cogs"></i>
