@@ -21,7 +21,7 @@
     box-sizing: border-box;
 }
 
-header {
+.header-content {
     left: 240px; /* Aligns header with sidebar */
     width: calc(100% - 240px);
 }
@@ -110,7 +110,7 @@ header {
     margin: auto;
 }
 
-header {
+.header-content {
     position: fixed;
     width: 75%;
     top: 0;
@@ -642,11 +642,17 @@ main {
 }
 @media (max-width: 768px) {
   .header-content {
-    width: 80% !important; /* Adjust width dynamically */
-    margin-left: -130px !important;
-    margin-right: auto !important;
-    text-align: center; /* Centers content */
-  }
+    display: none;
+}
+.header {
+  width: 100vw;
+  background: #000;
+  height: 65px;
+  padding: 0 2rem;
+  border-bottom: 1px solid #ccc;
+  transition: left 500ms;
+}
+
   .chart-container {
     width: 500px !important;
   }
@@ -656,16 +662,13 @@ main {
   }
   .settings-dropdown {
     top:   60px;
-    right: 30px;
-  }
-  .msg-dropdown {
-    right: 40px;
+    right: 25%;
   }
   .notification-dropdown {
-    right: 40px;
+    right: 25%;
   }
   .markets-container {
-    margin-top: 0px;
+    margin-top: 20%;
     margin-left: -180px;
     height: 100vh; /* Change from calc(100vh) to 100% */
     max-height: calc(100vh - 60px);
@@ -675,10 +678,7 @@ main {
     width: 500px !important;
   }
   .notification-wrapper {
-    justify-content: flex-start;
-  }
-  .header-content {
-    display: none;
+    justify-content: flex-end;
   }
   .sidebar-menu ul li {
     padding: 4px 15px;
@@ -686,7 +686,35 @@ main {
   .sidebar-menu ul li:first-child {
     margin-top: 20px;
   }
-  
+  .collapsed {
+    display: none;
+  }
+  .header-content {
+    position: relative;
+    width: 100%;
+    top: 0;
+    border-radius: 10px;
+    background: #000;
+    height: 65px;
+    padding: 0 2rem;
+    border-bottom: 1px solid #ccc;
+    transition: left 500ms;
+    overflow: hidden; /* Prevents content from overflowing */
+}
+.social-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.announcement-popup {
+  right: 30%;
+}
+#renderContainer {
+  left: 0;
+  margin-left: 2%;
+  overflow-x: hidden;
+  background-color: transparent;
+}
 }
 
 @media (min-width: 769px) {

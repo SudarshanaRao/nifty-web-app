@@ -266,9 +266,17 @@
     display: flex;
     align-items: center;
     justify-content: flex-start !important;
+    width: 55%;
   }
   .chart-container {
     width: 520px !important;
+  }
+  .chart-header {
+    display: flex;
+    flex-direction: column;
+  }
+  .active {
+    padding-top: 10px;
   }
 }
 
@@ -333,7 +341,7 @@
 
 @media (max-width: 768px) {
   .dashboard-card-container {
-    width: 220px;
+    width: 250px;
   }
   .all-time-stats {
     gap: 0px;
@@ -368,5 +376,18 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+  }
+  .time-filters {
+    margin-top: 10px;
+  }
+  .dashboard-cards-container{
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .chart-container{
+    width: 600px !important;
   }
 }

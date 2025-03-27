@@ -211,3 +211,34 @@
   font-weight: 500;
   color: #333;
 }
+
+@media (max-width: 768px) {
+  .company-stocks-container {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    margin-bottom: 50px;
+  }
+  .company-popup {
+    top: 42%;
+    left: 40%;
+    padding: 10px;
+    width: 70vw;
+    height: 50vh;
+    align-items: center;
+  }
+  .company-form-group {
+    margin: 20px 0px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  label {
+    margin-bottom: 8px;
+  }
+  .add-company-btn {
+    margin-top: 10px;
+  }
+  input {
+    width: auto !important;
+  }
+}

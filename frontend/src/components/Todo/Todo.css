@@ -130,6 +130,10 @@
     max-width: 500px;
     width: 100% !important;
   }
+  .todo-form {
+    display: flex;
+    flex-direction: column;
+  }
 }
 @media (max-width: 480px) {
   .todo-container {

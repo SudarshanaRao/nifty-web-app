@@ -242,6 +242,106 @@ const AnnouncementUnreadCount = announcements.filter((ann) => ann.active).length
             </ul>
           </div>
         </div>
+        <div id="mobile-header" className="mobile-header">
+          <header id="header" className='header'>
+          <div className="search-wrapper">
+            <div className="social-icons">
+            <img src="Nifty10-logo.png" alt="logo" className="logo" onClick={() => setIsCollapsed((prev) => !prev)}/>
+            <div className="notification-wrapper">
+              <i className="fas fa-megaphone" onClick={toggleAnnouncement}> 
+              <img src="/megaphone.png" alt="megaphone" className="social-icon-megaphone" />
+              {AnnouncementUnreadCount > 0 && <span className="notification-count">{AnnouncementUnreadCount}</span>}
+              </i>
+              {isAnnouncementOpen && (
+                <div className="announcement-popup">
+                  <button className="close-btn" onClick={() => setIsAnnouncementOpen(false)}>✖</button>
+                <div className="announcement-text-wrapper">  
+                  <div className="announcement-icon-wrapper">
+                    <img src="/megaphone.png" alt="megaphone" className="announcement-icon" />
+                    <div className="waves"></div>
+                  </div>
+
+                  {announcements.filter(announcement => announcement.active).length > 0 ? (
+                    <ul className="announcement-list">
+                      {announcements
+                        .filter(announcement => announcement.active) 
+                        .map((announcement) => (
+                          <li key={announcement.id} className="announcement-text">
+                            {announcement.notification}
+                          </li>
+                        ))}
+                    </ul>
+                  ) : (
+                    <p className="no-notifications">No new messages</p>
+                  )}
+                  </div>
+                </div>
+              )}
+
+              {/* Message Icon */}
+              <i className="fas fa-envelope" onClick={toggleMsgDropdown}>
+                {MsgUnreadCount > 0 && <span className="notification-count">{MsgUnreadCount}</span>}
+              </i>
+
+              {isMsgDropdownOpen && (
+                <div className="notification-dropdown msg-dropdown">
+                  {messages.filter(msg => msg.active).length > 0 ? (
+                    messages
+                      .filter(msg => msg.active)
+                      .map((msg) => (
+                        <div key={msg.id} className="notification-item">
+                          <p>{msg.notification}</p>
+                          <span className="timestamp">{msg.formattedTimestamp}</span>
+                        </div>
+                      ))
+                  ) : (
+                    <p className="no-notifications">No new messages</p>
+                  )}
+                </div>
+              )}
+
+
+              {/* Notification Icon */}
+              <i className="fas fa-bell" onClick={toggleNotificationDropdown}>
+                {NotificationUnreadCount > 0 && <span className="notification-count">{NotificationUnreadCount}</span>}
+              </i>
+
+              {isDropdownOpen && (
+                <div className="notification-dropdown">
+                  {notifications.filter((notif) => notif.active).length > 0 ? (
+                    notifications
+                      .filter((notif) => notif.active)
+                      .map((notif) => (
+                        <div key={notif.id} className="notification-item read">
+                          <p>{notif.notification}</p>
+                          <span className="timestamp">{notif.formattedTimestamp}</span>
+                        </div>
+                      ))
+                  ) : (
+                    <p className="no-notifications">No new notifications</p>
+                  )}
+                </div>
+              )}
+
+
+              {/* Settings Icon */}
+              <i
+                className={`fa-solid fa-user-gear settings-icon ${isSettingsOpen ? "rotate" : ""}`}
+                onClick={toggleSettingsDropdown}
+              ></i>
+
+              {isSettingsOpen && (
+                <div className="settings-dropdown">
+                  <button onClick={handleLogout} className="logout-btn">Logout</button>
+                </div>
+              )}
+            </div>
+
+            </div>
+            {/* <button onClick={handleLogout} className="btn logout">Logout</button> */}
+          </div>
+          </header>
+        </div>
 
         {/* Main Content */}
         <div id="mainContent" className="main-content">

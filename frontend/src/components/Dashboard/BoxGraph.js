@@ -20,11 +20,20 @@ const marketGradients = {
 const BoxGraph = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showDefs, setShowDefs] = useState(window.innerWidth > 768);
   // Default to today's date in the input format yyyy-mm-dd
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
+  useEffect(() => {
+    const handleResize = () => {
+      setShowDefs(window.innerWidth > 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Fetch market data based on the selected date.
   const fetchAllMarketsData = useCallback(async () => {
@@ -125,7 +134,7 @@ const BoxGraph = () => {
   return (
     <div className="chart-container">
       <div className="chart-header">
-        <h3>Market-Wise Bid Analysis</h3>
+        <h3>Bid Analysis</h3>
         <div className="time-filters">
           <span className="active">Selected Date:</span>
           {/* Date picker to select a date */}
@@ -233,8 +242,9 @@ const BoxGraph = () => {
                 );
               }}
             />
-
-            <Legend />
+            {showDefs && (
+              <Legend />
+            )}
 
             <Bar
               dataKey="Bullish"
