@@ -16,7 +16,7 @@ import { Analytics } from "@vercel/analytics/react"
 import ProfileCard from "../ProfileCard/ProfileCard";
 
 const HomePage = () => {
-  const [activeTab, setActiveTab] = useState(); // Default tab is "markets"
+  const [activeTab, setActiveTab] = useState("dashboard"); // Default tab is "markets"
   const [result, setResult] = useState(false);
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);

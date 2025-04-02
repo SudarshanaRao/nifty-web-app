@@ -136,7 +136,7 @@ const BoxGraph = () => {
       <div className="chart-header">
         <h3>Bid Analysis</h3>
         <div className="time-filters">
-          <span className="active">Selected Date:</span>
+          <span className="active-date">Selected Date:</span>
           {/* Date picker to select a date */}
           <input
             type="date"
