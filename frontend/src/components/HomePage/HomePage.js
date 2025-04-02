@@ -167,7 +167,7 @@ const AnnouncementUnreadCount = announcements.filter((ann) => ann.active).length
       case "profile-card":
         return <ProfileCard selectedUser={selectedUser.userId} setActiveTab={setActiveTab}/>;
       default:
-        return <ProfileCard />; // Default to Markets if no tab is selected
+        return <Dashboard />; // Default to Markets if no tab is selected
     }
   };
 
