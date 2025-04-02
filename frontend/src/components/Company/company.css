@@ -212,6 +212,27 @@
   color: #333;
 }
 
+.swal2-popup {
+  width: 25% !important; /* Reduce the modal width */
+  font-size: 14px !important; /* Reduce text size */
+  border-radius: 14px !important;
+}
+.swal2-title {
+  font-size: 16px !important; /* Adjust title size */
+}
+.swal2-content {
+  font-size: 14px !important; /* Adjust content text */
+}
+.swal2-actions {
+  flex-direction: row; /* Stack buttons */
+  align-items: center;
+  width: 100%;
+}
+.swal2-confirm, .swal2-cancel {
+  width: auto !important; /* Make buttons full width */
+  margin: auto;
+}
+
 @media (max-width: 768px) {
   .company-stocks-container {
     display: grid !important;
@@ -219,8 +240,8 @@
     margin-bottom: 50px;
   }
   .company-popup {
-    top: 42%;
-    left: 40%;
+    top: 50%;
+    left: 50%;
     padding: 10px;
     width: 70vw;
     height: 50vh;
@@ -240,5 +261,25 @@
   }
   input {
     width: 100% !important;
+  }
+}
+@media (max-width: 768px) {
+  .swal2-popup {
+    width: 70% !important; /* Reduce the modal width */
+    font-size: 14px !important; /* Reduce text size */
+  }
+  .swal2-title {
+    font-size: 16px !important; /* Adjust title size */
+  }
+  .swal2-content {
+    font-size: 14px !important; /* Adjust content text */
+  }
+  .swal2-actions {
+    flex-direction: row; /* Stack buttons */
+    width: auto;
+  }
+  .swal2-confirm, .swal2-cancel {
+    width: 100% !important; /* Make buttons full width */
+    margin: 5px 0;
   }
 }

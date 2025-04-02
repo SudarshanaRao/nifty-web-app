@@ -711,6 +711,7 @@ main {
 }
 #renderContainer {
   left: 0;
+  max-width: 100vw !important;
   margin-left: 2%;
   overflow-x: hidden;
   background-color: transparent;
