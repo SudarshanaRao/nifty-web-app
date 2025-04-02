@@ -13,9 +13,10 @@ import BidsCreation from "../BidsCreation/BidsCreation"
 import axios from "axios";
 import HolidayConfig from "../HolidayConfig/HolidayConfig";
 import { Analytics } from "@vercel/analytics/react"
+import ProfileCard from "../ProfileCard/ProfileCard";
 
 const HomePage = () => {
-  const [activeTab, setActiveTab] = useState("dashboard"); // Default tab is "markets"
+  const [activeTab, setActiveTab] = useState(); // Default tab is "markets"
   const [result, setResult] = useState(false);
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
@@ -26,6 +27,7 @@ const HomePage = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAnnouncementOpen, setIsAnnouncementOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth <= 768);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -155,15 +157,17 @@ const AnnouncementUnreadCount = announcements.filter((ann) => ann.active).length
       case "market-status":
         return <MarketStatus />;
       case "users-info":
-        return <UsersInfo />;
+        return <UsersInfo setActiveTab={setActiveTab} setSelectedUser={setSelectedUser} />;
       case "results":
         return <Results />;
       case "bids-creation":
         return <BidsCreation />
       case "holiday-config":
         return <HolidayConfig />
+      case "profile-card":
+        return <ProfileCard selectedUser={selectedUser.userId} setActiveTab={setActiveTab}/>;
       default:
-        return <Dashboard />; // Default to Markets if no tab is selected
+        return <ProfileCard />; // Default to Markets if no tab is selected
     }
   };
 

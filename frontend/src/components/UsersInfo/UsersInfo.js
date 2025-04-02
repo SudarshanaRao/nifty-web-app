@@ -4,8 +4,7 @@ import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
-const UsersInfo = () => {
+const UsersInfo = ({ setActiveTab, setSelectedUser }) => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [displayedUsersData, setDisplayedUsersData] = useState([]);
@@ -19,6 +18,11 @@ const UsersInfo = () => {
 
   // Show 20 users per page
   const usersPerPage = 30;
+
+  const handleUserClick = (user) => {
+    setSelectedUser(user); // Store the selected user
+    setActiveTab("profile-card"); // Navigate to ProfileCard
+  };
 
   // Fetch Users
   const fetchUsers = async () => {
@@ -332,7 +336,7 @@ const UsersInfo = () => {
             </thead>
             <tbody>
               {displayedUsersData.map((user, index) => (
-                <tr key={index} className="users-info__row">
+                <tr key={index}  onClick={() => handleUserClick(user)} style={{ cursor: "pointer" }} className="users-info__row">
                   <td className="users-info__name" title={user.name}>{user.name || "N/A"}</td>
                   <td>{user.mobileNo || "N/A"}</td>
                   <td>{user.email || "N/A"}</td>

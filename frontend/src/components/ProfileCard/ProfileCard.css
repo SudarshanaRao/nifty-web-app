@@ -1,0 +1,181 @@
+/* Profile Container */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    background: #121212;
+    border-radius: 12px;
+    width: 81%;
+    margin-left: 15px;
+    color: white;
+    min-height: auto;
+    padding: 20px;
+}
+
+/* Profile Header - Full Width */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.profile-header div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-avatar {
+    font-size: 50px;
+    color: #f1c40f;
+}
+
+.user-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.user-type {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.status-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .active {
+    background-color: #28a745; /* Green for active */
+  }
+  
+  .inactive {
+    background-color: #dc3545; /* Red for inactive */
+  }
+
+/* Main Content Layout */
+.profile-content {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Left Side Container */
+.profile-left {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Profile Section */
+.profile-section {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.profile-section h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #f1c40f;
+    display: inline-block;
+}
+
+.profile-section p {
+    font-size: 16px;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Statistics - Small Card Layout */
+.statistics-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.stat-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px;
+    gap: 6px;
+}
+
+.stat-card h4 {
+    font-size: 16px;
+    color: #f1c40f;
+}
+
+.stat-card p {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Right Side - Bids */
+.bids-card {
+    width: 30%;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.bids-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #f1c40f;
+    display: inline-block;
+}
+
+.bids-count {
+    font-size: 30px;
+    font-weight: bold;
+    color: #f1c40f;
+}
+
+.icon {
+    color: #f1c40f;
+}
+
+.card-icon {
+    color: #f1c40f;
+    font-size: 26px;
+    margin-right: 8px;
+}
+
+.profile-back-btn {
+    background: #1e1e1e;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: flex-start;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    color: #f1c40f;
+    margin: 10px 0px 20px 0px;
+}
