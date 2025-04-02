@@ -24,7 +24,7 @@ const BoxGraph = () => {
   // Default to today's date in the input format yyyy-mm-dd
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
-    return today.toISOString().split("T")[0];
+    return today.toLocaleDateString("en-CA");
   });
   useEffect(() => {
     const handleResize = () => {
