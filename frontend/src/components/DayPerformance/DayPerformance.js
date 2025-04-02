@@ -4,7 +4,7 @@ import "./DayPerformance.css";
 
 const DayPerformance = ({ trend, onBack, marketId }) => {
   // Use the passed marketId or retrieve it from localStorage
-  const effectiveMarketId = marketId || localStorage.getItem("selectedMarketId");
+  const effectiveMarketId = marketId;
 
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ const DayPerformance = ({ trend, onBack, marketId }) => {
   };
 
   useEffect(() => {
-    console.log("Received Market ID in DayPerformance:", effectiveMarketId);
+    // console.log("Received Market ID in DayPerformance:", effectiveMarketId);
     const fetchStocks = async () => {
       setLoading(true);
       try {
@@ -63,7 +63,7 @@ const DayPerformance = ({ trend, onBack, marketId }) => {
       toast.error("Market ID is required.");
       return;
     }
-    console.log("Market ID at submission:", effectiveMarketId);
+    // console.log("Market ID at submission:", effectiveMarketId);
 
     const formattedData = stocks.map((stock) => ({
       companyId: stock.companyId,
@@ -81,9 +81,9 @@ const DayPerformance = ({ trend, onBack, marketId }) => {
     const todayDate = getTodayDate();
 
     // Build URL with query parameters
-    const url = `https://dev-api.nifty10.com/bid/market/result?date=21-03-2025&marketId=${effectiveMarketId}&userId=${userId}`;
-    console.log("Submitting payload to URL:", url);
-    console.log("Payload:", JSON.stringify(formattedData, null, 2));
+    const url = `https://dev-api.nifty10.com/bid/market/result?date=${todayDate}&marketId=${effectiveMarketId}&userId=${userId}`;
+    // console.log("Submitting payload to URL:", url);
+    // console.log("Payload:", JSON.stringify(formattedData, null, 2));
 
     try {
       const response = await fetch(url, {

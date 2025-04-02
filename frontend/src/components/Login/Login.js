@@ -36,7 +36,7 @@ const Login = () => {
                         alt="Logo" 
                     />
                 </div>
-                <h2>LOGIN</h2>
+                <h2 className="login-heading">LOGIN</h2>
                 {error && <p className="error">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="input-box">

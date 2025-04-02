@@ -5,6 +5,14 @@
 
 .holiday-btn-container {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+.holiday-submit-button {
+  width: auto;
+  margin-bottom: 10px;
 }
 
 .holiday-config-table {

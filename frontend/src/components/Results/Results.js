@@ -41,6 +41,15 @@ const Results = () => {
   const [loading, setLoading] = useState(true);
   const [selectedMarket, setSelectedMarket] = useState(null);
   const [selectedMarketId, setSelectedMarketId] = useState(null);
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     fetchMarketData();
@@ -125,35 +134,34 @@ const Results = () => {
 
   // Automatically select Bullish market if none is selected
   useEffect(() => {
-    if (marketData.length > 0 && !selectedMarket) {
+    if (marketData.length > 0 && !selectedMarket && !isMobileView) {
       const bullishMarket = marketData.find((m) =>
         m.marketName.toLowerCase().includes("bullish")
       );
       if (bullishMarket) {
         setSelectedMarket(bullishMarket.marketName);
         setSelectedMarketId(bullishMarket.marketId);
-        localStorage.setItem("selectedMarketId", bullishMarket.marketId);
       }
     }
   }, [marketData, selectedMarket]);
 
   // When a card is clicked, store both the market name and its ID
   const handleMarketClick = (marketName, marketId) => {
-    console.log("Selected Market:", marketName, "Market ID:", marketId);
     setSelectedMarket(marketName);
     setSelectedMarketId(marketId);
-    localStorage.setItem("selectedMarketId", marketId);
+  };
+
+  const handleBack = () => {
+    setSelectedMarket(null);
+    setSelectedMarketId(null);
   };
 
   return (
     <div className="Results-container">
       <div className="all-cards-container result-cards-container">
-        {loading ? (
-          <p>Loading market data...</p>
-        ) : (
-          marketData.map(({ marketId, marketName }) => (
+        {marketData.map(({ marketId, marketName }) => (
+          <React.Fragment key={marketId}>
             <Card
-              key={marketId}
               title={marketName}
               image={marketImages[marketName] || "default.png"}
               activeBids={bidsData[marketId]?.activeBids || 0}
@@ -161,22 +169,28 @@ const Results = () => {
               marketId={marketId}
               onClick={handleMarketClick}
             />
-          ))
-        )}
-        <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
+            {isMobileView && selectedMarketId === marketId && (
+              <div className="results-form-container">
+                <DayPerformance
+                  trend={selectedMarket.toUpperCase()}
+                  marketId={selectedMarketId}
+                  onBack={handleBack}
+                />
+              </div>
+            )}
+          </React.Fragment>
+        ))}
       </div>
-      {selectedMarket && (
+      {!isMobileView && selectedMarket && (
         <div className="results-form-container">
           <DayPerformance
             trend={selectedMarket.toUpperCase()}
-            marketId={selectedMarketId || localStorage.getItem("selectedMarketId")}
-            onBack={() => {
-              setSelectedMarket(null);
-              setSelectedMarketId(null);
-            }}
+            marketId={selectedMarketId}
+            onBack={handleBack}
           />
         </div>
       )}
+      <ToastContainer position="top-right" style={{ marginTop: "65px" }} />
     </div>
   );
 };

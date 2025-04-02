@@ -110,7 +110,7 @@ button {
   background-color: #1a1818;
   color: #fff;
   padding: 10px 20px;
-  width: 130px;
+  width: 130px !important;
 }
 .uni-submit-button:hover {
   background-color: #343435;

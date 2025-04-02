@@ -39,7 +39,7 @@
     margin-right: 15%;
   }
   .add-company-btn {
-    display: flex;
+    display: flex ;
     justify-content: flex-end;
     margin-right: 10px;
   }

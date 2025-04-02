@@ -167,7 +167,7 @@ const HolidayConfig = () => {
         </div>
 
         <div className="uni-form-group holiday-btn-container" style={{ gridColumn: "1 / span 2", textAlign: "right" }}>
-          <button type="submit" className="uni-submit-button">Add Holiday</button>
+          <button type="submit" className="holiday-submit-button">Add Holiday</button>
         </div>
       </form>
 

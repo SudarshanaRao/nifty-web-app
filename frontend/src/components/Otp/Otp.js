@@ -85,7 +85,7 @@ const Otp = () => {
       <ToastContainer position="top-center" />
       <div className="otp-container">
         <h2>OTP has been sent to your registered mobile</h2>
-        <p>Enter OTP</p>
+        <p className="otp-sub-heading">Enter OTP</p>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -106,7 +106,7 @@ const Otp = () => {
             ))}
           </div>
           <p className="otp-hint">Hint OTP: {generatedOtp}</p>
-          <button type="submit">Verify OTP</button>
+          <button className="verify-btn" type="submit">Verify OTP</button>
         </form>
         <p className="resend">
           Haven't received the OTP?{" "}

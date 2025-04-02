@@ -97,3 +97,44 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }  
+
+  @media (max-width: 768px) {
+    .day-performance-container {
+      width: 90%;
+    }
+
+    .performance-table th, .performance-table td {
+      font-size: 12px;
+    }
+
+    .performance-input {
+      font-size: 12px;
+    }
+
+    .performance-submit-btn {
+      font-size: 12px;
+    }
+
+    .performance-loading-container {
+      height: 80px;
+    }
+
+    .performance-loader {
+      width: 30px;
+      height: 30px;
+    }
+
+    .performance-back-btn {
+      font-size: 16px;
+      width: 40px;
+      height: 30px;
+    }
+
+    .performance-subtitle {
+      font-size: 14px;
+    }
+
+    .results-title {
+      font-size: 24px;
+    }
+  }
