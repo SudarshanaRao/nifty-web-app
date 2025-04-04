@@ -431,7 +431,7 @@ const BidCreationForm = () => {
         </div>
 
         {/* Submit Button */}
-        <div className="uni-form-group" style={{ gridColumn: "1 / span 2", textAlign: "right" }}>
+        <div className="uni-form-group uni-submit-container" style={{ gridColumn: "1 / span 2", textAlign: "right" }}>
           <button type="submit" className="uni-submit-button">
             Create Bid
           </button>

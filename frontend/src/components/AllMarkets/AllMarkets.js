@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./AllMarkets.css";
 import axios from "axios";
 import BidPieChart from "../Dashboard/PieChart";
@@ -111,8 +111,31 @@ const AllMarkets = () => {
     };
     fetchMarketData();
   }, []);
-
-  // Automatically select bullish market once marketData is loaded, if not already selected
+  const handleMarketClick = useCallback(async (marketId, marketName) => {
+    setSelectedMarket(marketName);
+    setDataLoading(true);
+    setErrorMsg("");
+    setIsActive(false);
+    setSelectedRow(null);
+  
+    try {
+      const data = await getMarketData(marketId);
+      if (data.length === 0) {
+        setErrorMsg("No data available for today.");
+      }
+      // Sort numerically using bidName (converted from string to number)
+      const sortedData = data.sort((a, b) => Number(a.bidName) - Number(b.bidName));
+      const filteredData = sortedData.filter((item) => item.freeBid === false);
+      setTableData(filteredData);
+    } catch (error) {
+      setErrorMsg("Failed to load data.");
+      console.error("Error fetching table data:", error);
+      toast.error("Error fetching data.!");
+    } finally {
+      setDataLoading(false);
+    }
+  }, []);
+  
   useEffect(() => {
     if (marketData.length > 0 && !selectedMarket) {
       const bullishMarket = marketData.find((m) =>
@@ -122,7 +145,8 @@ const AllMarkets = () => {
         handleMarketClick(bullishMarket.marketId, bullishMarket.marketName);
       }
     }
-  }, [marketData, selectedMarket]);
+  }, [marketData, selectedMarket, handleMarketClick]);
+  
 
   const getMarketData = async (marketId) => {
     setDataLoading(true);
@@ -148,32 +172,7 @@ const AllMarkets = () => {
     }
   };
 
-  const handleMarketClick = async (marketId, marketName) => {
-    setSelectedMarket(marketName);
-    setDataLoading(true);
-    setErrorMsg("");
-    setIsActive(false);
-    setSelectedRow(null);
-
-    try {
-      const data = await getMarketData(marketId);
-      if (data.length === 0) {
-        setErrorMsg("No data available for today.");
-      }
-      // Sort numerically using bidName (converted from string to number)
-      const sortedData = data.sort(
-        (a, b) => Number(a.bidName) - Number(b.bidName)
-      );
-      const filteredData = sortedData.filter((item) => item.freeBid === false);
-      setTableData(filteredData);
-    } catch (error) {
-      setErrorMsg("Failed to load data.");
-      console.error("Error fetching table data:", error);
-      toast.error("Error fetching data.!");
-    } finally {
-      setDataLoading(false);
-    }
-  };
+  
 
   // Automatically select the row with bidName "19" for bullish and bearish markets
   useEffect(() => {

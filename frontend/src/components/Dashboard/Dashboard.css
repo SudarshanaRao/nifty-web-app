@@ -80,7 +80,7 @@
     background: white;
     padding: 10px;
     border-radius: 16px;
-    margin: 0px 20px;
+    max-width: 100%;
     width: 750px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding-bottom: 10px;
@@ -250,10 +250,7 @@
   }
   .dashboard-graph-todo {
     flex-direction: row; /* Stacks elements */
-  }
-  .chart-container {
-    width: 420px !important;
-    margin-right: 0px;
+    margin-bottom: 190px;
   }
 }
 
@@ -265,11 +262,8 @@
   .dashboard-graph-todo {
     display: flex;
     align-items: center;
-    justify-content: flex-start !important;
-    width: 55%;
-  }
-  .chart-container {
-    width: 520px !important;
+    justify-content: center !important;
+    width: 60%;
   }
   .chart-header {
     display: flex;
@@ -284,9 +278,6 @@
   .all-cards-container {
     grid-template-columns: repeat(1, 1fr); /* 1 card in a row */
   }
-  .chart-container {
-    width: 400px !important;
-  }
 }
 
 /* Graph and To-do Container */
@@ -298,12 +289,7 @@
   gap: 20px;
 }
 
-/* Chart Container */
-.chart-container {
-  max-width: 100%; /* Ensures responsiveness */
-  width: 700px;
-  margin-right: 0px;
-}
+
 
 @media (max-width: 1024px) {
   .chart-container {
@@ -376,6 +362,8 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    min-height: 100vh;
+    height: auto;
   }
   .time-filters {
     margin-top: 10px;

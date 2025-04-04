@@ -10,9 +10,12 @@
   padding: 10px;
   border-radius: 5px;
 }
+
 .holiday-submit-button {
   width: auto;
   margin-bottom: 10px;
+  padding: 10px 15px;
+  font-size: 16px;
 }
 
 .holiday-config-table {
@@ -21,7 +24,7 @@
   flex-direction: column;
   padding: 0px;
   height: 500px;
-  overflow: hidden; /* Prevents scrolling on the full container */
+  overflow: hidden;
 }
 
 .holiday-table table {
@@ -32,16 +35,16 @@
 .holiday-table {
   display: block;
   width: 100%;
-  max-height: 450px; /* Adjust height for scrolling */
-  overflow-y: auto; /* Enables vertical scrolling */
-  border: 1px solid #ddd; /* Optional: Adds a border for better visibility */
-  min-height: 450px; /* Ensures table doesn't shrink when data is less */
+  max-height: 450px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  min-height: 450px;
 }
 
 .holiday-table tbody {
   display: block;
   width: 100%;
-  min-height: 400px; /* Keeps tbody height fixed */
+  min-height: 400px;
 }
 
 .holiday-table tbody tr {
@@ -57,8 +60,6 @@
   z-index: 2;
 }
 
-
-/* Align sorting options to the right */
 .sort-options {
   display: flex;
   justify-content: flex-end;
@@ -76,5 +77,78 @@
 
 .uni-holiday-list {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
 }
 
+/* Responsive Styling */
+@media (max-width: 1024px) {
+  .holiday-conif{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 550px;
+    justify-content: flex-start;
+    margin: 0px;
+    min-height: 100vh;
+    height: auto;
+    /* height: 140vh !important; */
+  }
+  .holiday-btn-container {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .holiday-submit-button {
+    width: 100%;
+  }
+  .table-container {
+    height: auto;
+    min-width: 350px;
+  }
+  .uni-holiday-list {
+    margin-bottom: 12.5rem;
+  }
+
+  .sort-options {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .uni-bid-form-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .uni-form-group {
+    width: 100%;
+  }
+
+  .holiday-table tbody {
+    min-height: auto;
+  }
+
+  .sort-options {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .holiday-config-table {
+    height: auto;
+  }
+
+  .holiday-table {
+    max-height: 300px;
+  }
+
+  .holiday-btn-container {
+    align-items: center;
+  }
+}

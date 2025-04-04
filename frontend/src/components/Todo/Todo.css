@@ -2,7 +2,7 @@
 .todo-container {
   max-width: 90%;
   width: 400px;
-  margin: auto;
+  min-height: 24.5rem;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -129,7 +129,7 @@
 /* Responsive Styles */
 @media (max-width: 768px) {
   .todo-container {
-    width: 95%;
+    width: 600px !important;
   }
 
 
@@ -151,7 +151,6 @@
 
 @media (max-width: 480px) {
   .todo-container {
-    width: 100%;
     border-radius: 12px;
     padding: 15px;
   }
