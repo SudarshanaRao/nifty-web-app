@@ -9,6 +9,10 @@ import {
   FaWallet,
 } from "react-icons/fa";
 import { RiBankLine, RiMoneyRupeeCircleFill } from "react-icons/ri";
+import { BsCardList } from "react-icons/bs";
+import { FaKey } from "react-icons/fa";
+import { FaIdCard } from "react-icons/fa";
+
 
 const ProfileCard = ({ selectedUser: userId, setActiveTab }) => {
   const [users, setUsers] = useState([]);
@@ -157,10 +161,28 @@ const ProfileCard = ({ selectedUser: userId, setActiveTab }) => {
           {/* Bank Details */}
           <div className="profile-section">
             <h3>Bank Details</h3>
-            <p><RiBankLine className="icon" /> {userData?.bankName || "NA"}</p>
-            <p>Branch: {userData?.branch || "NA"}</p>
-            <p>Account No: {userData?.accountNumber || "NA"}</p>
-            <p>IFSC Code: {userData?.ifscCode || "NA"}</p>
+            <div className="statistics-container bank-card-container">
+              <div className="stat-card">
+              <RiBankLine className="card-icon" /> 
+                <h4>Bank Name: </h4>
+                <p>{userData?.bankName || "NA"}</p>
+              </div>
+              <div className="stat-card">
+                <BsCardList className="card-icon" />
+                <h4>Branch: </h4>
+                <p>{userData?.branch || "NA"}</p>
+              </div>
+              <div className="stat-card">
+                <FaIdCard className="card-icon" />
+                <h4>Account No: </h4>
+                <p>{userData?.accountNumber || "NA"}</p>
+              </div>
+              <div className="stat-card">
+                <FaKey className="card-icon" />
+                <h4>IFSC Code: </h4>
+                <p>{userData?.ifscCode || "NA"}</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -168,7 +190,17 @@ const ProfileCard = ({ selectedUser: userId, setActiveTab }) => {
         <div className="bids-card">
           <h3>Today's Bids</h3>
           <p className="bids-count">{bidsCount}</p>
+          {/* <div className="statistics-container bids-card-container">
+            {Array.from({ length: bidsCount }).map((_, index) => (
+              <div className="stat-card" key={index}>
+                <RiMoneyRupeeCircleFill className="card-icon" />
+                <h4>Invested Money</h4>
+                <p>₹{userData?.investedMoney ?? 0.00}</p>
+              </div>
+            ))}
+            </div> */}
         </div>
+        
       </div>
     </div>
   );

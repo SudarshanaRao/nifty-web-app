@@ -179,3 +179,24 @@
     color: #f1c40f;
     margin: 10px 0px 20px 0px;
 }
+
+.bank-card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.bank-sub-heading {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.bids-card-container {
+    display: flex;
+    height: 80vh;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
